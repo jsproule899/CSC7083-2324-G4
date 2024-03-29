@@ -1,4 +1,4 @@
-package assignment;
+package beeopoly;
 
 import java.util.Scanner;
 
