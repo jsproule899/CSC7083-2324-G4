@@ -1,16 +1,24 @@
 package beeopoly;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.Scanner;
 
 public class BoardGame {
 
 	public static String[] players;
+	public static ArrayList<Player> activePlayers;
+	public static ArrayList<Player> playerRank;
+	public static ArrayList<Garden> gameBoard;
+	public boolean quit = false;
 	
 	public static void main(String[] args) {
 
-		
+		//initialise game with fields, gardens and boardgame array?
 		welcome();
 		register();
+		//enter game loop While(!quit){} etc
 	}
 
 	public static void register() {
@@ -53,6 +61,21 @@ public class BoardGame {
 		System.out.println("Welcome to Beeopoly");
 		System.out.println("Rules of the game.....");
 		
+	}
+	
+	private void setPlayerOrder(ArrayList<Player> playOrder) {
+		Collections.shuffle(playOrder);
+	}
+	
+	
+	
+	private void removePlayer(Player player) {
+		activePlayers.remove(player);
+		playerRank.add(player);
+	}
+	
+	private void endGame() {
+		//TO DO
 	}
 
 }
