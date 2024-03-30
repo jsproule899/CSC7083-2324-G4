@@ -20,6 +20,29 @@ public class Garden extends BoardTile {
 		this.buildCost = buildCost;
 	}
 
+	@Override
+	public void landOn(Player player) {
+		Scanner sc = new Scanner(System.in);
+		System.out.printf("You've landed on %s.%n", this.getName());
+		if (this.getOwner() != null) {
+			System.out.printf("The owner of this Garden is %s.%n", this.getOwner());
+			this.payRent(player);
+		} else {
+			System.out.printf("This Garden isn't owned by anyone.%n");
+			System.out.println("Do you want to give up some of your Honey Jars to own this Garden? [Y/N]");
+			String choice = sc.nextLine().trim();
+			if (choice.contains("Y") || choice.contains("Yes") || choice.contains("y") || choice.contains("yes")) {
+				this.setOwner(player);
+				System.out.println("The new owner of " + this.getName() + " is " + player.getName());
+				player.updateHoney(-this.getTileCost());
+				player.showHoney();
+			} else {
+				// TO DO - implement auction feature to pass onto other players
+			}
+
+		}
+	}
+
 	public void purchase(Player player) {
 		// TO DO
 	}
@@ -62,7 +85,8 @@ public class Garden extends BoardTile {
 			System.out.println("Your garden " + this.getName()
 					+ " needs 3 Hives before you can build an Apiary... do you want to build a Hive instead? [Y/N]");
 			Scanner sc = new Scanner(System.in);
-			if (sc.next() == "Y" || sc.next() == "y" || sc.next() == "Yes" || sc.next() == "yes") {
+			String choice = sc.nextLine();
+			if (choice.contains("Y") || choice.contains("Yes") || choice.contains("y") || choice.contains("yes")) {
 				this.buildHive(1);
 			} else {
 				return;
@@ -100,7 +124,7 @@ public class Garden extends BoardTile {
 	}
 
 	public void payRent(Player player) {
-		
+
 		rent = this.rent;
 		int hives = this.getHives();
 		int apiary = this.getApiary();

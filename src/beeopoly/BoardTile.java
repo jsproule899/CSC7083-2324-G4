@@ -20,8 +20,8 @@ public abstract class BoardTile {
 		return name;
 	}
 
-	public void displayMessage() {
-		System.out.println("You've landed on " + name);
+	public void landOn(Player player) {
+		System.out.println(player.getName()+", You've landed on " + name);
 	}
 
 }

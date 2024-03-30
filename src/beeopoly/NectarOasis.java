@@ -7,7 +7,7 @@ public class NectarOasis extends BoardTile {
 	}
 
 	@Override
-	public void displayMessage() {
-		System.out.println("Welcome to the "+ this.getName() + "your Bees rest in the nectar until your next turn");
+	public void landOn(Player player) {
+		System.out.println("Welcome to the "+ this.getName() + " your Bees rest in the nectar until your next turn");
 	}
 }
