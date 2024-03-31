@@ -8,6 +8,8 @@ class BoardTileTest {
 
 	@Test
 	void testBoardTile() {
+		//test 
+		System.out.println("Testing repo");
 		fail("Not yet implemented");
 	}
 
