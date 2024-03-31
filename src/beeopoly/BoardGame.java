@@ -141,15 +141,20 @@ public class BoardGame {
 		// TODO Auto-generated method stub 
 		//show summary and Bee logo?
 		
+		
+		
+		printLogo();
+	}
+
+	private static void printLogo() {
+		
 		System.out.println("                   __        ");
         System.out.println("                  // \       ");  
         System.out.println("                  \\_/ //    ");
         System.out.println("''-.._.-''-.._.. -(||)(')    ");
         System.out.println("                  '''        ");
-
-
 	}
-
+	
 	public static void removePlayer(Player player) {
 		activePlayers.remove(player); //throws error for some reason?
 		playerRank.add(player);
