@@ -140,6 +140,13 @@ public class BoardGame {
 	private static void nextRound() {
 		// TODO Auto-generated method stub 
 		//show summary and Bee logo?
+		
+		System.out.println("                   __        ");
+        System.out.println("                  // \       ");  
+        System.out.println("                  \\_/ //    ");
+        System.out.println("''-.._.-''-.._.. -(||)(')    ");
+        System.out.println("                  '''        ");
+
 
 	}
 
