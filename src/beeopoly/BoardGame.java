@@ -22,8 +22,6 @@ public class BoardGame {
 		welcome();
 		register();
 		setPlayerOrder(activePlayers);
-		
-		
 
 		// enter game loop
 		while (!quit) {
@@ -36,10 +34,14 @@ public class BoardGame {
 				System.out.printf("End of %s's turn.%n", player.getName());
 				System.out.println("____________________________________");
 			}
+			continueGame();
+			
 			if (activePlayers.size() < 2) {
 				quit = true;
 			}
 		}
+
+	
 	}
 
 	public static void register() {
@@ -157,16 +159,22 @@ public class BoardGame {
 	}
 
 	private static void nextRound() {
-		
+
 		delay();
 
 		System.out.println(
 				"It's time for the Start-of-Round Buzz Report. Let's see how our honey jars and gardens are buzzing along!");
 
+		gameStatistics();
+
+		printLogo();
+	}
+
+	private static void gameStatistics() {
 		for (int i = 0; i < activePlayers.size(); i++) {
 
 			delay();
-			
+
 			// Print honey jars of player
 			System.out.println();
 			activePlayers.get(i).showHoney();
@@ -188,28 +196,26 @@ public class BoardGame {
 				// Print owned gardens
 				for (int j = 0; j < gardens.size(); j++) {
 					if (gardens.get(j).getOwner() == activePlayers.get(i)) {
-						System.out.printf("%s (%s) \t\t\t",gardens.get(j).getName(),gardens.get(j).getField().toString());
-						
-						if(gardens.get(j).getHives()>0) {
+						System.out.printf("%s (%s) \t\t\t", gardens.get(j).getName(),
+								gardens.get(j).getField().toString());
+
+						if (gardens.get(j).getHives() > 0) {
 							System.out.printf("Hives: %d \t\t", gardens.get(j).getHives());
 						}
-						
-						if(gardens.get(j).getApiary()>0) {
+
+						if (gardens.get(j).getApiary() > 0) {
 							System.out.printf("Apiary: %d \t\t", gardens.get(j).getApiary());
 						}
 						System.out.println();
 					}
 				}
-				
-			
+
 			} else {
 				// If the player doesn't own any gardens
 				System.out.printf(
 						"Their empire stands gardenless, yet hope blooms for the bees to claim their own sanctuary in the next round.\n");
 			}
 		}
-
-		printLogo();
 	}
 
 	private static void printLogo() {
@@ -219,6 +225,54 @@ public class BoardGame {
 		System.out.println("                  \\\\_/ //    ");
 		System.out.println("''-.._.-''-.._.. -(||)(')    ");
 		System.out.println("                  '''        ");
+		System.out.println();
+
+	}
+
+	private static void continueGame() {
+
+		System.out.println(
+				"This round is now over. As the buzzing subsides, a pivotal moment arises. Do you want to continue your beekeeping journey? [Y/N]");
+
+		Scanner sc = new Scanner(System.in);
+
+		String agree = sc.nextLine().trim();
+
+		if (agree.contains("N") || agree.contains("No") || agree.contains("n") || agree.contains("no")) {
+
+			System.out.println(
+					"Before we wrap up, let's take a moment to appreciate the journey. Here are the game stats so far:");
+			gameStatistics();
+
+			System.out.println("Are you absolutely certain you want to end the game? [Y/N]");
+
+			agree = sc.nextLine().trim();
+			if (agree.contains("Y") || agree.contains("Yes") || agree.contains("y") || agree.contains("yes")) {
+
+				System.out.println(
+						"Understood, fellow beekeepers. Sometimes, even the busiest bees need to rest their wings.");
+
+				displayLeaderboard();
+
+				quit = true;
+
+			} else {
+				System.out.println(
+						"Excellent choice! The bees are buzzing with excitement to continue their journey. Let's keep the garden buzzing with excitement for another round of sweet victories! \n");
+			}
+	
+
+		} else {
+			System.out.println(
+					"Excellent choice! The bees are buzzing with excitement to continue their journey. Let's keep the garden buzzing with excitement for another round of sweet victories! \n");
+		}
+
+	}
+
+	private static void displayLeaderboard() {
+		// TO DO (MO'C)
+		// Rank players based on honey and value of real estate
+		System.out.println("Leaderboard");
 
 	}
 
@@ -230,7 +284,6 @@ public class BoardGame {
 	private static void endGame() {
 		// TO DO
 	}
-	
 
 	private static void delay() {
 		try {
@@ -239,6 +292,5 @@ public class BoardGame {
 			Thread.currentThread().interrupt();
 		}
 	}
-
 
 }
