@@ -2,7 +2,10 @@ package beeopoly;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 public class BoardGame {
@@ -17,13 +20,13 @@ public class BoardGame {
 
 	public static void main(String[] args) {
 
-		// initialise game with fields, gardens and boardgame array
+		// Initialise game with fields, gardens and boardgame array
 		setupGameBoard();
 		welcome();
 		register();
 		setPlayerOrder(activePlayers);
 
-		// enter game loop
+		// Enter game loop
 		while (!quit) {
 			nextRound();
 
@@ -38,18 +41,24 @@ public class BoardGame {
 				}
 
 			}
-			continueGame();
 
+			// End game if there are less than 2 players
 			if (activePlayers.size() < 2) {
 				quit = true;
 				for (Player player : activePlayers) {
-					System.out.println("There is only a single Beekeeper and their swarm still buzzing... " + player.getName()
+					System.out.println("There is only a single Beekeeper and their swarm still buzzing... "
+							+ player.getName()
 							+ " has won! Congratulations!!! Your Bees have grew into a wonderful colony and repollinated the world :D");
+
+					beekeeperLeaderboard();
+					System.out.println(
+							"Thank you for fluttering with us! Until our next pollen-packed adventure, keep buzzing with excitement!");
 				}
 
+			} else {
+			
+				continueGame();
 			}
-
-			endGame();
 
 		}
 	}
@@ -136,8 +145,8 @@ public class BoardGame {
 		gameBoard.add(new Garden("Wild Rose Retreat", fields.get(0), 80, 4, 10));
 		gameBoard.add(new Garden("Sunflower Grove", fields.get(1), 100, 6, 10));
 		gameBoard.add(new Garden("Lavender Fields", fields.get(1), 120, 8, 10));
-		gameBoard.add(new Garden("Daisy Patch", fields.get(1), 60, 140, 10)); 
-		
+		gameBoard.add(new Garden("Daisy Patch", fields.get(1), 60, 140, 10));
+
 		gameBoard.add(new NectarOasis("Nectar Oasis"));
 		gameBoard.add(new Garden("Apple Blossom Grove", fields.get(2), 180, 14, 10));
 		gameBoard.add(new Garden("Pear Orchard Delight", fields.get(2), 200, 16, 10));
@@ -171,6 +180,7 @@ public class BoardGame {
 
 		delay();
 
+		System.out.println();
 		System.out.println(
 				"It's time for the Start-of-Round Buzz Report. Let's see how our honey jars and gardens are buzzing along!");
 
@@ -179,18 +189,20 @@ public class BoardGame {
 		printLogo();
 	}
 
+	// Method to display honey jars and real estate owned by each player
 	private static void gameStatistics() {
+		
 		for (int i = 0; i < activePlayers.size(); i++) {
 
 			delay();
 
-			// Print honey jars of player
+			// Print number of honey jars player has
 			System.out.println();
 			activePlayers.get(i).showHoney();
 
 			boolean hasGardens = false; // Flag to check if the player owns any gardens
 
-			// Check if the player owns any gardens
+			// Check if player owns any gardens
 			for (int j = 0; j < gardens.size(); j++) {
 				if (gardens.get(j).getOwner() == activePlayers.get(i)) {
 					hasGardens = true;
@@ -198,7 +210,7 @@ public class BoardGame {
 				}
 			}
 
-			// If the player owns gardens, print the gardens they own
+			// If yes, print the gardens they own
 			if (hasGardens) {
 				System.out.printf("Their Empire:\n", activePlayers.get(i).getName());
 
@@ -220,13 +232,15 @@ public class BoardGame {
 				}
 
 			} else {
-				// If the player doesn't own any gardens
+				
+				// If no, print message that player doesn't own any gardens
 				System.out.printf(
 						"Their empire stands gardenless, yet hope blooms for the bees to claim their own sanctuary in the next round.\n");
 			}
 		}
 	}
 
+	// Method to print Beeopoly logo
 	private static void printLogo() {
 
 		System.out.println("                   __        ");
@@ -238,35 +252,43 @@ public class BoardGame {
 
 	}
 
+	// Method to allow players to collectively decide to quit the game or continue
+	// to the next round
 	private static void continueGame() {
 
+		System.out.println();
 		System.out.println(
 				"This round is now over. As the buzzing subsides, a pivotal moment arises. Do you want to continue your beekeeping journey? [Y/N]");
 
 		Scanner sc = new Scanner(System.in);
 
+		// Player input
 		String agree = sc.nextLine().trim();
 
+		// Process player input
 		if (agree.contains("N") || agree.contains("No") || agree.contains("n") || agree.contains("no")) {
 
 			System.out.println(
 					"Before we wrap up, let's take a moment to appreciate the journey. Here are the game stats so far:");
+			
 			gameStatistics();
 
+			// Confirm players want to end game
+			System.out.println();
 			System.out.println("Are you absolutely certain you want to end the game? [Y/N]");
 
+			// Player input
 			agree = sc.nextLine().trim();
+
+			// Process player input
 			if (agree.contains("Y") || agree.contains("Yes") || agree.contains("y") || agree.contains("yes")) {
 
 				System.out.println(
 						"Understood, fellow beekeepers. Sometimes, even the busiest bees need to rest their wings.");
-				
-				for (int i = 0; i < activePlayers.size(); i++) {
-				playerRank.add(activePlayers.get(i));
-				}
 
 				displayLeaderboard();
 
+				// Bring game to an end
 				quit = true;
 
 			} else {
@@ -281,21 +303,136 @@ public class BoardGame {
 
 	}
 
+	// Method to rank players based on honey and value of real estate
+
+	private static List<Map.Entry<String, Double>> rankPlayers() {
+		Map<String, Double> leaderboard = new HashMap<>();
+
+		for (int i = 0; i < activePlayers.size(); i++) {
+
+			double honeyTotal = activePlayers.get(i).getHoney();
+			double realEstateTotal = 0;
+			double finalScore = 0;
+
+			// Calculate value of each garden including developments owned by the player
+			for (int j = 0; j < gardens.size(); j++) {
+
+				if (gardens.get(j).getOwner() == activePlayers.get(i)) {
+
+					double gardenCost = gardens.get(j).getTileCost();
+					double developmentsTotal = 0;
+
+					double hiveTotal = 0;
+					double apiaryTotal = 0;
+
+					if (gardens.get(j).getHives() == 1) {
+						// First hive costs 10% of TileCost
+						hiveTotal = (gardens.get(j).getTileCost()) * (0.1);
+					} else if (gardens.get(j).getHives() == 2) {
+						// Second hive costs 20% of TileCost
+						hiveTotal = ((gardens.get(j).getTileCost()) * (0.1)) + ((gardens.get(j).getTileCost()) * (0.2));
+					} else if (gardens.get(j).getHives() == 3) {
+						// Third hive costs 30% of TileCost
+						hiveTotal = ((gardens.get(j).getTileCost()) * (0.1)) + ((gardens.get(j).getTileCost()) * (0.2))
+								+ ((gardens.get(j).getTileCost()) * (0.3));
+					}
+
+					if (gardens.get(j).getApiary() == 1) {
+						// Apiary costs 50% of TileCost
+						apiaryTotal = (gardens.get(j).getTileCost()) * (0.5);
+					}
+
+					developmentsTotal = hiveTotal + apiaryTotal;
+
+					realEstateTotal += (gardenCost + developmentsTotal);
+
+				}
+
+			}
+
+			finalScore = honeyTotal + realEstateTotal;
+
+			// Add player name and final score to map
+			leaderboard.put(activePlayers.get(i).getName(), finalScore);
+
+		}
+
+		// Convert map entries to a list of Map.Entry objects for sorting
+		List<Map.Entry<String, Double>> list = new ArrayList<>(leaderboard.entrySet());
+
+		// Sort the list based on score (highest to lowest)
+		Collections.sort(list, new Comparator<Map.Entry<String, Double>>() {
+			@Override
+			public int compare(Map.Entry<String, Double> entry1, Map.Entry<String, Double> entry2) {
+				// Sort in descending order based on values (scores)
+				return Double.compare(entry2.getValue(), entry1.getValue());
+			}
+		});
+		return list;
+	}
+
+	// Method to display final leader board when game is brought to an end
 	private static void displayLeaderboard() {
-		// TO DO (MO'C)
-		// Rank players based on honey and value of real estate
-		System.out.println("Leaderboard");
+
+		List<Map.Entry<String, Double>> list = rankPlayers();
+
+		// Access the player name at position zero after sorting
+
+		Map.Entry<String, Double> firstEntry = list.get(0);
+		String winner = firstEntry.getKey();
+
 		System.out.println();
-		
-		
+		System.out.println("We're buzzing about as we tally up the scores. Stay tuned for the exciting results!");
+		delay();
+		System.out.println();
+		System.out.printf(
+				"Flap your wings in triumph Beekeeper %s! Congratulations on your buzzing victory as a top beekeeper! \n",
+				winner);
+		System.out.println(
+				"Your dedication to our buzzing friends has paid off in sweet success! Keep up the buzz-tastic work!");
+
+		beekeeperLeaderboard();
+
+		System.out.println(
+				"Thank you for fluttering with us! Until our next pollen-packed adventure, keep buzzing with excitement!");
 
 	}
 
+	private static void beekeeperLeaderboard() {
+		List<Map.Entry<String, Double>> list = rankPlayers();
+		int rank = 1;
+		delay();
+		System.out.println();
+		System.out.println("\tBee Leaderboard");
+		System.out.println("------------------------------------");
+		System.out.println(" Beekeeper \tScore");
+		System.out.println("____________________________________");
+
+		for (Map.Entry<String, Double> entry : list) {
+			String playerName = entry.getKey();
+			double score = entry.getValue();
+			delay();
+			System.out.printf("%d. %-10s   %.1f\n", rank++, playerName, score);
+		}
+
+		if (playerRank.size() > 0) {
+			for (Player player : playerRank) {
+				String playerName = player.getName();
+				delay();
+				System.out.printf("%d. %-10s   %.1f\n", rank++, playerName, 0.0);
+			}
+		}
+
+		delay();
+		System.out.println("____________________________________");
+		printLogo();
+	}
+
 	public static void removePlayer(Player player) {
-		activePlayers.remove(player); 
+		activePlayers.remove(player);
 		playerRank.add(player);
-		for(Garden garden : gardens) {
-			if(garden.getOwner() == player) {
+		for (Garden garden : gardens) {
+			if (garden.getOwner() == player) {
 				garden.setOwner(null);
 				garden.setHives(0);
 				garden.setApiary(0);
@@ -303,18 +440,7 @@ public class BoardGame {
 		}
 	}
 
-
-	private static void endGame() {
-		playerRank.addAll(activePlayers);
-		Collections.reverse(playerRank);
-		System.out.println("The leaderboard below summarises the game from winner to loser. Thanks for playing!!!"); //Will need to update to align with displayLeaderBoard()
-		int i = 1;
-		for(Player player : playerRank) {
-			System.out.printf("%d. %s%n",i, player.getName());
-			i++;
-		}
-		
-	}
+	// Method to add a short delay to create suspense in game play.
 
 	public static void delay() {
 		try {
@@ -325,7 +451,9 @@ public class BoardGame {
 	}
 
 	public static void eliminatePlayer(Player player) {
-		System.out.printf("Beekeeper %s, you have been elimated from the game as you have run out of Honey... Your Bees have fled the gardens and abondoned all the hives and apiaries!%n", player.getName());
+		System.out.printf(
+				"Beekeeper %s, you have been eliminated from the game as you have run out of Honey... Your Bees have fled the gardens and abondoned all the hives and apiaries!%n",
+				player.getName());
 		removePlayer(player);
 	}
 

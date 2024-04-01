@@ -264,7 +264,7 @@ public class Player {
 		case 3:
 			BoardGame.removePlayer(this);
 			System.out.printf("Beekeeper %s has decided to retire and is letting their Bees rest their wings!%n",this.getName());
-			return false;
+			return false; 
 		default:
 			return this.showMenu();
 		}
