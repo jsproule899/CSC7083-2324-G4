@@ -197,7 +197,10 @@ public class Player {
 	}
 
 	public void develop() {
-		// TO DO
+		// TO DO DMcL
+	
+		
+		
 	}
 
 	public void showMenu() {
