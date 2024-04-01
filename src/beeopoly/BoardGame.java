@@ -17,7 +17,7 @@ public class BoardGame {
 
 	public static void main(String[] args) {
 
-		// initialise game with fields, gardens and boardgame array?
+		// initialise game with fields, gardens and boardgame array
 		setupGameBoard();
 		welcome();
 		register();
@@ -29,19 +29,29 @@ public class BoardGame {
 
 			for (Player player : activePlayers) {
 				System.out.printf("It's %s's turn.%n", player.getName());
-				player.showMenu();
-				gameBoard.get(player.getPosition()).landOn(player);
-				System.out.printf("End of %s's turn.%n", player.getName());
-				System.out.println("____________________________________");
+				if (player.showMenu()) {
+					gameBoard.get(player.getPosition()).landOn(player);
+					System.out.printf("End of %s's turn.%n", player.getName());
+					System.out.println("____________________________________");
+				} else {
+					System.out.println("____________________________________");
+				}
+
 			}
 			continueGame();
-			
+
 			if (activePlayers.size() < 2) {
 				quit = true;
-			}
-		}
+				for (Player player : activePlayers) {
+					System.out.println("There is only a single Beekeeper and their swarm still buzzing... " + player.getName()
+							+ " has won! Congratulations!!! Your Bees have grew into a wonderful colony and repollinated the world :D");
+				}
 
-	
+			}
+
+			endGame();
+
+		}
 	}
 
 	public static void register() {
@@ -63,7 +73,7 @@ public class BoardGame {
 		for (int i = 0; i < numOfPlayers; i++) {
 			System.out.printf("Please Enter player %d", i + 1);
 			System.out.println();
-			String player = sc.nextLine();
+			String player = sc.nextLine(); // do we need to have a input check, i.e. name>3 chars etc
 			if (checkPlayer(player)) {
 				players[i] = player;
 				System.out.println("Player Successfully added");
@@ -260,7 +270,6 @@ public class BoardGame {
 				System.out.println(
 						"Excellent choice! The bees are buzzing with excitement to continue their journey. Let's keep the garden buzzing with excitement for another round of sweet victories! \n");
 			}
-	
 
 		} else {
 			System.out.println(
@@ -277,20 +286,40 @@ public class BoardGame {
 	}
 
 	public static void removePlayer(Player player) {
-		activePlayers.remove(player); // throws error for some reason?
+		activePlayers.remove(player); 
 		playerRank.add(player);
+		for(Garden garden : gardens) {
+			if(garden.getOwner() == player) {
+				garden.setOwner(null);
+				garden.setHives(0);
+				garden.setApiary(0);
+			}
+		}
 	}
 
 	private static void endGame() {
-		// TO DO
+		playerRank.addAll(activePlayers);
+		Collections.reverse(playerRank);
+		System.out.println("The leaderboard below summarises the game from winner to loser. Thanks for playing!!!"); //Will need to update to align with displayLeaderBoard()
+		int i = 1;
+		for(Player player : playerRank) {
+			System.out.printf("%d. %s%n",i, player.getName());
+			i++;
+		}
+		
 	}
 
-	private static void delay() {
+	public static void delay() {
 		try {
 			Thread.sleep(1000);
 		} catch (InterruptedException e) {
 			Thread.currentThread().interrupt();
 		}
+	}
+
+	public static void eliminatePlayer(Player player) {
+		System.out.printf("Beekeeper %s, you have been elimated from the game as you have run out of Honey... Your Bees have fled the gardens and abondoned all the hives and apiaries!%n", player.getName());
+		removePlayer(player);
 	}
 
 }
