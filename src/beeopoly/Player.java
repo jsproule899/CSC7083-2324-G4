@@ -19,7 +19,7 @@ public class Player {
 	public Player(String name) {
 		super();
 		this.name = name;
-		this.honey = 1500;
+		this.honey = 500;
 		this.position = 0; // indexed 0-11
 	}
 
@@ -271,4 +271,9 @@ public class Player {
 		
 
 	}
+	
+	 @Override
+	    public String toString() {
+	        return name;
+	    }
 }

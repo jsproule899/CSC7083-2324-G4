@@ -111,7 +111,7 @@ public class BoardGame {
 				"3. Own your piece of paradise by snapping up sweet garden tiles. But watch out—others might snatch them first! If you land on a tile and don't buy it, it will be offered to the other players.");
 		System.out.println(
 				"4. If another Beekeeper lands on one of your gardens, they must show their appreciation for your hospitality by leaving you some honey jars.");
-		System.out.println("5. Collect 200 sweet honey jars when your bees fly through the Honey Haven.");
+		System.out.println("5. Collect 50 sweet honey jars when your bees fly through the Honey Haven.");
 		System.out.println("6. Rest and recharge when you land on the Nectar Oasis.");
 		System.out.println(
 				"7. Rule the fields by acquiring all gardens within a field. Then, develop your empire with Hives—but remember, you'll need three before you can build an Apiary.");
@@ -136,9 +136,8 @@ public class BoardGame {
 		gameBoard.add(new Garden("Wild Rose Retreat", fields.get(0), 80, 4, 10));
 		gameBoard.add(new Garden("Sunflower Grove", fields.get(1), 100, 6, 10));
 		gameBoard.add(new Garden("Lavender Fields", fields.get(1), 120, 8, 10));
-		gameBoard.add(new Garden("Daisy Patch", fields.get(1), 60, 140, 10)); // might need to change base-rent as
-																				// landing on the early ones cost less
-																				// than the 200 each round
+		gameBoard.add(new Garden("Daisy Patch", fields.get(1), 60, 140, 10)); 
+		
 		gameBoard.add(new NectarOasis("Nectar Oasis"));
 		gameBoard.add(new Garden("Apple Blossom Grove", fields.get(2), 180, 14, 10));
 		gameBoard.add(new Garden("Pear Orchard Delight", fields.get(2), 200, 16, 10));
@@ -286,6 +285,7 @@ public class BoardGame {
 		// TO DO (MO'C)
 		// Rank players based on honey and value of real estate
 		System.out.println("Leaderboard");
+		System.out.println();
 		
 		
 
@@ -302,6 +302,7 @@ public class BoardGame {
 			}
 		}
 	}
+
 
 	private static void endGame() {
 		playerRank.addAll(activePlayers);
