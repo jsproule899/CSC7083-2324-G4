@@ -56,7 +56,7 @@ public class BoardGame {
 				}
 
 			} else {
-			
+
 				continueGame();
 			}
 
@@ -191,7 +191,7 @@ public class BoardGame {
 
 	// Method to display honey jars and real estate owned by each player
 	private static void gameStatistics() {
-		
+
 		for (int i = 0; i < activePlayers.size(); i++) {
 
 			delay();
@@ -232,7 +232,7 @@ public class BoardGame {
 				}
 
 			} else {
-				
+
 				// If no, print message that player doesn't own any gardens
 				System.out.printf(
 						"Their empire stands gardenless, yet hope blooms for the bees to claim their own sanctuary in the next round.\n");
@@ -240,7 +240,7 @@ public class BoardGame {
 		}
 	}
 
-	// Method to print Beeopoly logo
+	// Method to print Beeopoly logo to screen
 	private static void printLogo() {
 
 		System.out.println("                   __        ");
@@ -270,7 +270,7 @@ public class BoardGame {
 
 			System.out.println(
 					"Before we wrap up, let's take a moment to appreciate the journey. Here are the game stats so far:");
-			
+
 			gameStatistics();
 
 			// Confirm players want to end game
