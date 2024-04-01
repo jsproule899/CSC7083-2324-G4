@@ -26,6 +26,10 @@ public class Player {
 	public String getName() {
 		return name;
 	}
+	
+	public int getHoney() {
+		return honey;
+	}
 
 	public void updateHoney(int jars) {
 		this.honey += jars;

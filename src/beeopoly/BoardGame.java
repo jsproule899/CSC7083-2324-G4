@@ -251,6 +251,10 @@ public class BoardGame {
 
 				System.out.println(
 						"Understood, fellow beekeepers. Sometimes, even the busiest bees need to rest their wings.");
+				
+				for (int i = 0; i < activePlayers.size(); i++) {
+				playerRank.add(activePlayers.get(i));
+				}
 
 				displayLeaderboard();
 
@@ -273,6 +277,8 @@ public class BoardGame {
 		// TO DO (MO'C)
 		// Rank players based on honey and value of real estate
 		System.out.println("Leaderboard");
+		
+		
 
 	}
 
