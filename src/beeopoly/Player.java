@@ -26,9 +26,9 @@ public class Player {
 	public String getName() {
 		return name;
 	}
-	
+
 	public int getHoney() {
-		return honey;
+		return this.honey;
 	}
 
 	public void updateHoney(int jars) {
@@ -41,19 +41,15 @@ public class Player {
 
 	public int rollDice() {
 		int roll, dice1, dice2 = 0;
-	
+
 		Random rand = new Random();
-		dice1 = rand.nextInt(6)+1;
-		dice2 = rand.nextInt(6)+1;
-		roll = dice1+dice2;
-		
+		dice1 = rand.nextInt(6) + 1;
+		dice2 = rand.nextInt(6) + 1;
+		roll = dice1 + dice2;
+
 		System.out.println("Rolling dice...");
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			Thread.currentThread().interrupt();
-		}
-		System.out.println(this.getName()+" You have rolled a "+dice1+" and a "+ dice2+ " that makes "+roll);
+		BoardGame.delay();
+		System.out.println(this.getName() + " You have rolled a " + dice1 + " and a " + dice2 + " that makes " + roll);
 		return roll;
 	}
 
@@ -66,17 +62,17 @@ public class Player {
 			this.position += places;
 		}
 	}
-	
+
 	public int getPosition() {
 		return position;
 	}
 
-
 	public void trade(ArrayList<Garden> gardens, ArrayList<Player> players) {
-		// TO DO
 		int honey = 0;
-		Garden garden1, garden2 = null;
+		Garden garden1 = null, garden2 = null;
+		ArrayList<Player> otherPlayers = new ArrayList<Player>();
 		Player player2 = null;
+		boolean sell = false, swap = false;
 
 		ArrayList<Garden> ownedGardens1 = new ArrayList<Garden>();
 		ArrayList<Garden> ownedGardens2 = new ArrayList<Garden>();
@@ -99,14 +95,18 @@ public class Player {
 			System.out.println("Trade cancelled...");
 			return;
 		} else {
-			garden1 = gardens.get(choice-1);
+			garden1 = ownedGardens1.get(choice - 1);
 		}
 
 		System.out.println("Which Player would you like to trade with? [Enter a number]");
 		int j = 1;
 		for (Player player : players) {
-			System.out.println(j + ". " + player.getName());
-			j++;
+			if (player != this) {
+				System.out.println(j + ". " + player.getName());
+				otherPlayers.add(player);
+				j++;
+			}
+
 		}
 		System.out.println(j + ". Cancel trade");
 		choice = sc.nextInt();
@@ -115,7 +115,7 @@ public class Player {
 			System.out.println("Trade cancelled...");
 			return;
 		} else {
-			player2 = players.get(choice-1);
+			player2 = otherPlayers.get(choice - 1);
 		}
 
 		for (Garden garden : gardens) {
@@ -133,6 +133,7 @@ public class Player {
 		sc.nextLine();
 		switch (choice) {
 		case 1:
+			swap = true;
 			System.out.println("Which Garden do you wish to swap for?");
 			int k = 1;
 			for (Garden garden : ownedGardens2) {
@@ -146,7 +147,7 @@ public class Player {
 				System.out.println("Trade cancelled...");
 				return;
 			} else {
-				garden2 = gardens.get(choice-1);
+				garden2 = ownedGardens2.get(choice - 1);
 			}
 
 			System.out.println("Do you wish to add Honey to sweeten the deal? [Enter a number]");
@@ -158,8 +159,16 @@ public class Player {
 			switch (choice) {
 			case 1:
 				System.out.println("How much Honey do you want to add to sweeten the deal? [Enter a number]");
+				
 				honey = sc.nextInt();
 				sc.nextLine();
+				while(this.getHoney()<honey) {
+					System.out.println("You don't have that many Honey Jars, you currently have "+ this.getHoney()+" please enter a lower amount:");
+					honey = sc.nextInt();
+					sc.nextLine();
+				}
+				
+				
 				break;
 			case 2:
 				break;
@@ -171,9 +180,15 @@ public class Player {
 
 			break;
 		case 2:
+			sell = true;
 			System.out.println("How much Honey do you want to sell this for? [Enter a number]");
 			honey = sc.nextInt();
 			sc.nextLine();
+			while(player2.getHoney()<honey) {
+				System.out.println(player2.getName()+" doesn't have that many Honey Jars, They currently have "+player2.getHoney()+"Honey Jars please enter a lower amount:");
+				honey = sc.nextInt();
+				sc.nextLine();
+			}
 			break;
 		default:
 			System.out.println("Trade cancelled...");
@@ -184,15 +199,24 @@ public class Player {
 		String agree = sc.nextLine().trim();
 
 		if (agree.contains("Y") || agree.contains("Yes") || agree.contains("y") || agree.contains("yes")) {
+			
 			garden1.setOwner(player2);
-			garden2.setOwner(this);
-			this.updateHoney(-honey);
-			player2.updateHoney(+honey);
+			if (swap) {
+				this.updateHoney(-honey);
+				player2.updateHoney(+honey);
+				garden2.setOwner(this);
+				System.out.println(this.getName() + " now owns " + garden2.getName());
 
-			System.out.println(this.getName() + " now owns " + garden2.getName());
+			} else if (sell) {
+				this.updateHoney(+honey);
+				player2.updateHoney(-honey);
+			}		
+			
 			this.showHoney();
+			System.out.println();
 			System.out.println(player2.getName() + " now owns " + garden1.getName());
 			player2.showHoney();
+			System.out.println();
 
 		} else {
 			System.out.println("Trade cancelled...");
@@ -204,7 +228,7 @@ public class Player {
 		// TO DO
 	}
 
-	public void showMenu() {
+	public boolean showMenu() {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Select an option:");
 		System.out.println("1. Manage Gardens");
@@ -222,20 +246,29 @@ public class Player {
 			int option = sc.nextInt();
 			sc.nextLine();
 			switch (option) {
-			case 1: this.trade(BoardGame.gardens, BoardGame.activePlayers);
-				break;
-			case 2: this.develop();
-				break;
-			default: this.showMenu();
+			case 1:
+				this.trade(BoardGame.gardens, BoardGame.activePlayers);
+				return this.showMenu();
+				
+			case 2:
+				this.develop();
+				return this.showMenu();
+	
+			default:
+				return this.showMenu();
 			}
-			break;
-		case 2: this.move(this.rollDice());;
-			break;
-		case 3: BoardGame.removePlayer(this);
-			break;
-		default: this.showMenu();
-		
+			
+		case 2:
+			this.move(this.rollDice());
+			return true;
+		case 3:
+			BoardGame.removePlayer(this);
+			System.out.printf("Beekeeper %s has decided to retire and is letting their Bees rest their wings!%n",this.getName());
+			return false;
+		default:
+			return this.showMenu();
 		}
+		
 
 	}
 }
