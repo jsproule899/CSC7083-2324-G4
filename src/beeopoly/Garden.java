@@ -7,7 +7,7 @@ public class Garden extends BoardTile {
 	private Field field;
 	private int tileCost;
 	private int rent;
-	private int buildCost;
+	private int buildCost; // is this needed anymore if we are calculating as a percentage of tileCost?
 	private int hives = 0;
 	private int apiary = 0;
 	private Player owner = null;
@@ -23,36 +23,38 @@ public class Garden extends BoardTile {
 	@Override
 	public void landOn(Player player) {
 		Scanner sc = new Scanner(System.in);
-		System.out.printf("You've landed on %s.%n", this.getName());
+		System.out.printf("You've landed on %s (%s).%n", this.getName(), this.getField());
+
 		if (this.getOwner() != null) {
-			System.out.printf("The owner of this Garden is %s.%n", this.getOwner());
+			System.out.printf("The owner of this Garden is %s.%n", this.getOwner().getName());
 			this.payRent(player);
 		} else {
 			System.out.printf("This Garden isn't owned by anyone.%n");
-			System.out.println("Do you want to give up some of your Honey Jars to own this Garden? [Y/N]");
+			System.out.println(
+					"Do you want to trade " + this.getTileCost() + " Honey Jars to colonise this Garden? [Y/N]");
 			String choice = sc.nextLine().trim();
 			if (choice.contains("Y") || choice.contains("Yes") || choice.contains("y") || choice.contains("yes")) {
-				this.setOwner(player);
-				System.out.println("The new owner of " + this.getName() + " is " + player.getName());
-				player.updateHoney(-this.getTileCost());
-				player.showHoney();
+				this.purchase(player);
 			} else {
-				// TO DO - implement auction feature to pass onto other players
+				this.auction(player);
 			}
 
 		}
 	}
 
 	public void purchase(Player player) {
-		// TO DO
+		if (player.getHoney() < this.getTileCost()) {
+			System.out.println("Sorry you don't have enough Honey Jars to colonise this Garden.... ");
+		} else {
+			this.setOwner(player);
+			System.out.println("The new owner of " + this.getName() + " is " + player.getName());
+			player.updateHoney(-this.getTileCost());
+			player.showHoney();
+		}
 	}
 
-	public void swap(Player player) {
-		// TO DO
-	}
-
-	public void sell(Player player) {
-		// TO DO
+	public void auction(Player player) {
+		// TO DO - implement auction feature to pass onto other players
 	}
 
 	public int getHives() {
@@ -125,20 +127,28 @@ public class Garden extends BoardTile {
 
 	public void payRent(Player player) {
 
-		rent = this.rent;
+		int developedRent = this.rent;
 		int hives = this.getHives();
 		int apiary = this.getApiary();
 		if (hives > 0 && apiary > 0) {
-			rent = this.rent * (2 * hives + 4 * apiary);
+			developedRent = this.rent * (2 * hives + 4 * apiary);
 		} else if (hives > 0) {
-			rent = this.rent * (2 * hives);
+			developedRent = this.rent * (2 * hives);
 		}
 
-		player.updateHoney(-rent);
-		this.getOwner().updateHoney(+rent);
-
-		System.out.println(
-				player + " has visited " + this.getName() + " and paid " + rent + " Honey Jars to " + this.getOwner());
+		if (player.getHoney() < developedRent) {
+			int remainingHoney = player.getHoney();
+			player.updateHoney(-remainingHoney);
+			this.getOwner().updateHoney(+remainingHoney);
+			System.out.println(player.getName() + " has visited " + this.getName() + " and paid " + remainingHoney
+					+ " Honey Jars to " + this.getOwner().getName());
+			BoardGame.eliminatePlayer(player);
+		} else {
+			player.updateHoney(-developedRent);
+			this.getOwner().updateHoney(+developedRent);
+			System.out.println(player.getName() + " has visited " + this.getName() + " and paid " + developedRent
+					+ " Honey Jars to " + this.getOwner().getName());
+		}
 
 	}
 

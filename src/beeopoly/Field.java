@@ -25,5 +25,10 @@ public class Field {
 	public void addGarden(Garden garden) {
 		this.gardens.add(garden);
 	}
+	
+	 @Override
+	    public String toString() {
+	        return name;
+	    }
 
 }
