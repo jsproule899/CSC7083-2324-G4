@@ -26,7 +26,7 @@ public class Player {
 
 	public Player(String name) {
 		super();
-		this.setName(name);
+		this.name = name;
 		this.honey = 500;
 		this.position = 0; // indexed 0-11
 	}
@@ -37,6 +37,7 @@ public class Player {
 
 
 
+	// Not working
 	public void setName(String name)throws IllegalArgumentException {
 		if (name.length() >= MIN_NAME && name.length() <= MAX_NAME) {
 			this.name = name;
