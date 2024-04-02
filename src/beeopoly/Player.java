@@ -376,6 +376,7 @@ public class Player {
 		return trade;
 	}
 
+	// Updating validation - Ciaran McGloin
 	public boolean showMenu() {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Select an option:");
