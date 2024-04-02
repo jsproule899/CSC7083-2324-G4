@@ -145,7 +145,7 @@ public class BoardGame {
 		gameBoard.add(new Garden("Wild Rose Retreat", fields.get(0), 80, 4, 10));
 		gameBoard.add(new Garden("Sunflower Grove", fields.get(1), 100, 6, 10));
 		gameBoard.add(new Garden("Lavender Fields", fields.get(1), 120, 8, 10));
-		gameBoard.add(new Garden("Daisy Patch", fields.get(1), 60, 140, 10));
+		gameBoard.add(new Garden("Daisy Patch", fields.get(1), 140, 10, 10));
 
 		gameBoard.add(new NectarOasis("Nectar Oasis"));
 		gameBoard.add(new Garden("Apple Blossom Grove", fields.get(2), 180, 14, 10));
@@ -209,6 +209,8 @@ public class BoardGame {
 					break; // Exit loop if player owns a garden
 				}
 			}
+	
+
 
 			// If yes, print the gardens they own
 			if (hasGardens) {
@@ -217,8 +219,8 @@ public class BoardGame {
 				// Print owned gardens
 				for (int j = 0; j < gardens.size(); j++) {
 					if (gardens.get(j).getOwner() == activePlayers.get(i)) {
-						System.out.printf("%s (%s) \t\t\t", gardens.get(j).getName(),
-								gardens.get(j).getField().toString());
+						System.out.printf("%-30s (%-20s\t", gardens.get(j).getName(),
+								gardens.get(j).getField().toString()+")");
 
 						if (gardens.get(j).getHives() > 0) {
 							System.out.printf("Hives: %d \t\t", gardens.get(j).getHives());
@@ -261,45 +263,69 @@ public class BoardGame {
 				"This round is now over. As the buzzing subsides, a pivotal moment arises. Do you want to continue your beekeeping journey? [Y/N]");
 
 		Scanner sc = new Scanner(System.in);
+		boolean validInputLoop1 = false; // Flag for valid initial input
+		boolean validInputLoop2 = false; // Flag for valid input to confirm response question
+		// boolean statsDisplayed = false; // Flag for whether stats have been displayed
+		// to the user
 
-		// Player input
-		String agree = sc.nextLine().trim();
-
-		// Process player input
-		if (agree.contains("N") || agree.contains("No") || agree.contains("n") || agree.contains("no")) {
-
-			System.out.println(
-					"Before we wrap up, let's take a moment to appreciate the journey. Here are the game stats so far:");
-
-			gameStatistics();
-
-			// Confirm players want to end game
-			System.out.println();
-			System.out.println("Are you absolutely certain you want to end the game? [Y/N]");
-
+		do {
 			// Player input
-			agree = sc.nextLine().trim();
+			String agree = sc.nextLine().trim();
 
 			// Process player input
-			if (agree.contains("Y") || agree.contains("Yes") || agree.contains("y") || agree.contains("yes")) {
+			if (agree.contains("N") || agree.contains("No") || agree.contains("n") || agree.contains("no")) {
+
+				validInputLoop1 = true;
 
 				System.out.println(
-						"Understood, fellow beekeepers. Sometimes, even the busiest bees need to rest their wings.");
+						"Before we wrap up, let's take a moment to appreciate the journey. Here are the game stats so far:");
 
-				displayLeaderboard();
+				gameStatistics();
 
-				// Bring game to an end
-				quit = true;
+				// Confirm players want to end game
+				System.out.println();
+				System.out.println("Are you absolutely certain you want to end the game? [Y/N]");
 
-			} else {
+				do {
+					// Player input
+					agree = sc.nextLine().trim();
+
+					// Process player input
+					if (agree.contains("Y") || agree.contains("Yes") || agree.contains("y") || agree.contains("yes")) {
+
+						validInputLoop2 = true;
+
+						System.out.println(
+								"Understood, fellow beekeepers. Sometimes, even the busiest bees need to rest their wings.");
+
+						displayLeaderboard();
+
+						// Bring game to an end
+						quit = true;
+
+					} else if (agree.contains("N") || agree.contains("No") || agree.contains("n")
+							|| agree.contains("no")) {
+
+						validInputLoop2 = true;
+						System.out.println(
+								"Excellent choice! The bees are buzzing with excitement to continue their journey. Let's keep the garden buzzing with excitement for another round of sweet victories! \n");
+					} else {
+						System.out.println(
+								"Buzz off! Invalid input detected. Please flutter with either a \"Y\" for yes or an \"N\" for no to indicate your choice. Let's keep this hive buzzing smoothly!");
+					}
+				} while (!validInputLoop2);
+
+			} else if (agree.contains("Y") || agree.contains("Yes") || agree.contains("y") || agree.contains("yes")) {
+
+				validInputLoop1 = true;
+
 				System.out.println(
 						"Excellent choice! The bees are buzzing with excitement to continue their journey. Let's keep the garden buzzing with excitement for another round of sweet victories! \n");
+			} else {
+				System.out.println(
+						"Buzz off! Invalid input detected. Please flutter with either a \"Y\" for yes or an \"N\" for no to indicate your choice. Let's keep this hive buzzing smoothly!");
 			}
-
-		} else {
-			System.out.println(
-					"Excellent choice! The bees are buzzing with excitement to continue their journey. Let's keep the garden buzzing with excitement for another round of sweet victories! \n");
-		}
+		} while (!validInputLoop1);
 
 	}
 
@@ -324,7 +350,7 @@ public class BoardGame {
 
 					double hiveTotal = 0;
 					double apiaryTotal = 0;
-
+					
 					if (gardens.get(j).getHives() == 1) {
 						// First hive costs 10% of TileCost
 						hiveTotal = (gardens.get(j).getTileCost()) * (0.1);
@@ -376,18 +402,62 @@ public class BoardGame {
 
 		List<Map.Entry<String, Double>> list = rankPlayers();
 
-		// Access the player name at position zero after sorting
+		// Create an ArrayList to store keys with matching values
+		List<String> winners = new ArrayList<>();
 
-		Map.Entry<String, Double> firstEntry = list.get(0);
-		String winner = firstEntry.getKey();
+		// Check if more than one player came first
+		if (!list.isEmpty()) {
+
+			Map.Entry<String, Double> firstEntry = list.get(0);
+			double firstValue = firstEntry.getValue();
+			winners.add(firstEntry.getKey());
+
+			// Loop through the list starting from the second element
+			for (int i = 1; i < list.size(); i++) {
+				Map.Entry<String, Double> currentEntry = list.get(i);
+				double currentValue = currentEntry.getValue();
+
+				// Check if the current value matches the value of the first entry
+				if (currentValue == firstValue) {
+					// If the values match, add the corresponding key to the list
+					winners.add(currentEntry.getKey());
+				}
+			}
+		}
 
 		System.out.println();
 		System.out.println("We're buzzing about as we tally up the scores. Stay tuned for the exciting results!");
 		delay();
 		System.out.println();
-		System.out.printf(
-				"Flap your wings in triumph Beekeeper %s! Congratulations on your buzzing victory as a top beekeeper! \n",
-				winner);
+
+		// Display message depending on whether there is one winner or joint winners
+		if (winners.size() == 1) {
+			System.out.printf(
+					"Flap your wings in triumph Beekeeper %s! Congratulations on your buzzing victory as a top beekeeper! \n",
+					winners.get(0));
+			
+		} else if (winners.size() > 1) {
+
+			// Create string with list of winners
+			StringBuilder winnerlist = new StringBuilder();
+
+			for (int i = 0; i < winners.size(); i++) {
+
+				if (i == list.size() - 1) {
+					winnerlist.append("and ").append(winners.get(i));
+					
+					
+				} else {
+					winnerlist.append(winners.get(i)).append(", ");
+				}
+
+			}
+
+			System.out.printf(
+					"Flap your wings in triumph Beekeepers %s! Congratulations on your buzzing victory as top beekeepers! \n",
+					winnerlist);
+		}
+
 		System.out.println(
 				"Your dedication to our buzzing friends has paid off in sweet success! Keep up the buzz-tastic work!");
 
@@ -401,6 +471,7 @@ public class BoardGame {
 	private static void beekeeperLeaderboard() {
 		List<Map.Entry<String, Double>> list = rankPlayers();
 		int rank = 1;
+
 		delay();
 		System.out.println();
 		System.out.println("\tBee Leaderboard");
@@ -408,13 +479,46 @@ public class BoardGame {
 		System.out.println(" Beekeeper \tScore");
 		System.out.println("____________________________________");
 
-		for (Map.Entry<String, Double> entry : list) {
+		
+		Map.Entry<String, Double> topEntry = list.get(0);
+		double topScore = topEntry.getValue();
+		double previousScore = topEntry.getValue();
+		
+		
+		// Display final score and rank of active players when game is brought to an end
+		for (int i = 0; i < list.size(); i++) {
+			Map.Entry<String, Double> entry = list.get(i);
 			String playerName = entry.getKey();
 			double score = entry.getValue();
-			delay();
-			System.out.printf("%d. %-10s   %.1f\n", rank++, playerName, score);
+	
+			
+			if (i < list.size() - 1) {
+				
+				Map.Entry<String, Double> nextEntry = list.get(i + 1);
+				double nextScore = nextEntry.getValue();
+
+				delay();
+				if (score != nextScore) {
+					System.out.printf("%d. %-10s   %.1f\n", rank++, playerName, score);
+				} else if ((score == nextScore) && (score == topScore)) {
+					System.out.println("Draw Score!");
+					System.out.printf("%d. %-10s   %.1f\n", rank, playerName, score);
+					topScore = 0;
+				} else if ((score == nextScore) && (score != previousScore)) {
+					System.out.println("Draw Score!");
+					System.out.printf("%d. %-10s   %.1f\n", rank, playerName, score);
+				} else if ((score == nextScore) && (score == previousScore)) {
+					System.out.printf("%d. %-10s   %.1f\n", rank, playerName, score);
+					previousScore = score;
+				}
+
+			} else {
+				delay();
+				System.out.printf("%d. %-10s   %.1f\n", rank++, playerName, score);
+			}
 		}
 
+		// Display rank of players who quit game
 		if (playerRank.size() > 0) {
 			for (Player player : playerRank) {
 				String playerName = player.getName();
@@ -441,7 +545,6 @@ public class BoardGame {
 	}
 
 	// Method to add a short delay to create suspense in game play.
-
 	public static void delay() {
 		try {
 			Thread.sleep(1000);
