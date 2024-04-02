@@ -63,6 +63,7 @@ public class BoardGame {
 		}
 	}
 
+	// Working on validation - Ciaran
 	public static void register() {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("How many players are there? [must be 2-4]");
