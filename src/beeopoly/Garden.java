@@ -64,6 +64,14 @@ public class Garden extends BoardTile {
 	public void setHives(int hives) {
 		this.hives = hives;
 	}
+	
+	public void updateHives() {
+		this.hives += 1;
+	}
+	
+	public void updateApiaries() {
+		this.apiary += 1;
+	}
 
 	public void buildHive(int hives) {
 
@@ -137,7 +145,7 @@ public class Garden extends BoardTile {
 		}
 
 		if (player.getHoney() < developedRent) {
-			int remainingHoney = player.getHoney();
+			double remainingHoney = player.getHoney();
 			player.updateHoney(-remainingHoney);
 			this.getOwner().updateHoney(+remainingHoney);
 			System.out.println(player.getName() + " has visited " + this.getName() + " and paid " + remainingHoney
