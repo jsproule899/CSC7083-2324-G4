@@ -64,7 +64,7 @@ public class BoardGame {
 		}
 	}
 
-	// Working on validation - Ciaran
+	
 	public static void register() {
 		Scanner sc = new Scanner(System.in);
 		int numOfPlayers = 0;
@@ -90,9 +90,21 @@ public class BoardGame {
 		
 
 		for (int i = 0; i < numOfPlayers; i++) {
-			System.out.printf("Please Enter player %d", i + 1);
-			System.out.println();
-			String player = sc.nextLine(); // do we need to have a input check, i.e. name>3 chars etc
+			String player = "";
+			while(player.length() <3 || player.length() >15) {
+				System.out.printf("Please Enter player %d (3-15 chars)", i + 1);
+				System.out.println();
+				player = sc.nextLine();
+				if(player.length() <3 ) {
+					System.out.printf("Player name too short %d chars in length", player.length());
+					System.out.println();
+				}else if(player.length() >15) {
+					System.out.printf("Player name too long %d chars in length", player.length());
+					System.out.println();
+				}
+			}
+
+			
 			if (checkPlayer(player)) {
 				players[i] = player;
 				System.out.println("Player Successfully added");
