@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
@@ -66,19 +67,27 @@ public class BoardGame {
 	// Working on validation - Ciaran
 	public static void register() {
 		Scanner sc = new Scanner(System.in);
-		System.out.println("How many players are there? [must be 2-4]");
-		int numOfPlayers = sc.nextInt();
-		sc.nextLine();
-		players = new String[numOfPlayers];
-
-		if (numOfPlayers < 2 || numOfPlayers > 4) {
-			System.out.println(
-					"The game must be played with 2 to 4 players, please start the game again with the correct amount of players.");
-			System.err.println("Quiting game...");
-			sc.close();
-			quit = true;
-			return;
+		int numOfPlayers = 0;
+		boolean input = false;
+		
+		while(!input) {
+			try {
+				System.out.println("How many players are there? [must be 2-4]");
+				numOfPlayers = sc.nextInt();
+				sc.nextLine();
+				if(numOfPlayers >= 2 && numOfPlayers <=4) {
+					input = true;
+					players = new String[numOfPlayers];
+				}else {
+					System.out.println("Incorrect value entered");
+				}
+				
+			} catch (InputMismatchException e) {
+				System.out.println("Invalid data type, please enter a number");
+				sc.nextLine();
+			}
 		}
+		
 
 		for (int i = 0; i < numOfPlayers; i++) {
 			System.out.printf("Please Enter player %d", i + 1);
