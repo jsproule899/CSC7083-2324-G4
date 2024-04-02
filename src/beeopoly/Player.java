@@ -26,7 +26,7 @@ public class Player {
 
 	public Player(String name) {
 		super();
-		this.name = name;
+		this.setName(name);
 		this.honey = 500;
 		this.position = 0; // indexed 0-11
 	}
