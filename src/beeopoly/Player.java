@@ -238,6 +238,7 @@ public class Player {
 		int fieldCount2 = 0;
 		int fieldCount3 = 0;
 		int fieldCount4 = 0;
+		System.out.println();
 
 		Garden garden1 = null;
 		Map<String, Integer> fieldCount = new HashMap<>();
