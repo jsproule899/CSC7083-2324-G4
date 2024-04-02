@@ -37,7 +37,7 @@ public class Player {
 
 
 
-	// Not working
+	
 	public void setName(String name)throws IllegalArgumentException {
 		if (name.length() >= MIN_NAME && name.length() <= MAX_NAME) {
 			this.name = name;
