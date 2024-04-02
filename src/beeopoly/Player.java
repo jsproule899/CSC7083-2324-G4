@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.HashMap;
+import java.util.InputMismatchException;
 import java.util.Map;
 
 /**
@@ -376,25 +377,57 @@ public class Player {
 		return trade;
 	}
 
-	// Updating validation - Ciaran McGloin
+	
 	public boolean showMenu() {
 		Scanner sc = new Scanner(System.in);
-		System.out.println("Select an option:");
-		System.out.println("1. Manage Gardens");
-		System.out.println("2. Roll Dice");
-		System.out.println("3. Quit Game");
-		int choice = sc.nextInt();
-		sc.nextLine();
+		boolean input = false;
+		int choice = 0;
+		
+		while(!input) {
+			try {
+				System.out.println("Select an option:");
+				System.out.println("1. Manage Gardens");
+				System.out.println("2. Roll Dice");
+				System.out.println("3. Quit Game");
+				choice = sc.nextInt();
+				sc.nextLine();
+				if(choice >= 1 && choice <= 3) {
+					input = true;
+				}else {
+					System.out.println("You must enter a number between 1 & 3 inclusive");
+				}
+			} catch (InputMismatchException e) {
+				System.out.println("Invalid data type, please enter a number");
+				sc.nextLine();
+			}
+			
+		}
+		
 
 		switch (choice) {
 		case 1:
-			System.out.println("Select an option:");
-			System.out.println("1. Trade Gardens");
-			System.out.println("2. Develop Gardens");
-			System.out.println("3. Back to turn menu");
-			int option = sc.nextInt();
+			input = false;
 			Boolean trade = false;
-			sc.nextLine();
+			int option = 0;
+			while(!input) {
+				try {
+					System.out.println("Select an option:");
+					System.out.println("1. Trade Gardens");
+					System.out.println("2. Develop Gardens");
+					System.out.println("3. Back to turn menu");
+					option = sc.nextInt();
+					sc.nextLine();
+					if(option >= 1 && option <= 3) {
+						input = true;
+					}else {
+						System.out.println("You must enter a number between 1 & 3 inclusive");
+					}
+				} catch (Exception e) {
+					System.out.println("Invalid data type, please enter a number");
+					sc.nextLine();
+				}
+			}
+			
 			switch (option) {
 			case 1:
 				this.trade(BoardGame.gardens, BoardGame.activePlayers, trade);
@@ -411,6 +444,7 @@ public class Player {
 				} else {
 					return this.showMenu();
 				}
+				//Would it be better for readability to add a case 3 (I know it gets caught in the default)
 			default:
 				return this.showMenu();
 			}
