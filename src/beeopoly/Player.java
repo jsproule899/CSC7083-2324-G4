@@ -419,14 +419,10 @@ public class Player {
 			return true;
 		case 3:
 			BoardGame.removePlayer(this);
-<<<<<<< HEAD
-			System.out.printf("Beekeeper %s has decided to retire and is letting their Bees rest their wings!%n",
-					this.getName());
-			return false;
-=======
+
 			System.out.printf("Beekeeper %s has decided to retire and is letting their Bees rest their wings!%n",this.getName());
 			return false; 
->>>>>>> branch 'main' of https://gitlab.eeecs.qub.ac.uk/CSC7083-2324/CSC7083-2324-G4.git
+
 		default:
 			return this.showMenu();
 		}
