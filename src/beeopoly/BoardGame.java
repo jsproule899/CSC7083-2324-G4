@@ -132,7 +132,7 @@ public class BoardGame {
 	}
 
 	private static void welcome() {
-
+		
 		System.out.println("Welcome to Beeopoly");
 		System.out.println();
 		System.out.println("Buzzing Rules for Beekeepers!");

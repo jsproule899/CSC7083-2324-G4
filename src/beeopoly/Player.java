@@ -15,6 +15,10 @@ import java.util.Map;
  * 
  */
 public class Player {
+	
+	public static final int MIN_NAME = 3;
+	public static final int MAX_NAME = 15;
+
 
 	private String name;
 	private double honey;
@@ -22,13 +26,24 @@ public class Player {
 
 	public Player(String name) {
 		super();
-		this.name = name;
+		this.setName(name);
 		this.honey = 500;
 		this.position = 0; // indexed 0-11
 	}
 
 	public String getName() {
 		return name;
+	}
+
+
+
+	public void setName(String name)throws IllegalArgumentException {
+		if (name.length() >= MIN_NAME && name.length() <= MAX_NAME) {
+			this.name = name;
+		}else {
+			throw new IllegalArgumentException("Name length is invalid");
+		}
+		
 	}
 
 	public double getHoney() {
