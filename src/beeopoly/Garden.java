@@ -107,6 +107,7 @@ public class Garden extends BoardTile {
 		this.apiary = apiary;
 	}
 
+	//TODO - update validation - ciaran
 	public void buildApiary() {
 
 		if (this.getHives() < 3) {
@@ -114,6 +115,7 @@ public class Garden extends BoardTile {
 					+ " needs 3 Hives before you can build an Apiary... do you want to build a Hive instead? [Y/N]");
 			Scanner sc = new Scanner(System.in);
 			String choice = sc.nextLine();
+			//TODO - update validation - include equalsIgnoreCase
 			if (choice.contains("Y") || choice.contains("Yes") || choice.contains("y") || choice.contains("yes")) {
 				this.buildHive(1);
 			} else {
