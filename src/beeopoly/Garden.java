@@ -20,24 +20,42 @@ public class Garden extends BoardTile {
 		this.buildCost = buildCost;
 	}
 
+	//Working on validation Ciaran
 	@Override
 	public void landOn(Player player) {
 		Scanner sc = new Scanner(System.in);
+		boolean input = false; 
 		System.out.printf("You've landed on %s (%s).%n", this.getName(), this.getField());
 
 		if (this.getOwner() != null) {
 			System.out.printf("The owner of this Garden is %s.%n", this.getOwner().getName());
 			this.payRent(player);
 		} else {
-			System.out.printf("This Garden isn't owned by anyone.%n");
-			System.out.println(
-					"Do you want to trade " + this.getTileCost() + " Honey Jars to colonise this Garden? [Y/N]");
-			String choice = sc.nextLine().trim();
-			if (choice.contains("Y") || choice.contains("Yes") || choice.contains("y") || choice.contains("yes")) {
-				this.purchase(player);
-			} else {
-				this.auction(player);
+			//Keep looping while input is false
+			while(!input) {
+				try {
+					System.out.printf("This Garden isn't owned by anyone.%n");
+					System.out.println(
+							"Do you want to trade " + this.getTileCost() + " Honey Jars to colonise this Garden? [Y/N]");
+					String choice = sc.nextLine().trim();
+					//Think equals ignore case would work better here?
+//					if (choice.contains("y") || choice.contains("Yes") || choice.contains("y") || choice.contains("yes")) {
+					if (choice.equalsIgnoreCase("y") || choice.equalsIgnoreCase("yes")) {
+						this.purchase(player);
+						input = true;
+					} else if (choice.equalsIgnoreCase("n") || choice.equalsIgnoreCase("no")){
+						this.auction(player);
+						input = true;
+					}else {
+						System.out.println("Invalid entry, please enter [Y/N]");
+						//sc.nextLine();
+					}
+				} catch (Exception e) {
+					System.err.println("Error, please try again");
+				}
 			}
+			
+
 
 		}
 	}

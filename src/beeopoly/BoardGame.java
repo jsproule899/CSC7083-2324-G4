@@ -94,7 +94,7 @@ public class BoardGame {
 			while(player.length() <3 || player.length() >15) {
 				System.out.printf("Please Enter player %d (3-15 chars)", i + 1);
 				System.out.println();
-				player = sc.nextLine();
+				player = sc.nextLine().strip();
 				if(player.length() <3 ) {
 					System.out.printf("Player name too short %d chars in length", player.length());
 					System.out.println();
