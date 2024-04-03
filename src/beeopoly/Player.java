@@ -16,6 +16,7 @@ import java.util.Map;
  */
 public class Player {
 	
+	//Constants to set min/max names
 	public static final int MIN_NAME = 3;
 	public static final int MAX_NAME = 15;
 

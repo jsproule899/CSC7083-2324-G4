@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public class Garden extends BoardTile {
 
-	
+	//Constant for minimum value
 	public static final int MIN_Value = 0;
 	
 	private Field field;

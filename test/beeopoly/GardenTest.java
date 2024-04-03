@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 
 class GardenTest {
 	
+	//test data
 	int validValueMin, validValue, invalidValue;
 	Field field;
 	Garden garden;
