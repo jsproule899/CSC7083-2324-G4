@@ -72,6 +72,7 @@ public class Garden extends BoardTile {
 	}
 
 	public void auction(Player player) {
+		// In Progress with PT 
 		// TO DO - implement auction feature to pass onto other players
 	}
 
