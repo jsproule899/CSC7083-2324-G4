@@ -2,15 +2,25 @@ package beeopoly;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class BoardTileTest {
 
-	//Working on J-Unit test cases - Ciaran McGloin
-	@Test
-	void testBoardTile() {
+	//Don't think we need to test this Abstract Class as it is tested in other classes
 
-		fail("Not yet implemented");
+	@BeforeEach
+	void setUp() throws Exception {
+
+
+	
+
+	}
+
+	// Working on J-Unit test cases - Ciaran McGloin
+	@Test
+	void testBoardTileConstructor() {
+
 	}
 
 	@Test

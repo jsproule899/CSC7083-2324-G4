@@ -31,21 +31,24 @@ class GardenTest {
 	@Test
 	void testGardenConstructor() {
 		garden = new Garden(name, field, validValue, validValue, validValue);
-		assertEquals("Wild Rose Retreat", garden.getName());
-		//assertEquals("Pollen Meadow", garden.getField());
-		assertEquals(20, garden.getTileCost());
-		assertEquals(20, garden.getRent());
-		assertEquals(20, garden.getBuildCost());
+		//Test the abstract parent constructor
+		assertEquals(name, garden.getName());
+		//Garden constructor tests
+		assertEquals(field, garden.getField());
+		assertEquals(validValue, garden.getTileCost());
+		assertEquals(validValue, garden.getRent());
+		assertEquals(validValue, garden.getBuildCost());
 	}
 	
 	//Test Garden constructor invalid
 	@Test
 	void testGardenConstructorInvalid() {
-		//add validation to parent class
-//		assertThrows(IllegalArgumentException.class, ()->{
-//			garden = new Garden(null, field, validValueMin, validValue, invalidValue);
-//		});
+		//Test the abstract parent constructor
 		Exception exp = assertThrows(IllegalArgumentException.class, ()->{
+			garden = new Garden(null, field, validValueMin, validValue, invalidValue);
+		});assertEquals("Cannot be a null value", exp.getMessage());
+		//Garden constructor tests
+		exp = assertThrows(IllegalArgumentException.class, ()->{
 			garden = new Garden(name, null, validValue, validValue, validValue);
 		});assertEquals("Cannot be a null value", exp.getMessage());
 		exp = assertThrows(IllegalArgumentException.class, ()->{

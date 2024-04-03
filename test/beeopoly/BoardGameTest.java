@@ -38,6 +38,10 @@ class BoardGameTest {
 		assertTrue(playerRank.contains(player));
 		
 	}
-
+	@Test
+	void testPlayerNumber() {
+		fail("Not implemented yet");
+		
+	}
 
 }
