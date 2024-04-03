@@ -25,14 +25,14 @@ class PlayerTest {
 
 	@Test
 	void testPlayerConstructor() {
-		Player player = new Player(validNameMid);
+		player = new Player(validNameMid);
 		assertEquals(validNameMid, player.getName());
 	}
 
 	@Test
 	void testPlayerConstructorInvalid() {
 		assertThrows(IllegalArgumentException.class, ()->{
-			Player player = new Player(invalidNameMin);
+			player = new Player(invalidNameMin);
 		});
 	}
 	

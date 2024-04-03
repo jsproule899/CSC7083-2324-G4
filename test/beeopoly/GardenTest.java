@@ -59,10 +59,6 @@ class GardenTest {
 		});assertEquals("Value cannot be less than 0", exp.getMessage());
 	}
 
-	@Test
-	void testGetHives() {
-		fail("Not yet implemented");
-	}
 
 	@Test
 	void testUpdateHives() {
@@ -122,15 +118,33 @@ class GardenTest {
 		garden.setRent(validValue);
 		assertEquals(20, garden.getRent());
 	}
-
+	
 	@Test
-	void testPayRent() {
-		fail("Not yet implemented");
+	void testGetRentInvalid() {
+		Exception exp = assertThrows(IllegalArgumentException.class, () -> {
+			garden.setRent(invalidValue);
+		});assertEquals("Value cannot be less than 0", exp.getMessage());
+		
 	}
+//	Methods need to be split to test 
+//	@Test
+//	void testPayRent() {
+//		fail("Not yet implemented");
+//	}
 
 	@Test
 	void testGetBuildCost() {
-		fail("Not yet implemented");
+		garden.setBuildCost(validValueMin);
+		assertEquals(0, garden.getBuildCost());
+		garden.setBuildCost(validValue);
+		assertEquals(20, garden.getBuildCost());
+	}
+	
+	@Test
+	void testGetBuildCostInvalid() {
+		Exception exp = assertThrows(IllegalArgumentException.class, () -> {
+			garden.setBuildCost(invalidValue);
+		});assertEquals("Value cannot be less than 0", exp.getMessage());
 	}
 
 }
