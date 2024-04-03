@@ -13,7 +13,6 @@ class BoardGameTest {
 	Player player;
 	List<Player> activePlayers;
     List<Player> playerRank;
-    List<Garden> gardens;
 
 	@BeforeEach
 	void setUp() throws Exception {
@@ -21,7 +20,6 @@ class BoardGameTest {
 		player = new Player("Test Name");
 		activePlayers = new ArrayList<>();
         playerRank = new ArrayList<>();
-        gardens = new ArrayList<>();
         activePlayers.add(player);
         
 	}

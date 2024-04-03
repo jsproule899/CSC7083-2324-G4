@@ -4,6 +4,9 @@ import java.util.Scanner;
 
 public class Garden extends BoardTile {
 
+	
+	public static final int MIN_Value = 0;
+	
 	private Field field;
 	private int tileCost;
 	private int rent;
@@ -15,12 +18,12 @@ public class Garden extends BoardTile {
 	public Garden(String name, Field field, int tileCost, int rent, int buildCost) {
 		super(name);
 		this.field = field;
-		this.tileCost = tileCost;
-		this.rent = rent;
-		this.buildCost = buildCost;
+		this.setTileCost(tileCost);
+		this.setRent(rent);
+		this.setBuildCost(buildCost);
 	}
 
-	//Working on validation Ciaran
+
 	@Override
 	public void landOn(Player player) {
 		Scanner sc = new Scanner(System.in);
@@ -145,13 +148,45 @@ public class Garden extends BoardTile {
 		return field;
 	}
 
+	public void setField(Field field) {
+		if (field != null) {
+			this.field = field;
+		}else {
+			throw new IllegalArgumentException("Cannot be a null value");
+		}
+		
+	}
+
+
 	public int getTileCost() {
 		return tileCost;
 	}
+	
+
+	public void setTileCost(int tileCost)throws IllegalArgumentException {
+		if (tileCost >= MIN_Value) {
+			this.tileCost = tileCost;
+		}else {
+			throw new IllegalArgumentException("Value cannot be less than 0");
+		}
+		
+	}
+
 
 	public int getRent() {
 		return rent;
 	}
+	
+	
+
+	public void setRent(int rent) throws IllegalArgumentException{
+		if (rent >= MIN_Value) {
+			this.rent = tileCost;
+		}else {
+			throw new IllegalArgumentException("Value cannot be less than 0");
+		}
+	}
+
 
 	public void payRent(Player player) {
 
@@ -183,5 +218,17 @@ public class Garden extends BoardTile {
 	public int getBuildCost() {
 		return buildCost;
 	}
+
+
+	//Could be modified to set to a percentage
+	public void setBuildCost(int buildCost) throws IllegalArgumentException {
+		if(buildCost >= MIN_Value) {
+			this.buildCost = buildCost;
+		}else {
+			throw new IllegalArgumentException("Value cannot be less than 0");
+		}
+		
+	}
+	
 
 }
