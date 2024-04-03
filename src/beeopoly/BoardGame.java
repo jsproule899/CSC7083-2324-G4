@@ -276,7 +276,7 @@ public class BoardGame {
 
 	}
 
-	// TODO validation - Ciaran
+	// TODO Should .contains be changed to .equalsIgnoreCase - Ciaran
 	// Method to allow players to collectively decide to quit the game or continue
 	// to the next round
 	private static void continueGame() {
