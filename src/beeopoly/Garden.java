@@ -17,7 +17,7 @@ public class Garden extends BoardTile {
 
 	public Garden(String name, Field field, int tileCost, int rent, int buildCost) {
 		super(name);
-		this.field = field;
+		this.setField(field);
 		this.setTileCost(tileCost);
 		this.setRent(rent);
 		this.setBuildCost(buildCost);
@@ -182,7 +182,7 @@ public class Garden extends BoardTile {
 
 	public void setRent(int rent) throws IllegalArgumentException{
 		if (rent >= MIN_Value) {
-			this.rent = tileCost;
+			this.rent = rent;
 		}else {
 			throw new IllegalArgumentException("Value cannot be less than 0");
 		}

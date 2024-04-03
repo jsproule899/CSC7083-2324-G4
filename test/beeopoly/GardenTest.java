@@ -9,6 +9,7 @@ class GardenTest {
 	
 	//test data
 	int validValueMin, validValue, invalidValue;
+	int hives;
 	Field field;
 	Garden garden;
 	String name;
@@ -21,9 +22,12 @@ class GardenTest {
 		validValue = 20;
 		invalidValue = -1;
 		
+		hives = 0;
+		
 		garden = new Garden(name, field, validValue, validValue, validValue);
 	}
 
+	//Test Garden constructor
 	@Test
 	void testGardenConstructor() {
 		garden = new Garden(name, field, validValue, validValue, validValue);
@@ -34,70 +38,99 @@ class GardenTest {
 		assertEquals(20, garden.getBuildCost());
 	}
 	
+	//Test Garden constructor invalid
 	@Test
 	void testGardenConstructorInvalid() {
 		//add validation to parent class
-		assertThrows(IllegalArgumentException.class, ()->{
-			garden = new Garden(null, field, validValueMin, validValue, invalidValue);
-		});
-		assertThrows(IllegalArgumentException.class, ()->{
-			garden = new Garden(null, field, validValueMin, validValue, invalidValue);
-		});
+//		assertThrows(IllegalArgumentException.class, ()->{
+//			garden = new Garden(null, field, validValueMin, validValue, invalidValue);
+//		});
+		Exception exp = assertThrows(IllegalArgumentException.class, ()->{
+			garden = new Garden(name, null, validValue, validValue, validValue);
+		});assertEquals("Cannot be a null value", exp.getMessage());
+		exp = assertThrows(IllegalArgumentException.class, ()->{
+			garden = new Garden(name, field, invalidValue, validValue, validValue);
+		});assertEquals("Value cannot be less than 0", exp.getMessage());
+		exp = assertThrows(IllegalArgumentException.class, ()->{
+			garden = new Garden(name, field, validValue, invalidValue, validValue);
+		});assertEquals("Value cannot be less than 0", exp.getMessage());
+		exp = assertThrows(IllegalArgumentException.class, ()->{
+			garden = new Garden(name, field, validValue, validValue, invalidValue);
+		});assertEquals("Value cannot be less than 0", exp.getMessage());
 	}
 
-//	@Test
-//	void testGetHives() {
-//		fail("Not yet implemented");
-//	}
-//
-//	@Test
-//	void testUpdateHives() {
-//		fail("Not yet implemented");
-//	}
-//
-//	@Test
-//	void testUpdateApiaries() {
-//		fail("Not yet implemented");
-//	}
-//
-//	@Test
-//	void testBuildHive() {
-//		fail("Not yet implemented");
-//	}
-//
-//	@Test
-//	void testGetApiary() {
-//		fail("Not yet implemented");
-//	}
-//
-//	@Test
-//	void testGetOwner() {
-//		fail("Not yet implemented");
-//	}
-//
-//	@Test
-//	void testGetField() {
-//		fail("Not yet implemented");
-//	}
-//
-//	@Test
-//	void testGetTileCost() {
-//		fail("Not yet implemented");
-//	}
-//
-//	@Test
-//	void testGetRent() {
-//		fail("Not yet implemented");
-//	}
-//
-//	@Test
-//	void testPayRent() {
-//		fail("Not yet implemented");
-//	}
-//
-//	@Test
-//	void testGetBuildCost() {
-//		fail("Not yet implemented");
-//	}
+	@Test
+	void testGetHives() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	void testUpdateHives() {
+		garden.setHives(0);
+		garden.updateHives();
+		assertEquals(1, garden.getHives());
+		garden.setHives(2);
+		garden.updateHives();
+		assertEquals(3, garden.getHives());
+		
+	}
+
+	@Test
+	void testUpdateApiaries() {
+		garden.setApiary(0);
+		garden.updateApiaries();
+		assertEquals(1, garden.getApiary());
+	}
+
+
+	//Do we need to test for min and max values?
+	@Test
+	void testGetField() {
+		garden.setField(field);
+		assertEquals(field, garden.getField());
+	}
+	
+	@Test
+	void testGetFieldInvalid() {
+		Exception exp = assertThrows(IllegalArgumentException.class, () -> {
+			garden.setField(null);
+		});
+		assertEquals("Cannot be a null value", exp.getMessage());
+	}
+
+	@Test
+	void testGetTileCost() {
+		garden.setTileCost(validValueMin);
+		assertEquals(0, garden.getTileCost());
+		garden.setTileCost(validValue);
+		assertEquals(20, garden.getTileCost());
+		
+	}
+	
+	@Test
+	void testGetTileCostInvalid() {
+		Exception exp = assertThrows(IllegalArgumentException.class, () -> {
+			garden.setTileCost(invalidValue);
+		});assertEquals("Value cannot be less than 0", exp.getMessage());
+		
+	}
+
+	@Test
+	void testGetRent() {
+		garden.setRent(validValueMin);
+		assertEquals(0, garden.getRent());
+		garden.setRent(validValue);
+		assertEquals(20, garden.getRent());
+	}
+
+	@Test
+	void testPayRent() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	void testGetBuildCost() {
+		fail("Not yet implemented");
+	}
 
 }
