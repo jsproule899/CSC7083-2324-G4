@@ -13,7 +13,6 @@ class BoardGameTest {
 	Player player;
 	List<Player> activePlayers;
     List<Player> playerRank;
-    List<Garden> gardens;
 
 	@BeforeEach
 	void setUp() throws Exception {
@@ -21,7 +20,6 @@ class BoardGameTest {
 		player = new Player("Test Name");
 		activePlayers = new ArrayList<>();
         playerRank = new ArrayList<>();
-        gardens = new ArrayList<>();
         activePlayers.add(player);
         
 	}
@@ -40,6 +38,10 @@ class BoardGameTest {
 		assertTrue(playerRank.contains(player));
 		
 	}
-
+	@Test
+	void testPlayerNumber() {
+		fail("Not implemented yet");
+		
+	}
 
 }
