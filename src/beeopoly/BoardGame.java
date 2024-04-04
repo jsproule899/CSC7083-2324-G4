@@ -583,4 +583,11 @@ public class BoardGame {
 		removePlayer(player);
 	}
 
+
+	// method to return active players to be used for auction method
+	public static List<Player> getActivePlayers() {
+		// TODO Auto-generated method stub
+		return activePlayers;
+	}
+
 }

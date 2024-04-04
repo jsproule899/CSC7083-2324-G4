@@ -1,5 +1,6 @@
 package beeopoly;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class Garden extends BoardTile {
@@ -72,9 +73,35 @@ public class Garden extends BoardTile {
 	}
 
 	public void auction(Player player) {
-		// In Progress with Peter 
-		// TO DO - implement auction feature to pass onto other players
+	    Scanner scanner = new Scanner(System.in);
+	    Player currentPlayer = player;
+
+	    // Display that the garden will be auctioned to other players
+	    System.out.println(this.getName() + " will now be auctioned to all other beekeepers");
+
+	    // Get the list of active players from the BoardGame class
+	    List<Player> activePlayers = BoardGame.getActivePlayers();
+	    
+	    for (Player otherPlayer : activePlayers) {
+	        if (otherPlayer != currentPlayer) {
+	            System.out.println(otherPlayer.getName() + ", do you want to purchase " + this.getName() +"? [Y/N]");
+	            String choice = scanner.nextLine().trim();
+	            if (choice.equalsIgnoreCase("y") || choice.equalsIgnoreCase("yes")) {
+	            	if (otherPlayer.getHoney()>= this.getTileCost()) {
+	            		this.purchase(otherPlayer);
+	            		return;// Exit the method after selling
+	            	} else {
+	            		System.out.println("Sorry you don't have enough Honey Jars to colonise this Garden.... \"");
+	            	}
+	            }
+	        }
+	    }
+
+	    System.out.println("No other player wants to purchase " + this.getName() + ". The game continues.");
 	}
+		
+	
+		
 
 	public int getHives() {
 		return hives;
