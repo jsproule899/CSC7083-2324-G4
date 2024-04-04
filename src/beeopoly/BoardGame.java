@@ -92,9 +92,47 @@ public class BoardGame {
 		}
 	}
 
-	
+
 	public static void register() {
 		Scanner sc = new Scanner(System.in);
+		int numOfPlayers = checkNoPlayers(sc);
+		playerNameCheck(sc, numOfPlayers);
+
+	}
+
+	public static void playerNameCheck(Scanner sc, int numOfPlayers) {
+		for (int i = 0; i < numOfPlayers; i++) {
+			String player = "";
+			while(player.length() < MIN_CHARS || player.length() > MAX_CHARS) {
+				System.out.printf("Please Enter player %d (%d-%d chars)", i + 1, MIN_CHARS, MAX_CHARS);
+				System.out.println();
+				player = sc.nextLine().strip();
+				if(player.length() < MIN_CHARS ) {
+					System.out.printf("Player name too short %d chars in length", player.length());
+					System.out.println();
+				}else if(player.length() > MAX_CHARS) {
+					System.out.printf("Player name too long %d chars in length", player.length());
+					System.out.println();
+				}
+			}
+
+			if (checkPlayer(player)) {
+				players[i] = player;
+				System.out.println("Player Successfully added");
+
+			} else {
+				System.err.printf("Error %s has been taken.%n", player);
+				System.out.println();
+				i--;
+			}
+
+		}
+		for (String name : players) {
+			activePlayers.add(new Player(name));
+		}
+	}
+
+	public static int checkNoPlayers(Scanner sc) {
 		int numOfPlayers = 0;
 		boolean input = false;
 		
@@ -115,39 +153,7 @@ public class BoardGame {
 				sc.nextLine();
 			}
 		}
-		
-
-		for (int i = 0; i < numOfPlayers; i++) {
-			String player = "";
-			while(player.length() < MIN_CHARS || player.length() > MAX_CHARS) {
-				System.out.printf("Please Enter player %d (%d-%d chars)", i + 1, MIN_CHARS, MAX_CHARS);
-				System.out.println();
-				player = sc.nextLine().strip();
-				if(player.length() < MIN_CHARS ) {
-					System.out.printf("Player name too short %d chars in length", player.length());
-					System.out.println();
-				}else if(player.length() > MAX_CHARS) {
-					System.out.printf("Player name too long %d chars in length", player.length());
-					System.out.println();
-				}
-			}
-
-			
-			if (checkPlayer(player)) {
-				players[i] = player;
-				System.out.println("Player Successfully added");
-
-			} else {
-				System.err.printf("Error %s has been taken.%n", player);
-				System.out.println();
-				i--;
-			}
-
-		}
-		for (String name : players) {
-			activePlayers.add(new Player(name));
-		}
-
+		return numOfPlayers;
 	}
 
 	private static boolean checkPlayer(String player) {

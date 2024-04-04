@@ -123,7 +123,7 @@ public class Garden extends BoardTile {
 	 * @throws IllegalArgumentException
 	 */
 	public void setHives(int hives) throws IllegalArgumentException {
-		if (hives <= MAX_HIVES) {
+		if (hives <= MAX_HIVES && hives >= MIN_Value) {
 			this.hives = hives;
 		} else if(hives < MIN_Value){
 			throw new IllegalArgumentException("Hives cannot be set to less than 0");
@@ -155,11 +155,15 @@ public class Garden extends BoardTile {
 	}
 
 	public void setApiary(int apiary) throws IllegalArgumentException {
-		if (apiary <= MAX_APIARY) {
+		if (apiary <= MAX_APIARY && apiary >= MIN_Value) {
 			this.apiary = apiary;
-		} else {
+		} else if(apiary < MIN_Value){
+			throw new IllegalArgumentException("Apiaries canot be set to less than 0");
+		}else {
 			throw new IllegalArgumentException("The maximum Apiaries a garden can have is " + MAX_APIARY);
+
 		}
+		
 	}
 
 	public Player getOwner() {

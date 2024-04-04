@@ -77,18 +77,39 @@ class GardenTest {
 		assertEquals(validHiveMid, garden.getHives());
 		garden.setHives(validHiveMax);
 		assertEquals(validHiveMax, garden.getHives());
-		garden.setHives(invalidHiveMax);
-		assertEquals(invalidHiveMax, garden.getHives());
+		
 		
 	}
 	@Test
 	void testSetHiveInvalid() {
 		Exception exp = assertThrows(IllegalArgumentException.class, () -> {
-			System.out.println(validHiveMax);
-			garden.setHives(-1);
-			System.out.println(garden.getHives());
+			garden.setHives(invalidHiveMax);
+		});
+		assertEquals("The maximum Hives a garden can have is " + validHiveMax, exp.getMessage());
+		exp = assertThrows(IllegalArgumentException.class, () -> {
+			garden.setHives(invalidHiveMin);
 		});
 		assertEquals("Hives cannot be set to less than 0", exp.getMessage());
+	}
+	
+	@Test
+	void testSetApiary() {
+		garden.setApiary(validApiaryMin);
+		assertEquals(validApiaryMin, garden.getApiary());
+		garden.setApiary(validApiaryMax);
+		assertEquals(validApiaryMax, garden.getApiary());
+	}
+	@Test
+	void testSetApiaryInvalid() {
+		Exception exp = assertThrows(IllegalArgumentException.class, () -> {
+			garden.setApiary(invalidApiaryMin);
+		});
+		assertEquals("Apiaries canot be set to less than 0", exp.getMessage());
+		exp = assertThrows(IllegalArgumentException.class, () -> {
+			garden.setApiary(invalidApiaryMax);
+		});
+		assertEquals("The maximum Apiaries a garden can have is " + validApiaryMax, exp.getMessage());
+		
 	}
 
 	@Test
