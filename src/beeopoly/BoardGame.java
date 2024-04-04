@@ -18,6 +18,7 @@ public class BoardGame {
 
 	public static String[] players;
 	public static ArrayList<Player> activePlayers = new ArrayList<Player>();
+	public static ArrayList<Player> startingPlayers = new ArrayList<Player>();
 	public static ArrayList<Player> playerRank = new ArrayList<Player>();
 	public static ArrayList<BoardTile> gameBoard = new ArrayList<BoardTile>();
 	public static ArrayList<Field> fields = new ArrayList<Field>();
@@ -35,6 +36,7 @@ public class BoardGame {
 		// Enter game loop
 		while (!quit) {
 			nextRound();
+			//Methods below to accommodate single responsibility
 			playerTurn();
 			endGameCheck();
 
@@ -47,7 +49,12 @@ public class BoardGame {
 	 */
 
 	public static void playerTurn() {
-		for (Player player : activePlayers) {
+
+		startingPlayers.addAll(activePlayers);
+		for (Player player : startingPlayers) {
+			if(playerRank.contains(player)) {
+				continue;
+			}
 			System.out.printf("It's %s's turn.%n", player.getName());
 			if (player.showMenu()) {
 				gameBoard.get(player.getPosition()).landOn(player);

@@ -21,7 +21,8 @@ public class Player {
 	public static final int MAX_NAME = 15;
 
 	private String name;
-	private double honey; //why does this need to be a double? all of the rent and developments are integer numbers.
+	private double honey; // why does this need to be a double? all of the rent and developments are
+							// integer numbers.
 	private int position;
 
 	public Player(String name) {

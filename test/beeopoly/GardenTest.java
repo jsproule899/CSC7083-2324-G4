@@ -9,7 +9,8 @@ class GardenTest {
 	
 	//test data
 	int validValueMin, validValue, invalidValue;
-	int hives;
+	int validApiaryMin, validApiaryMax, invalidApiaryMin, invalidApiaryMax;
+	int validHiveMin, validHiveMid, validHiveMax, invalidHiveMin, invalidHiveMax;
 	Field field;
 	Garden garden;
 	String name;
@@ -21,8 +22,16 @@ class GardenTest {
 		validValueMin = 0;
 		validValue = 20;
 		invalidValue = -1;
+		//validApiaryMin = 0; 
+		validApiaryMax =1;
+		invalidApiaryMin = -1;
+		invalidApiaryMax = 2;
+		//validHiveMin = 0; 
+		validHiveMid = 2; 
+		validHiveMax = 3; 
+		invalidHiveMin = -1; 
+		invalidHiveMax = 4;
 		
-		hives = 0;
 		
 		garden = new Garden(name, field, validValue, validValue);
 	}
@@ -57,11 +66,30 @@ class GardenTest {
 		exp = assertThrows(IllegalArgumentException.class, ()->{
 			garden = new Garden(name, field, validValue, invalidValue);
 		});assertEquals("Value cannot be less than 0", exp.getMessage());
-		exp = assertThrows(IllegalArgumentException.class, ()->{
-			garden = new Garden(name, field, validValue, validValue);
-		});assertEquals("Value cannot be less than 0", exp.getMessage());
+
 	}
 
+	@Test
+	void testSetHive() {
+		garden.setHives(validHiveMin);
+		assertEquals(validHiveMin, garden.getHives());
+		garden.setHives(validHiveMid);
+		assertEquals(validHiveMid, garden.getHives());
+		garden.setHives(validHiveMax);
+		assertEquals(validHiveMax, garden.getHives());
+		garden.setHives(invalidHiveMax);
+		assertEquals(invalidHiveMax, garden.getHives());
+		
+	}
+	@Test
+	void testSetHiveInvalid() {
+		Exception exp = assertThrows(IllegalArgumentException.class, () -> {
+			System.out.println(validHiveMax);
+			garden.setHives(-1);
+			System.out.println(garden.getHives());
+		});
+		assertEquals("Hives cannot be set to less than 0", exp.getMessage());
+	}
 
 	@Test
 	void testBuildHive() {
@@ -129,6 +157,9 @@ class GardenTest {
 		});assertEquals("Value cannot be less than 0", exp.getMessage());
 		
 	}
+	
+	
+	
 //	Methods need to be split to test 
 //	@Test
 //	void testPayRent() {

@@ -22,6 +22,8 @@ public class Garden extends BoardTile {
 		this.setField(field);
 		this.setTileCost(tileCost);
 		this.setRent(rent);
+		this.getHives();
+		
 	}
 
 	@Override
@@ -123,8 +125,11 @@ public class Garden extends BoardTile {
 	public void setHives(int hives) throws IllegalArgumentException {
 		if (hives <= MAX_HIVES) {
 			this.hives = hives;
-		} else {
+		} else if(hives < MIN_Value){
+			throw new IllegalArgumentException("Hives cannot be set to less than 0");
+		}else {
 			throw new IllegalArgumentException("The maximum Hives a garden can have is " + MAX_HIVES);
+
 		}
 	}
 
