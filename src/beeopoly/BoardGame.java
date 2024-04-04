@@ -10,6 +10,11 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class BoardGame {
+	
+	public static final int MIN_PLAYERS = 2;
+	public static final int MAX_PLAYERS = 4;
+	public static final int MIN_CHARS = 3;
+	public static final int MAX_CHARS = 15;
 
 	public static String[] players;
 	public static ArrayList<Player> activePlayers = new ArrayList<Player>();
@@ -30,37 +35,53 @@ public class BoardGame {
 		// Enter game loop
 		while (!quit) {
 			nextRound();
+			playerTurn();
+			endGameCheck();
 
-			for (Player player : activePlayers) {
-				System.out.printf("It's %s's turn.%n", player.getName());
-				if (player.showMenu()) {
-					gameBoard.get(player.getPosition()).landOn(player);
-					System.out.printf("End of %s's turn.%n", player.getName());
-					System.out.println("____________________________________");
-				} else {
-					System.out.println("____________________________________");
-				}
+		}
+	}
+	
+	/*
+	 * Method that displays information about a player turn.
+	 * Who's turn it is, where they have landed & end of turn 
+	 */
 
-			}
-
-			// End game if there are less than 2 players
-			if (activePlayers.size() < 2) {
-				quit = true;
-				for (Player player : activePlayers) {
-					System.out.println("There is only a single Beekeeper and their swarm still buzzing... "
-							+ player.getName()
-							+ " has won! Congratulations!!! Your Bees have grew into a wonderful colony and repollinated the world :D");
-
-					beekeeperLeaderboard();
-					System.out.println(
-							"Thank you for fluttering with us! Until our next pollen-packed adventure, keep buzzing with excitement!");
-				}
-
+	public static void playerTurn() {
+		for (Player player : activePlayers) {
+			System.out.printf("It's %s's turn.%n", player.getName());
+			if (player.showMenu()) {
+				gameBoard.get(player.getPosition()).landOn(player);
+				System.out.printf("End of %s's turn.%n", player.getName());
+				System.out.println("____________________________________");
 			} else {
-
-				continueGame();
+				System.out.println("____________________________________");
 			}
 
+		}
+	}
+
+
+	/*
+	 * Method checks the size of activePlayers, if it is only 1 player
+	 * left, the game will end. The leader board will be displayed 
+	 */
+	public static void endGameCheck() {
+		// End game if there are less than 2 players
+		if (activePlayers.size() < MIN_PLAYERS) {
+			quit = true;
+			for (Player player : activePlayers) {
+				System.out.println("There is only a single Beekeeper and their swarm still buzzing... "
+						+ player.getName()
+						+ " has won! Congratulations!!! Your Bees have grew into a wonderful colony and repollinated the world :D");
+
+				beekeeperLeaderboard();
+				System.out.println(
+						"Thank you for fluttering with us! Until our next pollen-packed adventure, keep buzzing with excitement!");
+			}
+
+		} else {
+
+			continueGame();
 		}
 	}
 
@@ -72,10 +93,10 @@ public class BoardGame {
 		
 		while(!input) {
 			try {
-				System.out.println("How many players are there? [must be 2-4]");
+				System.out.printf("How many players are there? [must be %d-%d]", MIN_PLAYERS, MAX_PLAYERS);
 				numOfPlayers = sc.nextInt();
 				sc.nextLine();
-				if(numOfPlayers >= 2 && numOfPlayers <=4) {
+				if(numOfPlayers >= MIN_PLAYERS && numOfPlayers <=MAX_PLAYERS) {
 					input = true;
 					players = new String[numOfPlayers];
 				}else {
@@ -91,14 +112,14 @@ public class BoardGame {
 
 		for (int i = 0; i < numOfPlayers; i++) {
 			String player = "";
-			while(player.length() <3 || player.length() >15) {
-				System.out.printf("Please Enter player %d (3-15 chars)", i + 1);
+			while(player.length() < MIN_CHARS || player.length() > MAX_CHARS) {
+				System.out.printf("Please Enter player %d (%d-%d chars)", i + 1, MIN_CHARS, MAX_CHARS);
 				System.out.println();
 				player = sc.nextLine().strip();
-				if(player.length() <3 ) {
+				if(player.length() < MIN_CHARS ) {
 					System.out.printf("Player name too short %d chars in length", player.length());
 					System.out.println();
-				}else if(player.length() >15) {
+				}else if(player.length() > MAX_CHARS) {
 					System.out.printf("Player name too long %d chars in length", player.length());
 					System.out.println();
 				}
