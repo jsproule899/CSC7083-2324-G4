@@ -162,19 +162,18 @@ public class BoardGame {
 		fields.add(new Field("Blossom Estate"));
 
 		gameBoard.add(new HoneyHaven("Honey Haven"));
-		gameBoard.add(new Garden("Bluebell Enclave", fields.get(0), 60, 2, 10)); // did we agree on a build cost for
-																					// hives and apiary?
-		gameBoard.add(new Garden("Wild Rose Retreat", fields.get(0), 80, 4, 10));
-		gameBoard.add(new Garden("Sunflower Grove", fields.get(1), 100, 6, 10));
-		gameBoard.add(new Garden("Lavender Fields", fields.get(1), 120, 8, 10));
-		gameBoard.add(new Garden("Daisy Patch", fields.get(1), 140, 10, 10));
+		gameBoard.add(new Garden("Bluebell Enclave", fields.get(0), 60, 2));
+		gameBoard.add(new Garden("Wild Rose Retreat", fields.get(0), 80, 4));
+		gameBoard.add(new Garden("Sunflower Grove", fields.get(1), 100, 6));
+		gameBoard.add(new Garden("Lavender Fields", fields.get(1), 120, 8));
+		gameBoard.add(new Garden("Daisy Patch", fields.get(1), 140, 10));
 
 		gameBoard.add(new NectarOasis("Nectar Oasis"));
-		gameBoard.add(new Garden("Apple Blossom Grove", fields.get(2), 180, 14, 10));
-		gameBoard.add(new Garden("Pear Orchard Delight", fields.get(2), 200, 16, 10));
-		gameBoard.add(new Garden("Cherry Harmony Haven", fields.get(2), 240, 20, 10));
-		gameBoard.add(new Garden("Regal Rose Gardens", fields.get(3), 350, 35, 10));
-		gameBoard.add(new Garden("Tupil Elegance Enclave", fields.get(3), 400, 50, 10));
+		gameBoard.add(new Garden("Apple Blossom Grove", fields.get(2), 180, 14));
+		gameBoard.add(new Garden("Pear Orchard Delight", fields.get(2), 200, 16));
+		gameBoard.add(new Garden("Cherry Harmony Haven", fields.get(2), 240, 20));
+		gameBoard.add(new Garden("Regal Rose Gardens", fields.get(3), 350, 35));
+		gameBoard.add(new Garden("Tupil Elegance Enclave", fields.get(3), 400, 50));
 
 		fields.get(0).addGarden((Garden) gameBoard.get(1));
 		fields.get(0).addGarden((Garden) gameBoard.get(2));
