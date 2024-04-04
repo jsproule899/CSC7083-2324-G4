@@ -4,61 +4,58 @@ import java.util.Scanner;
 
 public class Garden extends BoardTile {
 
-	//Constant for minimum value
+	// Constant for minimum value
 	public static final int MIN_Value = 0;
-	
+	public static final int MAX_HIVES = 3;
+	public static final int MAX_APIARY = 1;
+
 	private Field field;
 	private int tileCost;
 	private int rent;
-	private int buildCost; // is this needed anymore if we are calculating as a percentage of tileCost?
 	private int hives = 0;
 	private int apiary = 0;
 	private Player owner = null;
 
-	public Garden(String name, Field field, int tileCost, int rent, int buildCost) {
+	public Garden(String name, Field field, int tileCost, int rent) {
 		super(name);
 		this.setField(field);
 		this.setTileCost(tileCost);
 		this.setRent(rent);
-		this.setBuildCost(buildCost);
 	}
-
 
 	@Override
 	public void landOn(Player player) {
 		Scanner sc = new Scanner(System.in);
-		boolean input = false; 
+		boolean input = false;
 		System.out.printf("You've landed on %s (%s).%n", this.getName(), this.getField());
 
 		if (this.getOwner() != null) {
 			System.out.printf("The owner of this Garden is %s.%n", this.getOwner().getName());
 			this.payRent(player);
 		} else {
-			//Keep looping while input is false
-			while(!input) {
+			// Keep looping while input is false
+			while (!input) {
 				try {
 					System.out.printf("This Garden isn't owned by anyone.%n");
-					System.out.println(
-							"Do you want to trade " + this.getTileCost() + " Honey Jars to colonise this Garden? [Y/N]");
+					System.out.println("Do you want to trade " + this.getTileCost()
+							+ " Honey Jars to colonise this Garden? [Y/N]");
 					String choice = sc.nextLine().trim();
-					//Think equals ignore case would work better here?
+					// Think equals ignore case would work better here?
 //					if (choice.contains("y") || choice.contains("Yes") || choice.contains("y") || choice.contains("yes")) {
 					if (choice.equalsIgnoreCase("y") || choice.equalsIgnoreCase("yes")) {
 						this.purchase(player);
 						input = true;
-					} else if (choice.equalsIgnoreCase("n") || choice.equalsIgnoreCase("no")){
+					} else if (choice.equalsIgnoreCase("n") || choice.equalsIgnoreCase("no")) {
 						this.auction(player);
 						input = true;
-					}else {
+					} else {
 						System.out.println("Invalid entry, please enter [Y/N]");
-						//sc.nextLine();
+						// sc.nextLine();
 					}
 				} catch (Exception e) {
 					System.err.println("Error, please try again");
 				}
 			}
-			
-
 
 		}
 	}
@@ -75,66 +72,60 @@ public class Garden extends BoardTile {
 	}
 
 	public void auction(Player player) {
-		// In Progress with Peter 
+		// In Progress with Peter
 		// TO DO - implement auction feature to pass onto other players
 	}
 
+	/**
+	 * Gets the number of Hives for the Garden
+	 * 
+	 * @return
+	 */
 	public int getHives() {
 		return hives;
 	}
 
-	public void setHives(int hives) {
-		this.hives = hives;
-	}
-	
-	public void updateHives() {
-		this.hives += 1;
-	}
-	
-	public void updateApiaries() {
-		this.apiary += 1;
+	/**
+	 * Sets the number of Hives for the Garden
+	 * 
+	 * @param hives
+	 * @throws IllegalArgumentException
+	 */
+	public void setHives(int hives) throws IllegalArgumentException {
+		if (hives <= MAX_HIVES) {
+			this.hives = hives;
+		} else {
+			throw new IllegalArgumentException("The maximum Hives a garden can have is " + MAX_HIVES);
+		}
 	}
 
-	public void buildHive(int hives) {
+	public void buildHive() throws IllegalArgumentException {
+		if (this.hives < MAX_HIVES) {
+			this.hives += 1;
+		} else {
+			throw new IllegalArgumentException("The maximum Hives a garden can have is " + MAX_HIVES);
+		}
+	}
 
-		// TO DO field logic to confirm that owner owns all gardens of the field
+	public void buildApiary() throws IllegalArgumentException {
+		if (this.apiary < MAX_APIARY) {
+			this.apiary += 1;
+		} else {
+			throw new IllegalArgumentException("The maximum Apiaries a garden can have is " + MAX_APIARY);
+		}
 
-		this.hives = hives;
-		System.out.println("Your garden " + this.getName() + " now has " + this.getHives() + " Hives");
 	}
 
 	public int getApiary() {
 		return apiary;
 	}
 
-	public void setApiary(int apiary) {
-		this.apiary = apiary;
-	}
-
-	//TODO - update validation - ciaran
-	public void buildApiary() {
-
-		if (this.getHives() < 3) {
-			System.out.println("Your garden " + this.getName()
-					+ " needs 3 Hives before you can build an Apiary... do you want to build a Hive instead? [Y/N]");
-			Scanner sc = new Scanner(System.in);
-			String choice = sc.nextLine();
-			//TODO - update validation - include equalsIgnoreCase
-			if (choice.contains("Y") || choice.contains("Yes") || choice.contains("y") || choice.contains("yes")) {
-				this.buildHive(1);
-			} else {
-				return;
-			}
+	public void setApiary(int apiary) throws IllegalArgumentException {
+		if (apiary <= MAX_APIARY) {
+			this.apiary = apiary;
 		} else {
-			if (this.apiary == 1) {
-				System.out.println(
-						"Your garden " + this.getName() + " can only have a single Apiary... try a different garden");
-			} else {
-				this.apiary = 1;
-				System.out.println("Your garden " + this.getName() + " now has an Apiary");
-			}
+			throw new IllegalArgumentException("The maximum Apiaries a garden can have is " + MAX_APIARY);
 		}
-
 	}
 
 	public Player getOwner() {
@@ -152,42 +143,36 @@ public class Garden extends BoardTile {
 	public void setField(Field field) {
 		if (field != null) {
 			this.field = field;
-		}else {
+		} else {
 			throw new IllegalArgumentException("Cannot be a null value");
 		}
-		
-	}
 
+	}
 
 	public int getTileCost() {
 		return tileCost;
 	}
-	
 
-	public void setTileCost(int tileCost)throws IllegalArgumentException {
+	public void setTileCost(int tileCost) throws IllegalArgumentException {
 		if (tileCost >= MIN_Value) {
 			this.tileCost = tileCost;
-		}else {
+		} else {
 			throw new IllegalArgumentException("Value cannot be less than 0");
 		}
-		
-	}
 
+	}
 
 	public int getRent() {
 		return rent;
 	}
-	
-	
 
-	public void setRent(int rent) throws IllegalArgumentException{
+	public void setRent(int rent) throws IllegalArgumentException {
 		if (rent >= MIN_Value) {
 			this.rent = rent;
-		}else {
+		} else {
 			throw new IllegalArgumentException("Value cannot be less than 0");
 		}
 	}
-
 
 	public void payRent(Player player) {
 
@@ -214,21 +199,6 @@ public class Garden extends BoardTile {
 					+ " Honey Jars to " + this.getOwner().getName());
 		}
 
-	}
-
-	public int getBuildCost() {
-		return buildCost;
-	}
-
-
-	//Could be modified to set to a percentage
-	public void setBuildCost(int buildCost) throws IllegalArgumentException {
-		if(buildCost >= MIN_Value) {
-			this.buildCost = buildCost;
-		}else {
-			throw new IllegalArgumentException("Value cannot be less than 0");
-		}
-		
 	}
 	
 

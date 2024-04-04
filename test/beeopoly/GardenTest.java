@@ -24,20 +24,20 @@ class GardenTest {
 		
 		hives = 0;
 		
-		garden = new Garden(name, field, validValue, validValue, validValue);
+		garden = new Garden(name, field, validValue, validValue);
 	}
 
 	//Test Garden constructor
 	@Test
 	void testGardenConstructor() {
-		garden = new Garden(name, field, validValue, validValue, validValue);
+		garden = new Garden(name, field, validValue, validValue);
 		//Test the abstract parent constructor
 		assertEquals(name, garden.getName());
 		//Garden constructor tests
 		assertEquals(field, garden.getField());
 		assertEquals(validValue, garden.getTileCost());
 		assertEquals(validValue, garden.getRent());
-		assertEquals(validValue, garden.getBuildCost());
+		
 	}
 	
 	//Test Garden constructor invalid
@@ -45,39 +45,39 @@ class GardenTest {
 	void testGardenConstructorInvalid() {
 		//Test the abstract parent constructor
 		Exception exp = assertThrows(IllegalArgumentException.class, ()->{
-			garden = new Garden(null, field, validValueMin, validValue, invalidValue);
+			garden = new Garden(null, field, validValueMin, validValue);
 		});assertEquals("Cannot be a null value", exp.getMessage());
 		//Garden constructor tests
 		exp = assertThrows(IllegalArgumentException.class, ()->{
-			garden = new Garden(name, null, validValue, validValue, validValue);
+			garden = new Garden(name, null, validValue, validValue);
 		});assertEquals("Cannot be a null value", exp.getMessage());
 		exp = assertThrows(IllegalArgumentException.class, ()->{
-			garden = new Garden(name, field, invalidValue, validValue, validValue);
+			garden = new Garden(name, field, invalidValue, validValue);
 		});assertEquals("Value cannot be less than 0", exp.getMessage());
 		exp = assertThrows(IllegalArgumentException.class, ()->{
-			garden = new Garden(name, field, validValue, invalidValue, validValue);
+			garden = new Garden(name, field, validValue, invalidValue);
 		});assertEquals("Value cannot be less than 0", exp.getMessage());
 		exp = assertThrows(IllegalArgumentException.class, ()->{
-			garden = new Garden(name, field, validValue, validValue, invalidValue);
+			garden = new Garden(name, field, validValue, validValue);
 		});assertEquals("Value cannot be less than 0", exp.getMessage());
 	}
 
 
 	@Test
-	void testUpdateHives() {
+	void testBuildHive() {
 		garden.setHives(0);
-		garden.updateHives();
+		garden.buildHive();
 		assertEquals(1, garden.getHives());
 		garden.setHives(2);
-		garden.updateHives();
+		garden.buildHive();
 		assertEquals(3, garden.getHives());
 		
 	}
 
 	@Test
-	void testUpdateApiaries() {
+	void testBuildApiary() {
 		garden.setApiary(0);
-		garden.updateApiaries();
+		garden.buildApiary();
 		assertEquals(1, garden.getApiary());
 	}
 
@@ -135,19 +135,6 @@ class GardenTest {
 //		fail("Not yet implemented");
 //	}
 
-	@Test
-	void testGetBuildCost() {
-		garden.setBuildCost(validValueMin);
-		assertEquals(0, garden.getBuildCost());
-		garden.setBuildCost(validValue);
-		assertEquals(20, garden.getBuildCost());
-	}
 	
-	@Test
-	void testGetBuildCostInvalid() {
-		Exception exp = assertThrows(IllegalArgumentException.class, () -> {
-			garden.setBuildCost(invalidValue);
-		});assertEquals("Value cannot be less than 0", exp.getMessage());
-	}
 
 }

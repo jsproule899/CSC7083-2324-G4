@@ -20,7 +20,7 @@ class FieldTest {
 		
 		validName = "Blossom Estate";
 		field = new Field(validName);
-		garden = new Garden("Apple Blossom Grove", field, 400, 50, 10);
+		garden = new Garden("Apple Blossom Grove", field, 400, 50);
 		gardens = new ArrayList<Garden>();
 	}
 
