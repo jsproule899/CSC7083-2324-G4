@@ -43,7 +43,7 @@ public class BoardGame {
 		}
 	}
 	
-	/*
+	/**
 	 * Method that displays information about a player turn.
 	 * Who's turn it is, where they have landed & end of turn 
 	 */
@@ -68,7 +68,7 @@ public class BoardGame {
 	}
 
 
-	/*
+	/**
 	 * Method checks the size of activePlayers, if it is only 1 player
 	 * left, the game will end. The leader board will be displayed 
 	 */
