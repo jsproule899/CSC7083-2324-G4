@@ -73,35 +73,43 @@ public class Garden extends BoardTile {
 			player.showHoney();
 		}
 	}
-
+	
+	/**
+	 * offers garden to other players if the player who lands on the garden does not want to trade 
+	 * @param player
+	 */
 	public void auction(Player player) {
-
 	    Scanner scanner = new Scanner(System.in);
 	    Player currentPlayer = player;
 
-	    // Display that the garden will be auctioned to other players
 	    System.out.println(this.getName() + " will now be auctioned to all other beekeepers");
 
-	    // Get the list of active players from the BoardGame class
 	    List<Player> activePlayers = BoardGame.getActivePlayers();
-	    
-	    for (Player otherPlayer : activePlayers) {
-	        if (otherPlayer != currentPlayer) {
-	            System.out.println(otherPlayer.getName() + ", do you want to purchase " + this.getName() +"? [Y/N]");
-	            String choice = scanner.nextLine().trim();
-	            if (choice.equalsIgnoreCase("y") || choice.equalsIgnoreCase("yes")) {
-	            	if (otherPlayer.getHoney()>= this.getTileCost()) {
-	            		this.purchase(otherPlayer);
-	            		return;// Exit the method after selling
-	            	} else {
-	            		System.out.println("Sorry you don't have enough Honey Jars to colonise this Garden.... \"");
-	            	}
+
+	    for (Player bidder : activePlayers) {
+	        if (bidder != currentPlayer) {
+	            boolean validInput = false;
+	            while (!validInput) {
+	                System.out.println(bidder.getName() + ", do you want to trade " + this.getTileCost() + " Honey Jars to colonise " + this.getName() + "? [Y/N]");
+	                String choice = scanner.nextLine().trim();
+
+	                // Check if the input is either Y or N (case-insensitive)
+	                if (!choice.equalsIgnoreCase("y") && !choice.equalsIgnoreCase("n") && !choice.equalsIgnoreCase("yes") && !choice.equalsIgnoreCase("no")) {
+	                    System.out.println("Invalid input. Please enter 'Y' for yes or 'N' for no.");
+	                    continue;
+	                }
+
+	                if (choice.equalsIgnoreCase("y") || choice.equalsIgnoreCase("yes")) {
+	                    this.purchase(bidder);
+	                    return;
+	                } else if (choice.equalsIgnoreCase("n") || choice.equalsIgnoreCase("no")) {
+	                    // If the player says no, valid input received, continue with the next player
+	                    validInput = true;
+	                }
 	            }
 	        }
 	    }
-
 	    System.out.println("No other player wants to purchase " + this.getName() + ". The game continues.");
-
 	}
 		
 	
