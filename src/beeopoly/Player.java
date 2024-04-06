@@ -403,7 +403,7 @@ public class Player {
 					}
 					System.out.println("fieldcount4: " + fieldCount4);
 				}
-				System.out.printf("Owned Gardens: %s (%s)%n", garden.getName(), garden.getField().toString());
+				System.out.printf("Owned Gardens: %s (%s)%n", garden.getName(), garden.getField().getName());
 			}
 
 		} else {
@@ -568,10 +568,5 @@ public class Player {
 			return this.showMenu();
 		}
 
-	}
-
-	@Override
-	public String toString() {
-		return name;
 	}
 }

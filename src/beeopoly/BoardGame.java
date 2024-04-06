@@ -95,12 +95,12 @@ public class BoardGame {
 
 	public static void register() {
 		Scanner sc = new Scanner(System.in);
-		int numOfPlayers = checkNoPlayers(sc);
-		playerNameCheck(sc, numOfPlayers);
+		int numOfPlayers = checkNumOfPlayers(sc);
+		getPlayerNames(sc, numOfPlayers);
 
 	}
 
-	public static void playerNameCheck(Scanner sc, int numOfPlayers) {
+	public static void getPlayerNames(Scanner sc, int numOfPlayers) {
 		for (int i = 0; i < numOfPlayers; i++) {
 			String player = "";
 			while(player.length() < MIN_CHARS || player.length() > MAX_CHARS) {
@@ -116,7 +116,7 @@ public class BoardGame {
 				}
 			}
 
-			if (checkPlayer(player)) {
+			if (checkPlayerNameUnique(player)) {
 				players[i] = player;
 				System.out.println("Player Successfully added");
 
@@ -132,13 +132,13 @@ public class BoardGame {
 		}
 	}
 
-	public static int checkNoPlayers(Scanner sc) {
+	public static int checkNumOfPlayers(Scanner sc) {
 		int numOfPlayers = 0;
 		boolean input = false;
 		
 		while(!input) {
 			try {
-				System.out.printf("How many players are there? [must be %d-%d]", MIN_PLAYERS, MAX_PLAYERS);
+				System.out.printf("How many players are there? [must be %d-%d]%n", MIN_PLAYERS, MAX_PLAYERS);
 				numOfPlayers = sc.nextInt();
 				sc.nextLine();
 				if(numOfPlayers >= MIN_PLAYERS && numOfPlayers <=MAX_PLAYERS) {
@@ -156,7 +156,7 @@ public class BoardGame {
 		return numOfPlayers;
 	}
 
-	private static boolean checkPlayer(String player) {
+	private static boolean checkPlayerNameUnique(String player) {
 		for (String name : players) {
 			if (player.equalsIgnoreCase(name)) {
 				return false;
@@ -275,7 +275,7 @@ public class BoardGame {
 				for (int j = 0; j < gardens.size(); j++) {
 					if (gardens.get(j).getOwner() == activePlayers.get(i)) {
 						System.out.printf("%-30s (%-20s\t", gardens.get(j).getName(),
-								gardens.get(j).getField().toString()+")");
+								gardens.get(j).getField().getName()+")");
 
 						if (gardens.get(j).getHives() > 0) {
 							System.out.printf("Hives: %d \t\t", gardens.get(j).getHives());
