@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class BoardGame {
-	
+
 	public static final int MIN_PLAYERS = 2;
 	public static final int MAX_PLAYERS = 4;
 	public static final int MIN_CHARS = 3;
@@ -18,7 +18,6 @@ public class BoardGame {
 
 	public static String[] players;
 	public static ArrayList<Player> activePlayers = new ArrayList<Player>();
-	public static ArrayList<Player> startingPlayers = new ArrayList<Player>();
 	public static ArrayList<Player> playerRank = new ArrayList<Player>();
 	public static ArrayList<BoardTile> gameBoard = new ArrayList<BoardTile>();
 	public static ArrayList<Field> fields = new ArrayList<Field>();
@@ -36,41 +35,42 @@ public class BoardGame {
 		// Enter game loop
 		while (!quit) {
 			nextRound();
-			//Methods below to accommodate single responsibility
+			// Methods below to accommodate single responsibility
 			playerTurn();
-			endGameCheck();
+			endGameCheck(); // This check only occurs at the end of the round, if there is 2 players and the
+							// 1st player gets eliminated the 2nd player has their turn before it checks.
 
 		}
 	}
-	
+
 	/**
-	 * Method that displays information about a player turn.
-	 * Who's turn it is, where they have landed & end of turn 
+	 * Method that displays information about a player turn. Who's turn it is, where
+	 * they have landed & end of turn
 	 */
 
 	public static void playerTurn() {
-
+		ArrayList<Player> startingPlayers = new ArrayList<Player>();
 		startingPlayers.addAll(activePlayers);
 		for (Player player : startingPlayers) {
-			if(playerRank.contains(player)) {
+			if (playerRank.contains(player)) {
 				continue;
 			}
 			System.out.printf("It's %s's turn.%n", player.getName());
 			if (player.showMenu()) {
 				gameBoard.get(player.getPosition()).landOn(player);
+				System.out.println();
 				System.out.printf("End of %s's turn.%n", player.getName());
-				System.out.println("____________________________________");
+				System.out.println("------------------------------------");
 			} else {
-				System.out.println("____________________________________");
+				System.out.println("------------------------------------");
 			}
 
 		}
 	}
 
-
 	/**
-	 * Method checks the size of activePlayers, if it is only 1 player
-	 * left, the game will end. The leader board will be displayed 
+	 * Method checks the size of activePlayers, if it is only 1 player left, the
+	 * game will end. The leader board will be displayed
 	 */
 	public static void endGameCheck() {
 		// End game if there are less than 2 players
@@ -92,7 +92,6 @@ public class BoardGame {
 		}
 	}
 
-
 	public static void register() {
 		Scanner sc = new Scanner(System.in);
 		int numOfPlayers = checkNumOfPlayers(sc);
@@ -103,14 +102,14 @@ public class BoardGame {
 	public static void getPlayerNames(Scanner sc, int numOfPlayers) {
 		for (int i = 0; i < numOfPlayers; i++) {
 			String player = "";
-			while(player.length() < MIN_CHARS || player.length() > MAX_CHARS) {
+			while (player.length() < MIN_CHARS || player.length() > MAX_CHARS) {
 				System.out.printf("Please Enter player %d (%d-%d chars)", i + 1, MIN_CHARS, MAX_CHARS);
 				System.out.println();
 				player = sc.nextLine().strip();
-				if(player.length() < MIN_CHARS ) {
+				if (player.length() < MIN_CHARS) {
 					System.out.printf("Player name too short %d chars in length", player.length());
 					System.out.println();
-				}else if(player.length() > MAX_CHARS) {
+				} else if (player.length() > MAX_CHARS) {
 					System.out.printf("Player name too long %d chars in length", player.length());
 					System.out.println();
 				}
@@ -135,19 +134,19 @@ public class BoardGame {
 	public static int checkNumOfPlayers(Scanner sc) {
 		int numOfPlayers = 0;
 		boolean input = false;
-		
-		while(!input) {
+
+		while (!input) {
 			try {
 				System.out.printf("How many players are there? [must be %d-%d]%n", MIN_PLAYERS, MAX_PLAYERS);
 				numOfPlayers = sc.nextInt();
 				sc.nextLine();
-				if(numOfPlayers >= MIN_PLAYERS && numOfPlayers <=MAX_PLAYERS) {
+				if (numOfPlayers >= MIN_PLAYERS && numOfPlayers <= MAX_PLAYERS) {
 					input = true;
 					players = new String[numOfPlayers];
-				}else {
+				} else {
 					System.out.println("Incorrect value entered");
 				}
-				
+
 			} catch (InputMismatchException e) {
 				System.out.println("Invalid data type, please enter a number");
 				sc.nextLine();
@@ -166,7 +165,7 @@ public class BoardGame {
 	}
 
 	private static void welcome() {
-		
+
 		System.out.println("Welcome to Beeopoly");
 		System.out.println();
 		System.out.println("Buzzing Rules for Beekeepers!");
@@ -264,8 +263,6 @@ public class BoardGame {
 					break; // Exit loop if player owns a garden
 				}
 			}
-	
-
 
 			// If yes, print the gardens they own
 			if (hasGardens) {
@@ -275,7 +272,7 @@ public class BoardGame {
 				for (int j = 0; j < gardens.size(); j++) {
 					if (gardens.get(j).getOwner() == activePlayers.get(i)) {
 						System.out.printf("%-30s (%-20s\t", gardens.get(j).getName(),
-								gardens.get(j).getField().getName()+")");
+								gardens.get(j).getField().getName() + ")");
 
 						if (gardens.get(j).getHives() > 0) {
 							System.out.printf("Hives: %d \t\t", gardens.get(j).getHives());
@@ -309,80 +306,34 @@ public class BoardGame {
 
 	}
 
-	// TODO Should .contains be changed to .equalsIgnoreCase - Ciaran
 	// Method to allow players to collectively decide to quit the game or continue
 	// to the next round
 	private static void continueGame() {
-
 		System.out.println();
 		System.out.println(
 				"This round is now over. As the buzzing subsides, a pivotal moment arises. Do you want to continue your beekeeping journey? [Y/N]");
-
-		Scanner sc = new Scanner(System.in);
-		boolean validInputLoop1 = false; // Flag for valid initial input
-		boolean validInputLoop2 = false; // Flag for valid input to confirm response question
-		// boolean statsDisplayed = false; // Flag for whether stats have been displayed
-		// to the user
-
-		do {
-			// Player input
-			String agree = sc.nextLine().trim();
-
-			// Process player input
-			if (agree.contains("N") || agree.contains("No") || agree.contains("n") || agree.contains("no")) {
-
-				validInputLoop1 = true;
-
+		// Process player input
+		if (!Player.getPlayerDecision()) {
+			System.out.println(
+					"Before we wrap up, let's take a moment to appreciate the journey. Here are the game stats so far:");
+			gameStatistics();
+			// Confirm players want to end game
+			System.out.println();
+			System.out.println("Are you absolutely certain you want to end the game? [Y/N]");
+			if (Player.getPlayerDecision()) {
 				System.out.println(
-						"Before we wrap up, let's take a moment to appreciate the journey. Here are the game stats so far:");
-
-				gameStatistics();
-
-				// Confirm players want to end game
-				System.out.println();
-				System.out.println("Are you absolutely certain you want to end the game? [Y/N]");
-
-				do {
-					// Player input
-					agree = sc.nextLine().trim();
-
-					// Process player input
-					if (agree.contains("Y") || agree.contains("Yes") || agree.contains("y") || agree.contains("yes")) {
-
-						validInputLoop2 = true;
-
-						System.out.println(
-								"Understood, fellow beekeepers. Sometimes, even the busiest bees need to rest their wings.");
-
-						displayLeaderboard();
-
-						// Bring game to an end
-						quit = true;
-
-					} else if (agree.contains("N") || agree.contains("No") || agree.contains("n")
-							|| agree.contains("no")) {
-
-						validInputLoop2 = true;
-						System.out.println(
-								"Excellent choice! The bees are buzzing with excitement to continue their journey. Let's keep the garden buzzing with excitement for another round of sweet victories! \n");
-					} else {
-						System.out.println(
-								"Buzz off! Invalid input detected. Please flutter with either a \"Y\" for yes or an \"N\" for no to indicate your choice. Let's keep this hive buzzing smoothly!");
-					}
-				} while (!validInputLoop2);
-
-			} else if (agree.contains("Y") || agree.contains("Yes") || agree.contains("y") || agree.contains("yes")) {
-
-				validInputLoop1 = true;
-
-				System.out.println(
-						"Excellent choice! The bees are buzzing with excitement to continue their journey. Let's keep the garden buzzing with excitement for another round of sweet victories! \n");
+						"Understood, fellow beekeepers. Sometimes, even the busiest bees need to rest their wings.");
+				displayLeaderboard();
+				// Bring game to an end
+				quit = true;
 			} else {
 				System.out.println(
-						"Buzz off! Invalid input detected. Please flutter with either a \"Y\" for yes or an \"N\" for no to indicate your choice. Let's keep this hive buzzing smoothly!");
+						"Excellent choice! The bees are buzzing with excitement to continue their journey. Let's keep the garden buzzing with excitement for another round of sweet victories! \n");
 			}
-		} while (!validInputLoop1);
-
+		} else {
+			System.out.println(
+					"Excellent choice! The bees are buzzing with excitement to continue their journey. Let's keep the garden buzzing with excitement for another round of sweet victories! \n");
+		}
 	}
 
 	// Method to rank players based on honey and value of real estate
@@ -406,7 +357,7 @@ public class BoardGame {
 
 					double hiveTotal = 0;
 					double apiaryTotal = 0;
-					
+
 					if (gardens.get(j).getHives() == 1) {
 						// First hive costs 10% of TileCost
 						hiveTotal = (gardens.get(j).getTileCost()) * (0.1);
@@ -491,7 +442,7 @@ public class BoardGame {
 			System.out.printf(
 					"Flap your wings in triumph Beekeeper %s! Congratulations on your buzzing victory as a top beekeeper! \n",
 					winners.get(0));
-			
+
 		} else if (winners.size() > 1) {
 
 			// Create string with list of winners
@@ -501,8 +452,7 @@ public class BoardGame {
 
 				if (i == list.size() - 1) {
 					winnerlist.append("and ").append(winners.get(i));
-					
-					
+
 				} else {
 					winnerlist.append(winners.get(i)).append(", ");
 				}
@@ -535,21 +485,18 @@ public class BoardGame {
 		System.out.println(" Beekeeper \tScore");
 		System.out.println("____________________________________");
 
-		
 		Map.Entry<String, Double> topEntry = list.get(0);
 		double topScore = topEntry.getValue();
 		double previousScore = topEntry.getValue();
-		
-		
+
 		// Display final score and rank of active players when game is brought to an end
 		for (int i = 0; i < list.size(); i++) {
 			Map.Entry<String, Double> entry = list.get(i);
 			String playerName = entry.getKey();
 			double score = entry.getValue();
-	
-			
+
 			if (i < list.size() - 1) {
-				
+
 				Map.Entry<String, Double> nextEntry = list.get(i + 1);
 				double nextScore = nextEntry.getValue();
 
@@ -615,7 +562,6 @@ public class BoardGame {
 				player.getName());
 		removePlayer(player);
 	}
-
 
 	// method to return active players to be used for auction method
 	public static List<Player> getActivePlayers() {

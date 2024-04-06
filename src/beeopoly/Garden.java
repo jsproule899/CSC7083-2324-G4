@@ -23,49 +23,37 @@ public class Garden extends BoardTile {
 		this.setTileCost(tileCost);
 		this.setRent(rent);
 		this.getHives();
-		
+
 	}
 
 	@Override
 	public void landOn(Player player) {
 		Scanner sc = new Scanner(System.in);
 		boolean input = false;
-		System.out.printf("You've landed on %s (%s).%n", this.getName(), this.getField());
-
-		if (this.getOwner() != null) {
+		System.out.printf("You've landed on %s (%s).%n", this.getName(), this.getField().getName());
+		Player owner = this.getOwner();
+		if (owner != null) {
 			System.out.printf("The owner of this Garden is %s.%n", this.getOwner().getName());
-			this.payRent(player);
-		} else {
-			// Keep looping while input is false
-			while (!input) {
-				try {
-					System.out.printf("This Garden isn't owned by anyone.%n");
-					System.out.println("Do you want to trade " + this.getTileCost()
-							+ " Honey Jars to colonise this Garden? [Y/N]");
-					String choice = sc.nextLine().trim();
-					// Think equals ignore case would work better here?
-//					if (choice.contains("y") || choice.contains("Yes") || choice.contains("y") || choice.contains("yes")) {
-					if (choice.equalsIgnoreCase("y") || choice.equalsIgnoreCase("yes")) {
-						this.purchase(player);
-						input = true;
-					} else if (choice.equalsIgnoreCase("n") || choice.equalsIgnoreCase("no")) {
-						this.auction(player);
-						input = true;
-					} else {
-						System.out.println("Invalid entry, please enter [Y/N]");
-						// sc.nextLine();
-					}
-				} catch (Exception e) {
-					System.err.println("Error, please try again");
-				}
+			if (owner != player) {
+				this.payRent(player);
 			}
+		} else {
+			System.out.printf("This Garden isn't owned by anyone.%n");
+			System.out.println(
+					"Do you want to trade " + this.getTileCost() + " Honey Jars to colonise this Garden? [Y/N]");
 
+			if (Player.getPlayerDecision()) {
+				this.purchase(player);
+			} else {
+				this.auction(player);
+			}
 		}
 	}
 
 	public void purchase(Player player) {
 		if (player.getHoney() < this.getTileCost()) {
 			System.out.println("Sorry you don't have enough Honey Jars to colonise this Garden.... ");
+			this.auction(player);
 		} else {
 			this.setOwner(player);
 			System.out.println("The new owner of " + this.getName() + " is " + player.getName());
@@ -76,36 +64,33 @@ public class Garden extends BoardTile {
 
 	public void auction(Player player) {
 
-	    Scanner scanner = new Scanner(System.in);
-	    Player currentPlayer = player;
+		Scanner scanner = new Scanner(System.in);
+		Player currentPlayer = player;
 
-	    // Display that the garden will be auctioned to other players
-	    System.out.println(this.getName() + " will now be auctioned to all other beekeepers");
+		// Display that the garden will be auctioned to other players
+		System.out.println(this.getName() + " will now be auctioned to all other beekeepers");
 
-	    // Get the list of active players from the BoardGame class
-	    List<Player> activePlayers = BoardGame.getActivePlayers();
-	    
-	    for (Player otherPlayer : activePlayers) {
-	        if (otherPlayer != currentPlayer) {
-	            System.out.println(otherPlayer.getName() + ", do you want to purchase " + this.getName() +"? [Y/N]");
-	            String choice = scanner.nextLine().trim();
-	            if (choice.equalsIgnoreCase("y") || choice.equalsIgnoreCase("yes")) {
-	            	if (otherPlayer.getHoney()>= this.getTileCost()) {
-	            		this.purchase(otherPlayer);
-	            		return;// Exit the method after selling
-	            	} else {
-	            		System.out.println("Sorry you don't have enough Honey Jars to colonise this Garden.... \"");
-	            	}
-	            }
-	        }
-	    }
+		// Get the list of active players from the BoardGame class
+		List<Player> activePlayers = BoardGame.getActivePlayers();
 
-	    System.out.println("No other player wants to purchase " + this.getName() + ". The game continues.");
+		for (Player otherPlayer : activePlayers) {
+			if (otherPlayer != currentPlayer) {
+				System.out.println(otherPlayer.getName() + ", do you want to purchase " + this.getName() + "? [Y/N]");
+				
+				if (Player.getPlayerDecision()) {
+					if (otherPlayer.getHoney() >= this.getTileCost()) {
+						this.purchase(otherPlayer);
+						return;// Exit the method after selling
+					} else {
+						System.out.println("Sorry you don't have enough Honey Jars to colonise this Garden.... \"");
+					}
+				}
+			}
+		}
+
+		System.out.println("No other player wants to purchase " + this.getName() + ". The game continues.");
 
 	}
-		
-	
-		
 
 	/**
 	 * Gets the number of Hives for the Garden
@@ -125,9 +110,9 @@ public class Garden extends BoardTile {
 	public void setHives(int hives) throws IllegalArgumentException {
 		if (hives <= MAX_HIVES && hives >= MIN_Value) {
 			this.hives = hives;
-		} else if(hives < MIN_Value){
+		} else if (hives < MIN_Value) {
 			throw new IllegalArgumentException("Hives cannot be set to less than 0");
-		}else {
+		} else {
 			throw new IllegalArgumentException("The maximum Hives a garden can have is " + MAX_HIVES);
 
 		}
@@ -157,13 +142,13 @@ public class Garden extends BoardTile {
 	public void setApiary(int apiary) throws IllegalArgumentException {
 		if (apiary <= MAX_APIARY && apiary >= MIN_Value) {
 			this.apiary = apiary;
-		} else if(apiary < MIN_Value){
+		} else if (apiary < MIN_Value) {
 			throw new IllegalArgumentException("Apiaries canot be set to less than 0");
-		}else {
+		} else {
 			throw new IllegalArgumentException("The maximum Apiaries a garden can have is " + MAX_APIARY);
 
 		}
-		
+
 	}
 
 	public Player getOwner() {
@@ -213,7 +198,7 @@ public class Garden extends BoardTile {
 	}
 
 	public void payRent(Player player) {
-
+//TODO fix bug where player lands on their own tile.
 		int developedRent = this.rent;
 		int hives = this.getHives();
 		int apiary = this.getApiary();
@@ -238,6 +223,5 @@ public class Garden extends BoardTile {
 		}
 
 	}
-	
 
 }

@@ -90,10 +90,8 @@ public class Player {
 		ArrayList<Player> otherPlayers = new ArrayList<Player>();
 		Player player2 = null;
 		boolean sell = false, swap = false;
-
 		ArrayList<Garden> ownedGardens1 = new ArrayList<Garden>();
 		ArrayList<Garden> ownedGardens2 = new ArrayList<Garden>();
-		Scanner sc = new Scanner(System.in);
 		for (Garden garden : gardens) {
 			if (garden.getOwner() == this) {
 				ownedGardens1.add(garden);
@@ -106,217 +104,120 @@ public class Player {
 			System.out.println("Which Garden would you like to trade? [Enter a number]");
 			int i = 1;
 			for (Garden garden : ownedGardens1) {
-				System.out.println(i + ". " + garden.getName());
+				System.out.printf("%d. %s (%s)", i, garden.getName(), garden.getField().getName());
 				i++;
 			}
 			System.out.println(i + ". Cancel trade");
-			while (true) {
-				try {
-					int choice = sc.nextInt();
-					sc.nextLine();
-					if (choice == i || choice > i || choice <= 0) {
-						System.out.println("Trade cancelled...");
-						return false;
-					} else {
-						garden1 = ownedGardens1.get(choice - 1);
-					}
-					break;
-				} catch (InputMismatchException e) {
-					System.out.println("Invalid input, you must enter a number:");
-					sc.next();
-					continue;
-				}
+			int choice = getPlayerChoice(i);
+			if (choice == i || choice > i || choice <= 0) {
+				System.out.println("Trade cancelled...");
+				return false;
+			} else {
+				garden1 = ownedGardens1.get(choice - 1);
 			}
-			System.out.println("Which Player would you like to trade with? [Enter a number]");
-			int j = 1;
-			for (Player player : players) {
-				if (player != this) {
-					System.out.println(j + ". " + player.getName());
-					otherPlayers.add(player);
-					j++;
-				}
-
-			}
-			System.out.println(j + ". Cancel trade");
-			while (true) {
-				try {
-					int choice = sc.nextInt();
-					sc.nextLine();
-					if (choice == j || choice > j || choice <= 0) {
-						System.out.println("Trade cancelled...");
-						return false;
-					} else {
-						player2 = otherPlayers.get(choice - 1);
-					}
-					break;
-				} catch (InputMismatchException e) {
-					System.out.println("Invalid input, you must enter a number:");
-					sc.next();
-					continue;
-				}
+		}
+		System.out.println("Which Player would you like to trade with? [Enter a number]");
+		int j = 1;
+		for (Player player : players) {
+			if (player != this) {
+				System.out.println(j + ". " + player.getName());
+				otherPlayers.add(player);
+				j++;
 			}
 
-			for (Garden garden : gardens) {
-				if (garden.getOwner() == player2) {
-					ownedGardens2.add(garden);
-				}
+		}
+		System.out.println(j + ". Cancel trade");
+		int choice = getPlayerChoice(j);
+		if (choice == j || choice > j || choice <= 0) {
+			System.out.println("Trade cancelled...");
+			return false;
+		} else {
+			player2 = otherPlayers.get(choice - 1);
+		}
+
+		for (Garden garden : gardens) {
+			if (garden.getOwner() == player2) {
+				ownedGardens2.add(garden);
+			}
+		}
+
+		System.out.println("Swap or Sell? [Enter a number]");
+		System.out.println("1. Swap");
+		System.out.println("2. Sell");
+		System.out.println("3. Cancel trade");
+
+		choice = getPlayerChoice(3);
+		switch (choice) {
+		case 1:
+			swap = true;
+			System.out.println("Which Garden do you wish to swap for?");
+			int k = 1;
+			for (Garden garden : ownedGardens2) {
+				System.out.printf("%d. %s (%s)", k, garden.getName(), garden.getField().getName());
+				k++;
+			}
+			System.out.println(k + ". Cancel trade");
+
+			choice = getPlayerChoice(k);
+			if (choice == k || choice > k || choice <= 0) {
+				System.out.println("Trade cancelled...");
+				return false;
+			} else {
+				garden2 = ownedGardens2.get(choice - 1);
 			}
 
-			System.out.println("Swap or Sell? [Enter a number]");
-			System.out.println("1. Swap");
-			System.out.println("2. Sell");
+			System.out.println("Do you wish to add Honey to sweeten the deal? [Enter a number]");
+			System.out.println("1. Yes - Add Honey with garden");
+			System.out.println("2. No - Just trade gardens");
 			System.out.println("3. Cancel trade");
 
-			while (true) {
-				try {
-					int choice = sc.nextInt();
-					sc.nextLine();
-					switch (choice) {
-					case 1:
-						swap = true;
-						System.out.println("Which Garden do you wish to swap for?");
-						int k = 1;
-						for (Garden garden : ownedGardens2) {
-							System.out.println(k + ". " + garden.getName());
-							k++;
-						}
-						System.out.println(k + ". Cancel trade");
-						while (true) {
-							try {
-								choice = sc.nextInt();
-								sc.nextLine();
-								if (choice == k || choice > k || choice <= 0) {
-									System.out.println("Trade cancelled...");
-									return false;
-								} else {
-									garden2 = ownedGardens2.get(choice - 1);
-								}
-								break;
-							} catch (InputMismatchException e) {
-								System.out.println("Invalid input, you must enter a number:");
-								sc.next();
-								continue;
-							}
-						}
-
-						System.out.println("Do you wish to add Honey to sweeten the deal? [Enter a number]");
-						System.out.println("1. Yes - Add Honey with garden");
-						System.out.println("2. No - Just trade gardens");
-						System.out.println("3. Cancel trade");
-						while (true) {
-							try {
-								choice = sc.nextInt();
-								sc.nextLine();
-								switch (choice) {
-								case 1:
-									System.out.println(
-											"How much Honey do you want to add to sweeten the deal? [Enter a number]");
-									while (true) {
-										try {
-											honey = sc.nextInt();
-											sc.nextLine();
-											while (this.getHoney() < honey || honey < 0) {
-												if (honey < 0) {
-													System.out.println(
-															"You must enter a positive amount, please try again:");
-												} else {
-													System.out.println(
-															"You don't have that many Honey Jars, you currently have "
-																	+ this.getHoney()
-																	+ " please enter a lower amount:");
-												}
-												honey = sc.nextInt();
-												sc.nextLine();
-											}
-											break;
-										} catch (InputMismatchException e) {
-											System.out.println("Invalid input, you must enter a number:");
-											sc.next();
-											continue;
-										}
-									}
-									break;
-								case 2:
-									break;
-								default:
-									System.out.println("Trade cancelled...");
-									return false;
-								}
-
-								break;
-							} catch (InputMismatchException e) {
-								System.out.println("Invalid input, you must enter a number:");
-								sc.next();
-								continue;
-							}
-						}
-						break;
-					case 2:
-						sell = true;
-						System.out.println("How much Honey do you want to sell this for? [Enter a number]");
-						while (true) {
-							try {
-								honey = sc.nextInt();
-								sc.nextLine();
-								while (player2.getHoney() < honey || honey < 0) {
-									if (honey < 0) {
-										System.out.println("You must enter a positive amount, please try again:");
-									} else {
-										System.out.println(player2.getName()
-												+ " doesn't have that many Honey Jars, They currently have "
-												+ player2.getHoney() + "Honey Jars please enter a lower amount:");
-									}
-									honey = sc.nextInt();
-									sc.nextLine();
-								}
-								break;
-							} catch (InputMismatchException e) {
-								System.out.println("Invalid input, you must enter a number:");
-								sc.next();
-								continue;
-							}
-						}
-						break;
-					default:
-						System.out.println("Trade cancelled...");
-						return false;
-					}
-					break;
-				} catch (InputMismatchException e) {
-					System.out.println("Invalid input, you must enter a number:");
-					sc.next();
-					continue;
-				}
-			}
-
-			System.out.println("Does " + player2.getName() + " agree with the trade? [Y/N]");
-			String agree = sc.nextLine().trim();
-
-			if (agree.equalsIgnoreCase("Y") || agree.equalsIgnoreCase("Yes")) {
-
-				garden1.setOwner(player2);
-				if (swap) {
-					this.updateHoney(-honey);
-					player2.updateHoney(+honey);
-					garden2.setOwner(this);
-					System.out.println(this.getName() + " now owns " + garden2.getName());
-				} else if (sell) {
-					this.updateHoney(+honey);
-					player2.updateHoney(-honey);
-				}
-
-				this.showHoney();
-				System.out.println();
-				System.out.println(player2.getName() + " now owns " + garden1.getName());
-				player2.showHoney();
-				System.out.println();
-
-				return true;
-
-			} else {
+			choice = getPlayerChoice(3);
+			switch (choice) {
+			case 1:
+				System.out.println("How much Honey do you want to add to sweeten the deal? [Enter a number]");
+				honey = getHoneyAmountFromPlayer(this.getHoney());
+				break;
+			case 2:
+				break;
+			default:
 				System.out.println("Trade cancelled...");
 				return false;
 			}
+			break;
+		case 2:
+			sell = true;
+			System.out.println("How much Honey do you want to sell this for? [Enter a number]");
+			honey = getHoneyAmountFromPlayer(player2.getHoney());
+			break;
+		default:
+			System.out.println("Trade cancelled...");
+			return false;
+		}
+
+		System.out.println("Does " + player2.getName() + " agree with the trade? [Y/N]");
+		if (getPlayerDecision()) {
+			garden1.setOwner(player2);
+			if (swap) {
+				this.updateHoney(-honey);
+				player2.updateHoney(+honey);
+				garden2.setOwner(this);
+				System.out.println(this.getName() + " now owns " + garden2.getName());
+			} else if (sell) {
+				this.updateHoney(+honey);
+				player2.updateHoney(-honey);
+			}
+
+			this.showHoney();
+			System.out.println();
+			System.out.println(player2.getName() + " now owns " + garden1.getName());
+			player2.showHoney();
+			System.out.println();
+
+			return true;
+
+		} else {
+			System.out.println("Trade cancelled...");
+			return false;
 		}
 	}
 
@@ -336,7 +237,6 @@ public class Player {
 		ArrayList<Garden> ownedGardensToAddHives = new ArrayList<Garden>();
 		ArrayList<Garden> ownedGardensToAddApiary = new ArrayList<Garden>();
 
-		Scanner sc = new Scanner(System.in);
 		for (Garden garden : gardens) {
 			if (garden.getOwner() == this) {
 				ownedGardens.add(garden);
@@ -425,15 +325,15 @@ public class Player {
 				for (Garden garden : ownedGardensToAddHives) {
 					if (garden.getHives() == 0) {
 						addHiveCost = (garden.getTileCost()) * (0.1);
-						System.out.println(i + ". " + garden.getName() + " for " + (addHiveCost) + " honey jars");
+						System.out.println(i + ". " + garden.getName() + " for " + (int) (addHiveCost) + " honey jars");
 					} else if (garden.getHives() == 1) {
 						addHiveCost = (((garden.getTileCost()) * (0.1)) + ((garden.getTileCost()) * (0.2)));
 // these shouldn't be cumulative as this is 30% and below is 50%
-						System.out.println(i + ". " + garden.getName() + " for " + (addHiveCost) + " honey jars");
+						System.out.println(i + ". " + garden.getName() + " for " + (int) (addHiveCost) + " honey jars");
 					} else if (garden.getHives() == 2) {
 						addHiveCost = (((garden.getTileCost()) * (0.1)) + ((garden.getTileCost()) * (0.2))
 								+ ((garden.getTileCost()) * (0.3)));
-						System.out.println(i + ". " + garden.getName() + " for " + (addHiveCost) + " honey jars");
+						System.out.println(i + ". " + garden.getName() + " for " + (int) (addHiveCost) + " honey jars");
 					}
 					i++;
 				}
@@ -451,9 +351,8 @@ public class Player {
 				}
 			}
 
-			System.out.println(i + ". Cancel trade");
-			int choice = sc.nextInt();
-			sc.nextLine();
+			System.out.println(i + ". Cancel development");
+			int choice = getPlayerChoice(i);
 			if (choice == i || choice > i || choice <= 0) {
 				System.out.println("Development cancelled...");
 				return false;
@@ -468,7 +367,7 @@ public class Player {
 				} else if (hasAddApiaryGardens) {
 					gardenToDevelop = ownedGardensToAddApiary.get(choice - 1);
 					System.out.println(this.getName() + ", you have developed an apiary on " + gardenToDevelop.getName()
-							+ " which costs" + addHiveCost + " Honey Jars.");
+							+ " which costs " + addApiaryCost + " Honey Jars.");
 					this.updateHoney(-addApiaryCost);
 					gardenToDevelop.buildApiary();
 					return true;
@@ -483,53 +382,21 @@ public class Player {
 	}
 
 	public boolean showMenu() {
-		Scanner sc = new Scanner(System.in);
-		boolean input = false;
-		int choice = 0;
-
-		while (!input) {
-			try {
-				System.out.println("Select an option:");
-				// Could implement that this first option doesn't show unless you have a garden
-				// but might confuse the players if the options change.
-				System.out.println("1. Manage Gardens");
-				System.out.println("2. Roll Dice");
-				System.out.println("3. Quit Game");
-				choice = sc.nextInt();
-				sc.nextLine();
-				if (choice >= 1 && choice <= 3) {
-					input = true;
-				} else {
-					System.out.println("You must enter a number between 1 & 3 inclusive");
-				}
-			} catch (InputMismatchException e) {
-				System.out.println("Invalid data type, please enter a number");
-				sc.nextLine();
-			}
-		}
+		System.out.println("Select an option:");
+		// Could implement that this first option doesn't show unless you have a garden
+		// but might confuse the players if the options change.
+		System.out.println("1. Manage Gardens");
+		System.out.println("2. Roll Dice");
+		System.out.println("3. Quit Game");
+		int choice = getPlayerChoice(3);
 
 		switch (choice) {
 		case 1:
-			input = false;
-			int option = 0;
-			while (!input) {
-				try {
-					System.out.println("Select an option:");
-					System.out.println("1. Trade Gardens");
-					System.out.println("2. Develop Gardens");
-					System.out.println("3. Back to turn menu");
-					option = sc.nextInt();
-					sc.nextLine();
-					if (option >= 1 && option <= 3) {
-						input = true;
-					} else {
-						System.out.println("You must enter a number between 1 & 3 inclusive");
-					}
-				} catch (Exception e) {
-					System.out.println("Invalid data type, please enter a number");
-					sc.nextLine();
-				}
-			}
+			System.out.println("Select an option:");
+			System.out.println("1. Trade Gardens");
+			System.out.println("2. Develop Gardens");
+			System.out.println("3. Back to turn menu");
+			int option = getPlayerChoice(3);
 
 			switch (option) {
 			case 1:
@@ -559,7 +426,6 @@ public class Player {
 			return true;
 		case 3:
 			BoardGame.removePlayer(this);
-
 			System.out.printf("Beekeeper %s has decided to retire and is letting their Bees rest their wings!%n",
 					this.getName());
 			return false;
@@ -568,5 +434,75 @@ public class Player {
 			return this.showMenu();
 		}
 
+	}
+
+	public static int getPlayerChoice(int num) {
+		Scanner sc = new Scanner(System.in);
+		while (true) {
+			try {
+				int choice = sc.nextInt();
+				sc.nextLine();
+				if (choice > num) {
+					if (num == 1) {
+						System.out.printf("Input can only be 1, try again:%n");
+					} else {
+						System.out.printf("Input must be 1 - %d, try again:%n", num);
+					}
+					choice = getPlayerChoice(num);
+				}
+				return choice;
+			} catch (InputMismatchException e) {
+				System.out.println("Invalid input, you must enter a number:");
+				sc.next();
+				continue;
+			}
+		}
+
+	}
+
+	public static boolean getPlayerDecision() {
+		Scanner sc = new Scanner(System.in);
+		while (true) {
+			try {
+				String decision = sc.nextLine().trim();
+				if (decision.equalsIgnoreCase("yes") || decision.equalsIgnoreCase("y")) {
+					return true;
+				} else if (decision.equalsIgnoreCase("no") || decision.equalsIgnoreCase("n")) {
+					return false;
+				}
+				throw new InputMismatchException(
+						"Buzz off! Invalid input detected. Please flutter with either a \"Y\" for yes or an \"N\" for no to indicate your choice. Let's keep this hive buzzing smoothly!");
+
+			} catch (InputMismatchException e) {
+				System.out.println(e.getMessage());
+				continue;
+			}
+		}
+
+	}
+
+	public static int getHoneyAmountFromPlayer(double playersHoney) {
+		Scanner sc = new Scanner(System.in);
+		while (true) {
+			try {
+				int honey = sc.nextInt();
+				sc.nextLine();
+				while (honey < 0 || honey > playersHoney) {
+					if (honey < 0) {
+						System.out.println("You must enter a positive amount, please try again:");
+					} else {
+						System.out.println("Not enough Honey Jars, must be " + playersHoney
+								+ " or less. please enter a lower amount:");
+					}
+					honey = sc.nextInt();
+					sc.nextLine();
+				}
+				return honey;
+			} catch (InputMismatchException e) {
+				System.out.println("Invalid input, you must enter a number:");
+				sc.next();
+				continue;
+			}
+		}
 	}
 }
