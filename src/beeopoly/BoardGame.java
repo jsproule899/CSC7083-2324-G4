@@ -275,7 +275,7 @@ public class BoardGame {
 		gameBoard.add(new Garden("Pear Orchard Delight", fields.get(2), 200, 16));
 		gameBoard.add(new Garden("Cherry Harmony Haven", fields.get(2), 240, 20));
 		gameBoard.add(new Garden("Regal Rose Gardens", fields.get(3), 350, 35));
-		gameBoard.add(new Garden("Tupil Elegance Enclave", fields.get(3), 400, 50));
+		gameBoard.add(new Garden("Tulip Elegance Enclave", fields.get(3), 400, 50));
 
 		fields.get(0).addGarden((Garden) gameBoard.get(1));
 		fields.get(0).addGarden((Garden) gameBoard.get(2));
@@ -595,22 +595,22 @@ public class BoardGame {
 
 				delay();
 				if (score != nextScore) {
-					System.out.printf("%d. %-10s   %.1f\n", rank++, playerName, score);
+					System.out.printf("%d. %-10s   %.0f\n", rank++, playerName, score);
 				} else if ((score == nextScore) && (score == topScore)) {
 					System.out.println("Draw Score!");
-					System.out.printf("%d. %-10s   %.1f\n", rank, playerName, score);
+					System.out.printf("%d. %-10s   %.0f\n", rank, playerName, score);
 					topScore = 0;
 				} else if ((score == nextScore) && (score != previousScore)) {
 					System.out.println("Draw Score!");
-					System.out.printf("%d. %-10s   %.1f\n", rank, playerName, score);
+					System.out.printf("%d. %-10s   %.0f\n", rank, playerName, score);
 				} else if ((score == nextScore) && (score == previousScore)) {
-					System.out.printf("%d. %-10s   %.1f\n", rank, playerName, score);
+					System.out.printf("%d. %-10s   %.0f\n", rank, playerName, score);
 					previousScore = score;
 				}
 
 			} else {
 				delay();
-				System.out.printf("%d. %-10s   %.1f\n", rank++, playerName, score);
+				System.out.printf("%d. %-10s   %.0f\n", rank++, playerName, score);
 			}
 		}
 
@@ -619,7 +619,7 @@ public class BoardGame {
 			for (Player player : playerRank) {
 				String playerName = player.getName();
 				delay();
-				System.out.printf("%d. %-10s   %.1f\n", rank++, playerName, 0.0);
+				System.out.printf("%d. %-10s   %.0f\n", rank++, playerName, 0.0);
 			}
 		}
 
