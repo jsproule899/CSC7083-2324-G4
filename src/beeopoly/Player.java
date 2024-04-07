@@ -224,88 +224,36 @@ public class Player {
 	public boolean develop(ArrayList<Garden> gardens) {
 		// TO DO DMcL
 		// In progress
-		int fieldCount1 = 0;
-		int fieldCount2 = 0;
-		int fieldCount3 = 0;
-		int fieldCount4 = 0;
-
+ 
 		System.out.println();
-
+ 
 		Garden gardenToDevelop = null;
-		Map<String, Integer> fieldCount = new HashMap<>();
 		ArrayList<Garden> ownedGardens = new ArrayList<Garden>();
 		ArrayList<Garden> ownedGardensToAddHives = new ArrayList<Garden>();
 		ArrayList<Garden> ownedGardensToAddApiary = new ArrayList<Garden>();
-
+ 
 		for (Garden garden : gardens) {
 			if (garden.getOwner() == this) {
 				ownedGardens.add(garden);
 			}
 		}
-
+ 
 		if (ownedGardens.size() > 0) {
-
-// I think these lines of code can replace lines 326-329, 334 and 364-405 and cut out some repetition			
-//			for (Garden garden : ownedGardens) {
-//				boolean ownsField = true;
-//				for(Garden fieldGarden : garden.getField().getGardens()) {
-//					if(fieldGarden.getOwner() != this) {
-//						ownsField=false;
-//					}
-//				}
-//				
-//				if (ownsField && garden.getHives() == 3 && garden.getApiary() == 0) {
-//					ownedGardensToAddApiary.add(garden);
-//				} else if (ownsField) {
-//					ownedGardensToAddHives.add(garden);
-//				}
-//				
-//			}
 			for (Garden garden : ownedGardens) {
-				String fieldName = garden.getField().getName();
-				if ("Wildflower Wilderness".equals(fieldName)) {
-					fieldCount1++;
-					fieldCount.put("Wildflower Wilderness", fieldCount1);
-					if (fieldCount1 == 2 && garden.getHives() == 3 && garden.getApiary() == 0) {
-						ownedGardensToAddApiary.add(garden);
-					} else if (fieldCount1 == 2) {
-						ownedGardensToAddHives.add(garden);
+				boolean ownsField = true;
+				for (Garden fieldGarden : garden.getField().getGardens()) {
+					if (fieldGarden.getOwner() != this) {
+						ownsField = false;
 					}
-					System.out.println("fieldcount1: " + fieldCount1);
-
-				} else if ("Pollen Meadow".equals(fieldName)) {
-					fieldCount2++;
-					fieldCount.put("Pollen Meadow", fieldCount2);
-					if (fieldCount2 == 3 && garden.getHives() == 3 && garden.getApiary() == 0) {
-						ownedGardensToAddApiary.add(garden);
-					} else if (fieldCount2 == 3) {
-						ownedGardensToAddHives.add(garden);
-					}
-					System.out.println("fieldcount2: " + fieldCount2);
-
-				} else if ("Golden Orchards".equals(fieldName)) {
-					fieldCount3++;
-					fieldCount.put("Golden Orchards", fieldCount3);
-					if (fieldCount3 == 3 && garden.getHives() == 3 && garden.getApiary() == 0) {
-						ownedGardensToAddApiary.add(garden);
-					} else if (fieldCount3 == 3) {
-						ownedGardensToAddHives.add(garden);
-					}
-					System.out.println("fieldcount3: " + fieldCount3);
-
-				} else if ("Blossom Estate".equals(fieldName)) {
-					fieldCount4++;
-					fieldCount.put("Blossom Estate", fieldCount4);
-					if (fieldCount4 == 2 && garden.getHives() == 3 && garden.getApiary() == 0) {
-						ownedGardensToAddApiary.add(garden);
-					} else if (fieldCount4 == 2) {
-						ownedGardensToAddHives.add(garden);
-					}
-					System.out.println("fieldcount4: " + fieldCount4);
 				}
-				System.out.printf("Owned Gardens: %s (%s)%n", garden.getName(), garden.getField().getName());
+ 
+				if (ownsField && garden.getHives() == 3 && garden.getApiary() == 0) {
+					ownedGardensToAddApiary.add(garden);
+				} else if (ownsField) {
+					ownedGardensToAddHives.add(garden);
+				}
 			}
-
+ 
 		} else {
 			System.out.println("You haven't purchased a garden tile yet, keep playing and build your empire");
 			return false;
@@ -313,44 +261,47 @@ public class Player {
 		boolean hasAddHiveGardens = false;
 		boolean hasAddApiaryGardens = false;
 		if (ownedGardensToAddHives.size() > 0 || ownedGardensToAddApiary.size() > 0) {
-
+ 
 			int i = 1;
 			double addHiveCost = 0;
 			double addApiaryCost = 0;
 			if (ownedGardensToAddHives.size() > 0) {
 				System.out.println("Which Garden would you like to develop? [Enter a number]");
 				hasAddHiveGardens = true;
-				System.out.println("You can add a hive to the following garden tiles:");
-
+				System.out.println("You can add a hive to the following garden tiles: /n");
+ 
 				for (Garden garden : ownedGardensToAddHives) {
 					if (garden.getHives() == 0) {
 						addHiveCost = (garden.getTileCost()) * (0.1);
-						System.out.println(i + ". " + garden.getName() + " for " + (int) (addHiveCost) + " honey jars");
+						System.out.printf("%d. %s (%s) for %.0f honey jars", i, garden.getName(),
+								garden.getField().getName(), addHiveCost);
+ 
 					} else if (garden.getHives() == 1) {
-						addHiveCost = (((garden.getTileCost()) * (0.1)) + ((garden.getTileCost()) * (0.2)));
-// these shouldn't be cumulative as this is 30% and below is 50%
-						System.out.println(i + ". " + garden.getName() + " for " + (int) (addHiveCost) + " honey jars");
+						addHiveCost = (garden.getTileCost()) * (0.2);
+						System.out.printf("%d. %s (%s) for %.0f honey jars", i, garden.getName(),
+								garden.getField().getName(), addHiveCost);
 					} else if (garden.getHives() == 2) {
-						addHiveCost = (((garden.getTileCost()) * (0.1)) + ((garden.getTileCost()) * (0.2))
-								+ ((garden.getTileCost()) * (0.3)));
-						System.out.println(i + ". " + garden.getName() + " for " + (int) (addHiveCost) + " honey jars");
+						addHiveCost = (garden.getTileCost()) * (0.3);
+						System.out.printf("%d. %s (%s) for %.0f honey jars", i, garden.getName(),
+								garden.getField().getName(), addHiveCost);
 					}
 					i++;
 				}
 			}
 			if (ownedGardensToAddApiary.size() > 0) {
 				hasAddApiaryGardens = true;
-				System.out.println("You can develop the following garden tiles into an apiary:");
-
+				System.out.println("You can develop the following garden tiles into an apiary: /n");
+ 
 				for (Garden garden : ownedGardensToAddApiary) {
 					if (garden.getApiary() == 0) {
 						addApiaryCost = (garden.getTileCost()) * (0.5);
-						System.out.println(i + ". " + garden.getName() + " for " + (addApiaryCost) + " honey jars");
+						System.out.printf("%d. %s (%s) for %.0f honey jars", i, garden.getName(),
+								garden.getField().getName(), addApiaryCost);
 						i++;
 					}
 				}
 			}
-
+ 
 			System.out.println(i + ". Cancel development");
 			int choice = getPlayerChoice(i);
 			if (choice == i || choice > i || choice <= 0) {
