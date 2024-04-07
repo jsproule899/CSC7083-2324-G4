@@ -4,12 +4,10 @@
 package beeopoly;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
-import java.util.HashMap;
 import java.util.InputMismatchException;
-import java.util.Map;
+
 
 /**
  * 
@@ -104,7 +102,7 @@ public class Player {
 			System.out.println("Which Garden would you like to trade? [Enter a number]");
 			int i = 1;
 			for (Garden garden : ownedGardens1) {
-				System.out.printf("%d. %s (%s)", i, garden.getName(), garden.getField().getName());
+				System.out.printf("%d. %s (%s)%n", i, garden.getName(), garden.getField().getName());
 				i++;
 			}
 			System.out.println(i + ". Cancel trade");
@@ -153,7 +151,7 @@ public class Player {
 			System.out.println("Which Garden do you wish to swap for?");
 			int k = 1;
 			for (Garden garden : ownedGardens2) {
-				System.out.printf("%d. %s (%s)", k, garden.getName(), garden.getField().getName());
+				System.out.printf("%d. %s (%s)%n", k, garden.getName(), garden.getField().getName());
 				k++;
 			}
 			System.out.println(k + ". Cancel trade");
@@ -201,7 +199,7 @@ public class Player {
 				this.updateHoney(-honey);
 				player2.updateHoney(+honey);
 				garden2.setOwner(this);
-				System.out.println(this.getName() + " now owns " + garden2.getName());
+				System.out.println(this.getName() + " now owns " + garden2.getName() + "("+garden2.getField().getName()+")");
 			} else if (sell) {
 				this.updateHoney(+honey);
 				player2.updateHoney(-honey);
@@ -209,7 +207,7 @@ public class Player {
 
 			this.showHoney();
 			System.out.println();
-			System.out.println(player2.getName() + " now owns " + garden1.getName());
+			System.out.println(player2.getName() + " now owns " + garden1.getName()+ "("+garden1.getField().getName()+")");
 			player2.showHoney();
 			System.out.println();
 
@@ -295,7 +293,7 @@ public class Player {
 				for (Garden garden : ownedGardensToAddApiary) {
 					if (garden.getApiary() == 0) {
 						addApiaryCost = (garden.getTileCost()) * (0.5);
-						System.out.printf("%d. %s (%s) for %.0f honey jars", i, garden.getName(),
+						System.out.printf("%d. %s (%s) for %.0f honey jars%n", i, garden.getName(),
 								garden.getField().getName(), addApiaryCost);
 						i++;
 					}
@@ -311,14 +309,14 @@ public class Player {
 				if (hasAddHiveGardens) {
 					gardenToDevelop = ownedGardensToAddHives.get(choice - 1);
 					System.out.println(this.getName() + ", you have added a hive to " + gardenToDevelop.getName()
-							+ " which costs " + addHiveCost + " Honey Jars");
+							+ " which costs " + (int)addHiveCost + " Honey Jars");
 					this.updateHoney(-addHiveCost);
 					gardenToDevelop.buildHive();
 					return true;
 				} else if (hasAddApiaryGardens) {
 					gardenToDevelop = ownedGardensToAddApiary.get(choice - 1);
 					System.out.println(this.getName() + ", you have developed an apiary on " + gardenToDevelop.getName()
-							+ " which costs " + addApiaryCost + " Honey Jars.");
+							+ " which costs " + (int)addApiaryCost + " Honey Jars.");
 					this.updateHoney(-addApiaryCost);
 					gardenToDevelop.buildApiary();
 					return true;
@@ -352,6 +350,7 @@ public class Player {
 			switch (option) {
 			case 1:
 				if (this.trade(BoardGame.gardens, BoardGame.activePlayers)) {
+					System.out.println("Now that you've traded a Garden, you must roll the dice.");
 					this.move(this.rollDice());
 					return true;
 				} else {
@@ -360,6 +359,7 @@ public class Player {
 
 			case 2:
 				if (this.develop(BoardGame.gardens)) {
+					System.out.println("Now that you've developed a Garden, you must roll the dice.");
 					this.move(this.rollDice());
 					return true;
 				} else {

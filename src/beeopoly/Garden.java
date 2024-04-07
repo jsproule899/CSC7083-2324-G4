@@ -1,7 +1,6 @@
 package beeopoly;
 
 import java.util.List;
-import java.util.Scanner;
 
 /**
  * Class to represent a garden on the Beeopoly game board.
@@ -47,16 +46,16 @@ public class Garden extends BoardTile {
 	 */
 	@Override
 	public void landOn(Player player) {
-		Scanner sc = new Scanner(System.in);
-		boolean input = false;
 		System.out.printf("You've landed on %s (%s).%n", this.getName(), this.getField().getName());
 		Player owner = this.getOwner();
 
 		// If garden tile is owned by another player, pay required rent
 		if (owner != null) {
-			System.out.printf("The owner of this Garden is %s.%n", this.getOwner().getName());
 			if (owner != player) {
+				System.out.printf("The owner of this Garden is %s.%n", this.getOwner().getName());
 				this.payRent(player);
+			}else {
+				System.out.printf("You already own this Garden and your swarm is buzzing to be back! ");
 			}
 		} else {
 			System.out.printf("This Garden isn't owned by anyone.%n");
@@ -101,8 +100,6 @@ public class Garden extends BoardTile {
 	 * @param player - The player the garden tile is being offered to.
 	 */
 	public void auction(Player player) {
-
-		Scanner scanner = new Scanner(System.in);
 		Player currentPlayer = player;
 
 		// Display that the garden will be auctioned to other players
@@ -317,7 +314,6 @@ public class Garden extends BoardTile {
 	 * @param player - The player that landed on the garden tile.
 	 */
 	public void payRent(Player player) {
-//TODO fix bug where player lands on their own tile.
 		int developedRent = this.rent;
 		int hives = this.getHives();
 		int apiary = this.getApiary();
