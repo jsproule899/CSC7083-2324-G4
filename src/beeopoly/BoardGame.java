@@ -9,24 +9,59 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
+/**
+ * BoardGame class to support the main functionality of the Beeopoly game. This
+ * class manages player registration, setup of the game, playing the game in a
+ * loop, each player's turn, and end game conditions.
+ * 
+ * @author Group 4 - CSC7083: Software Engineering
+ */
 public class BoardGame {
 
-	public static final int MIN_PLAYERS = 2; 
+	/**
+	 * Constants for the minimum and maximum number of players in a game, and
+	 * minimum and maximum number of characters in a player name.
+	 */
+	public static final int MIN_PLAYERS = 2;
 	public static final int MAX_PLAYERS = 4;
 	public static final int MIN_CHARS = 3;
 	public static final int MAX_CHARS = 15;
 
+	/**
+	 * Array to store names of players.
+	 */
 	public static String[] players;
+
+	/**
+	 * List of players currently playing the game.
+	 */
 	public static ArrayList<Player> activePlayers = new ArrayList<Player>();
+
+	/**
+	 * List of players who were removed from the game during gameplay.
+	 */
 	public static ArrayList<Player> playerRank = new ArrayList<Player>();
+
+	/**
+	 * Lists of tiles, fields, and gardens on game board.
+	 */
 	public static ArrayList<BoardTile> gameBoard = new ArrayList<BoardTile>();
 	public static ArrayList<Field> fields = new ArrayList<Field>();
 	public static ArrayList<Garden> gardens = new ArrayList<Garden>();
+
+	/**
+	 * Flag indicating whether the game has been ended.
+	 */
 	public static boolean quit = false;
 
+	/**
+	 * Main method to start the Beeopoly game.
+	 * 
+	 * @param args
+	 */
 	public static void main(String[] args) {
 
-		// Initialise game with fields, gardens and boardgame array 
+		// Initialise game with fields, gardens and boardgame array
 		setupGameBoard();
 		welcome();
 		register();
@@ -45,12 +80,12 @@ public class BoardGame {
 
 	/**
 	 * Method that displays information about a player turn. Who's turn it is, where
-	 * they have landed & end of turn
+	 * they have landed & end of turn.
 	 */
-
 	public static void playerTurn() {
 		ArrayList<Player> startingPlayers = new ArrayList<Player>();
 		startingPlayers.addAll(activePlayers);
+		// If player is eliminated, skip their turn
 		for (Player player : startingPlayers) {
 			if (playerRank.contains(player)) {
 				continue;
@@ -69,8 +104,8 @@ public class BoardGame {
 	}
 
 	/**
-	 * Method checks the size of activePlayers, if it is only 1 player left, the
-	 * game will end. The leader board will be displayed
+	 * Method to check the size of activePlayers. If only 1 player is left, the game
+	 * will end. The leader board will be displayed.
 	 */
 	public static void endGameCheck() {
 		// End game if there are less than 2 players
@@ -92,16 +127,26 @@ public class BoardGame {
 		}
 	}
 
+	/**
+	 * Method to register players for the game.
+	 */
 	public static void register() {
 		Scanner sc = new Scanner(System.in);
 		int numOfPlayers = checkNumOfPlayers(sc);
 		getPlayerNames(sc, numOfPlayers);
-
 	}
 
+	/**
+	 * Method to allow users to input player names including validation of input.
+	 * 
+	 * @param sc - Scanner object for user input.
+	 * @param numOfPlayers - Number of players playing the game.
+	 */
 	public static void getPlayerNames(Scanner sc, int numOfPlayers) {
 		for (int i = 0; i < numOfPlayers; i++) {
 			String player = "";
+
+			// Check user input is appropriate length
 			while (player.length() < MIN_CHARS || player.length() > MAX_CHARS) {
 				System.out.printf("Please Enter player %d (%d-%d chars)", i + 1, MIN_CHARS, MAX_CHARS);
 				System.out.println();
@@ -115,6 +160,7 @@ public class BoardGame {
 				}
 			}
 
+			// Check name is unique
 			if (checkPlayerNameUnique(player)) {
 				players[i] = player;
 				System.out.println("Player Successfully added");
@@ -126,20 +172,29 @@ public class BoardGame {
 			}
 
 		}
+		// Add names that have passed validation to the activePlayers array
 		for (String name : players) {
 			activePlayers.add(new Player(name));
 		}
 	}
 
+	/**
+	 * Method to check the number of players for the game entered by the user.
+	 * 
+	 * @param sc - Scanner object for user input.
+	 * @return - Number of players entered by the user.
+	 */
 	public static int checkNumOfPlayers(Scanner sc) {
 		int numOfPlayers = 0;
 		boolean input = false;
 
+		// Prompt user to enter number of players for game
 		while (!input) {
 			try {
 				System.out.printf("How many players are there? [must be %d-%d]%n", MIN_PLAYERS, MAX_PLAYERS);
 				numOfPlayers = sc.nextInt();
 				sc.nextLine();
+				// Check number of players entered is permitted by game rules
 				if (numOfPlayers >= MIN_PLAYERS && numOfPlayers <= MAX_PLAYERS) {
 					input = true;
 					players = new String[numOfPlayers];
@@ -155,6 +210,12 @@ public class BoardGame {
 		return numOfPlayers;
 	}
 
+	/**
+	 * Method to check whether player name input by the user is unique.
+	 * 
+	 * @param player - The player name to be checked for uniqueness.
+	 * @return - True if the player name is unique, false otherwise.
+	 */
 	private static boolean checkPlayerNameUnique(String player) {
 		for (String name : players) {
 			if (player.equalsIgnoreCase(name)) {
@@ -164,6 +225,9 @@ public class BoardGame {
 		return true;
 	}
 
+	/**
+	 * Method to display a welcome message and the rules of Beeopoly.
+	 */
 	private static void welcome() {
 
 		System.out.println("Welcome to Beeopoly");
@@ -188,12 +252,17 @@ public class BoardGame {
 
 	}
 
+	/**
+	 * Method to set up the game board with fields, gardens, and other tiles.
+	 */
 	private static void setupGameBoard() {
+		// Set up fields
 		fields.add(new Field("Wildflower Wilderness"));
 		fields.add(new Field("Pollen Meadow"));
 		fields.add(new Field("Golden Orchards"));
 		fields.add(new Field("Blossom Estate"));
 
+		// Set up board tiles
 		gameBoard.add(new HoneyHaven("Honey Haven"));
 		gameBoard.add(new Garden("Bluebell Enclave", fields.get(0), 60, 2));
 		gameBoard.add(new Garden("Wild Rose Retreat", fields.get(0), 80, 4));
@@ -219,6 +288,7 @@ public class BoardGame {
 		fields.get(3).addGarden((Garden) gameBoard.get(10));
 		fields.get(3).addGarden((Garden) gameBoard.get(11));
 
+		// Add board tiles to game board
 		for (BoardTile tile : gameBoard) {
 			if (Garden.class.isInstance(tile)) {
 				gardens.add((Garden) tile);
@@ -226,10 +296,18 @@ public class BoardGame {
 		}
 	}
 
+	/**
+	 * Method to ensure order of players is random.
+	 * 
+	 * @param playOrder - The list of players to shuffle
+	 */
 	private static void setPlayerOrder(ArrayList<Player> playOrder) {
 		Collections.shuffle(playOrder);
 	}
 
+	/**
+	 * Method to bring each round to an end and display summary of game statistics.
+	 */
 	private static void nextRound() {
 
 		delay();
@@ -243,7 +321,10 @@ public class BoardGame {
 		printLogo();
 	}
 
-	// Method to display honey jars and real estate owned by each player
+	/**
+	 * Method to display game statistics i.e. honey jars and real estate owned by
+	 * each player
+	 */
 	private static void gameStatistics() {
 
 		for (int i = 0; i < activePlayers.size(); i++) {
@@ -294,7 +375,9 @@ public class BoardGame {
 		}
 	}
 
-	// Method to print Beeopoly logo to screen
+	/**
+	 * Method to print Beeopoly logo to console.
+	 */
 	private static void printLogo() {
 
 		System.out.println("                   __        ");
@@ -306,8 +389,10 @@ public class BoardGame {
 
 	}
 
-	// Method to allow players to collectively decide to quit the game or continue
-	// to the next round
+	/**
+	 * Method to allow players to collectively decide to quit the game or continue
+	 * to the next round.
+	 */
 	private static void continueGame() {
 		System.out.println();
 		System.out.println(
@@ -336,8 +421,11 @@ public class BoardGame {
 		}
 	}
 
-	// Method to rank players based on honey and value of real estate
-
+	/**
+	 * Method to rank players based on honey and value of real estate.
+	 * 
+	 * @return - A list of ranked players.
+	 */
 	private static List<Map.Entry<String, Double>> rankPlayers() {
 		Map<String, Double> leaderboard = new HashMap<>();
 
@@ -404,7 +492,9 @@ public class BoardGame {
 		return list;
 	}
 
-	// Method to display final leader board when game is brought to an end
+	/**
+	 * Method to display final leader board when game is brought to an end.
+	 */
 	private static void displayLeaderboard() {
 
 		List<Map.Entry<String, Double>> list = rankPlayers();
@@ -474,6 +564,9 @@ public class BoardGame {
 
 	}
 
+	/**
+	 * Method to display the current leader board.
+	 */
 	private static void beekeeperLeaderboard() {
 		List<Map.Entry<String, Double>> list = rankPlayers();
 		int rank = 1;
@@ -535,9 +628,21 @@ public class BoardGame {
 		printLogo();
 	}
 
+	/**
+	 * Method to remove a player from the game and reset their gardens and
+	 * developments.
+	 * 
+	 * @param player - The player to be removed from the game.
+	 */
 	public static void removePlayer(Player player) {
+
+		// Remove player from activePlayers
 		activePlayers.remove(player);
+
+		// Add removed player to playerRank
 		playerRank.add(player);
+
+		// Add removed player to playerRank
 		for (Garden garden : gardens) {
 			if (garden.getOwner() == player) {
 				garden.setOwner(null);
@@ -547,7 +652,9 @@ public class BoardGame {
 		}
 	}
 
-	// Method to add a short delay to create suspense in game play.
+	/**
+	 * Method to add a short delay to create suspense in game play.
+	 */
 	public static void delay() {
 		try {
 			Thread.sleep(1000);
@@ -556,6 +663,12 @@ public class BoardGame {
 		}
 	}
 
+	/**
+	 * Method to eliminate a player from the game due to running out of honey jars
+	 * and display a message to the console.
+	 * 
+	 * @param player - The player to be eliminated from the game.
+	 */
 	public static void eliminatePlayer(Player player) {
 		System.out.printf(
 				"Beekeeper %s, you have been eliminated from the game as you have run out of Honey... Your Bees have fled the gardens and abondoned all the hives and apiaries!%n",
@@ -563,9 +676,14 @@ public class BoardGame {
 		removePlayer(player);
 	}
 
-	// method to return active players to be used for auction method
+	/**
+	 * Method to return activePlayers to be used for auction method in the Player
+	 * class.
+	 * 
+	 * @return - The activePlayers list.
+	 */
+	//
 	public static List<Player> getActivePlayers() {
-		// TODO Auto-generated method stub
 		return activePlayers;
 	}
 
