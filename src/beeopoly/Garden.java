@@ -3,9 +3,15 @@ package beeopoly;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Class to represent a garden on the Beeopoly game board.
+ */
 public class Garden extends BoardTile {
 
-	// Constant for minimum value
+	/**
+	 * Constants for the minimum and maximum number of hives and apiaries that can
+	 * be owned on a garden.
+	 */
 	public static final int MIN_Value = 0;
 	public static final int MAX_HIVES = 3;
 	public static final int MAX_APIARY = 1;
@@ -17,6 +23,14 @@ public class Garden extends BoardTile {
 	private int apiary = 0;
 	private Player owner = null;
 
+	/**
+	 * Constructor for garden objects.
+	 * 
+	 * @param name - The name of the garden tile.
+	 * @param field - The field the garden belongs to.
+	 * @param tileCost - The cost of the garden tile.
+	 * @param rent - The rent of the garden tile.
+	 */
 	public Garden(String name, Field field, int tileCost, int rent) {
 		super(name);
 		this.setField(field);
@@ -26,12 +40,19 @@ public class Garden extends BoardTile {
 
 	}
 
+	/**
+	 * Method to handle actions when a player lands on the garden tile.
+	 * 
+	 * @param player - The player who lands on the tile.
+	 */
 	@Override
 	public void landOn(Player player) {
 		Scanner sc = new Scanner(System.in);
 		boolean input = false;
 		System.out.printf("You've landed on %s (%s).%n", this.getName(), this.getField().getName());
 		Player owner = this.getOwner();
+
+		// If garden tile is owned by another player, pay required rent
 		if (owner != null) {
 			System.out.printf("The owner of this Garden is %s.%n", this.getOwner().getName());
 			if (owner != player) {
@@ -39,22 +60,33 @@ public class Garden extends BoardTile {
 			}
 		} else {
 			System.out.printf("This Garden isn't owned by anyone.%n");
+			// If garden tile is not owned, offer to player to purchase
 			System.out.println(
 					"Do you want to trade " + this.getTileCost() + " Honey Jars to colonise this Garden? [Y/N]");
 
 			if (Player.getPlayerDecision()) {
 				this.purchase(player);
 			} else {
+				// If player declines to purchase garden tile, offer to other players to
+				// purchase
 				this.auction(player);
 			}
 		}
 	}
 
+	/**
+	 * Method to allow a player to purchase a garden tile.
+	 * 
+	 * @param player - The player who purchases the garden.
+	 */
 	public void purchase(Player player) {
+		// Check if player has sufficient honey jars for the transaction
 		if (player.getHoney() < this.getTileCost()) {
 			System.out.println("Sorry you don't have enough Honey Jars to colonise this Garden.... ");
+			// If insufficient honey jars, offer to other players to purchase garden tile
 			this.auction(player);
 		} else {
+			// If player has sufficient honey jars, complete transaction
 			this.setOwner(player);
 			System.out.println("The new owner of " + this.getName() + " is " + player.getName());
 			player.updateHoney(-this.getTileCost());
@@ -62,6 +94,12 @@ public class Garden extends BoardTile {
 		}
 	}
 
+	/**
+	 * Method to offer garden tiles for purchase to other players in the game if the
+	 * player that landed on the garden tile declines to purchase it.
+	 * 
+	 * @param player - The player the garden tile is being offered to.
+	 */
 	public void auction(Player player) {
 
 		Scanner scanner = new Scanner(System.in);
@@ -76,7 +114,7 @@ public class Garden extends BoardTile {
 		for (Player otherPlayer : activePlayers) {
 			if (otherPlayer != currentPlayer) {
 				System.out.println(otherPlayer.getName() + ", do you want to purchase " + this.getName() + "? [Y/N]");
-				
+
 				if (Player.getPlayerDecision()) {
 					if (otherPlayer.getHoney() >= this.getTileCost()) {
 						this.purchase(otherPlayer);
@@ -87,38 +125,48 @@ public class Garden extends BoardTile {
 				}
 			}
 		}
-
 		System.out.println("No other player wants to purchase " + this.getName() + ". The game continues.");
 
 	}
 
 	/**
-	 * Gets the number of Hives for the Garden
+	 * Method to get the number of hives that have been developed on the garden
+	 * tile.
 	 * 
-	 * @return
+	 * @return - The number of hives that has been developed on the garden tile.
 	 */
 	public int getHives() {
 		return hives;
 	}
 
 	/**
-	 * Sets the number of Hives for the Garden
+	 * Method to set the number of hives that have been developed on the garden
+	 * tile.
 	 * 
-	 * @param hives
-	 * @throws IllegalArgumentException
+	 * @param hives - The number of hives to set.
+	 * @throws IllegalArgumentException - If number of hives to be set is outside
+	 *                                  the rules of the game.
 	 */
 	public void setHives(int hives) throws IllegalArgumentException {
+		// Check if the number of hives to set is within the rules of the game
 		if (hives <= MAX_HIVES && hives >= MIN_Value) {
 			this.hives = hives;
 		} else if (hives < MIN_Value) {
 			throw new IllegalArgumentException("Hives cannot be set to less than 0");
 		} else {
 			throw new IllegalArgumentException("The maximum Hives a garden can have is " + MAX_HIVES);
-
 		}
 	}
 
+	/**
+	 * Method to increase the number of hives on the garden tile by one, provided
+	 * the maximum number of hives has not been exceeded.
+	 * 
+	 * @throws IllegalArgumentException - If the maximum number of hives has been
+	 *                                  reached.
+	 */
 	public void buildHive() throws IllegalArgumentException {
+		// Check that the maximum number of hives has not been exceeded
 		if (this.hives < MAX_HIVES) {
 			this.hives += 1;
 		} else {
@@ -126,43 +174,84 @@ public class Garden extends BoardTile {
 		}
 	}
 
+	/**
+	 * Method to increase the number of apiaries on the garden tile by one, provided
+	 * the maximum number of apiaries has not been exceeded.
+	 * 
+	 * @throws IllegalArgumentException - If the maximum number of apiaries has been
+	 *                                  reached.
+	 */
 	public void buildApiary() throws IllegalArgumentException {
+		// Check that the maximum number of apiaries has not been exceeded
 		if (this.apiary < MAX_APIARY) {
 			this.apiary += 1;
 		} else {
 			throw new IllegalArgumentException("The maximum Apiaries a garden can have is " + MAX_APIARY);
 		}
-
 	}
 
+	/**
+	 * Method to get the number of apiaries that have been developed on the garden
+	 * tile.
+	 * 
+	 * @return - The number of apiaries that has been developed on the garden tile.
+	 */
 	public int getApiary() {
 		return apiary;
 	}
 
+	/**
+	 * Method to set the number of apiaries that have been developed on the garden
+	 * tile.
+	 * 
+	 * @param hives - The number of apiaries to set.
+	 * @throws IllegalArgumentException - If number of apiaries to be set is outside
+	 *                                  the rules of the game.
+	 */
 	public void setApiary(int apiary) throws IllegalArgumentException {
+		// Check if the number of apiaries to set is within the rules of the game
 		if (apiary <= MAX_APIARY && apiary >= MIN_Value) {
 			this.apiary = apiary;
 		} else if (apiary < MIN_Value) {
 			throw new IllegalArgumentException("Apiaries canot be set to less than 0");
 		} else {
 			throw new IllegalArgumentException("The maximum Apiaries a garden can have is " + MAX_APIARY);
-
 		}
-
 	}
 
+	/**
+	 * Method to get the name of the player that owns the garden tile.
+	 * 
+	 * @return - The name of the player that owns the garden tile.
+	 */
 	public Player getOwner() {
 		return owner;
 	}
 
+	/**
+	 * Method to set the name of the player that owns the garden tile.
+	 * 
+	 * @param owner - The name to set of the player that owns the garden tile.
+	 */
 	public void setOwner(Player owner) {
 		this.owner = owner;
 	}
 
+	/**
+	 * Method to get the field that the garden tile belongs to.
+	 * 
+	 * @return - The name of the field that the garden tile belongs to.
+	 */
 	public Field getField() {
 		return field;
 	}
 
+	/**
+	 * Method to set the field that the garden tile belongs to.
+	 * 
+	 * @param field - The name to set of the field that the garden tile belongs to.
+	 * @throws IllegalArgumentException - If name of the field is null.
+	 */
 	public void setField(Field field) {
 		if (field != null) {
 			this.field = field;
@@ -172,10 +261,22 @@ public class Garden extends BoardTile {
 
 	}
 
+	/**
+	 * Method to get the cost of purchasing the garden tile.
+	 * 
+	 * @return - The cost of purchasing the garden tile.
+	 */
 	public int getTileCost() {
 		return tileCost;
 	}
 
+	/**
+	 * Method to set the cost of purchasing the garden tile.
+	 * 
+	 * @param tileCost - The cost of purchasing the garden tile to set.
+	 * @throws IllegalArgumentException - If the cost of purchasing the garden tile
+	 *                                  to set is less than zero.
+	 */
 	public void setTileCost(int tileCost) throws IllegalArgumentException {
 		if (tileCost >= MIN_Value) {
 			this.tileCost = tileCost;
@@ -185,10 +286,22 @@ public class Garden extends BoardTile {
 
 	}
 
+	/**
+	 * Method to get the cost of landing on the garden tile.
+	 * 
+	 * @return - The cost of landing on the garden tile.
+	 */
 	public int getRent() {
 		return rent;
 	}
 
+	/**
+	 * Method to set the cost of landing on the garden tile.
+	 * 
+	 * @param rent - The cost of landing on the garden tile to set.
+	 * @throws IllegalArgumentException - If the cost of landing on the garden tile
+	 *                                  to set is less than zero.
+	 */
 	public void setRent(int rent) throws IllegalArgumentException {
 		if (rent >= MIN_Value) {
 			this.rent = rent;
@@ -197,6 +310,12 @@ public class Garden extends BoardTile {
 		}
 	}
 
+	/**
+	 * Method to calculate and handle the rent payment when a player lands on the
+	 * garden tile.
+	 * 
+	 * @param player - The player that landed on the garden tile.
+	 */
 	public void payRent(Player player) {
 //TODO fix bug where player lands on their own tile.
 		int developedRent = this.rent;

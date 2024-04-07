@@ -677,7 +677,7 @@ public class BoardGame {
 	}
 
 	/**
-	 * Method to return activePlayers to be used for auction method in the Player
+	 * Method to return activePlayers to be used for auction method in the Garden class
 	 * class.
 	 * 
 	 * @return - The activePlayers list.
