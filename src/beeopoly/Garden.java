@@ -75,14 +75,15 @@ public class Garden extends BoardTile {
 	}
 	
 	/**
-	 * offers garden to other players if the player who lands on the garden does not want to trade 
+	 * offers garden to other players if the player who lands on the garden does not want to trade honey  
 	 * @param player
 	 */
 	public void auction(Player player) {
+		
 	    Scanner scanner = new Scanner(System.in);
 	    Player currentPlayer = player;
 
-	    System.out.println(this.getName() + " will now be auctioned to all other beekeepers");
+	    System.out.println(this.getName() + " will now be offered to all other beekeepers");
 
 	    List<Player> activePlayers = BoardGame.getActivePlayers();
 
@@ -93,16 +94,16 @@ public class Garden extends BoardTile {
 	                System.out.println(bidder.getName() + ", do you want to trade " + this.getTileCost() + " Honey Jars to colonise " + this.getName() + "? [Y/N]");
 	                String choice = scanner.nextLine().trim();
 
-	                // Check if the input is either Y or N (case-insensitive)
-	                if (!choice.equalsIgnoreCase("y") && !choice.equalsIgnoreCase("n") && !choice.equalsIgnoreCase("yes") && !choice.equalsIgnoreCase("no")) {
-	                    System.out.println("Invalid input. Please enter 'Y' for yes or 'N' for no.");
+	                // Checking if the input is either Y or N (case-insensitive)
+	                if (!choice.equalsIgnoreCase("y") && !choice.equalsIgnoreCase("n")) {
+	                    System.out.println("Invalid input. Please enter 'Y' or 'N'");
 	                    continue;
 	                }
 
-	                if (choice.equalsIgnoreCase("y") || choice.equalsIgnoreCase("yes")) {
+	                if (choice.equalsIgnoreCase("y")) {
 	                    this.purchase(bidder);
 	                    return;
-	                } else if (choice.equalsIgnoreCase("n") || choice.equalsIgnoreCase("no")) {
+	                } else if (choice.equalsIgnoreCase("n")) {
 	                    // If the player says no, valid input received, continue with the next player
 	                    validInput = true;
 	                }
