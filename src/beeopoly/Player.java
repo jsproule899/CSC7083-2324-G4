@@ -10,11 +10,13 @@ import java.util.InputMismatchException;
 
 
 /**
- * 
+ * Class to represent a player of the Beeopoly game.
  */
 public class Player {
 
-	// Constants to set min/max names
+	/**
+	 * Constants for the minimum and maximum number of characters in a player name.
+	 */
 	public static final int MIN_NAME = 3;
 	public static final int MAX_NAME = 15;
 
@@ -22,44 +24,76 @@ public class Player {
 	private double honey;
 	private int position;
 
+	/**
+	 * Constructor for player objects, which sets starting honey jars to 500 and starting position on game board.
+	 * 
+	 * @param name - The name of the player object.
+	 */
 	public Player(String name) {
 		super();
 		this.setName(name);
 		this.honey = 500;
 		this.position = 0; // indexed 0-11
 	}
-
+	 
+	/**
+	 * Method to get the name of the player.
+	 * @return - The name of the player.
+	 */
 	public String getName() {
 		return name;
 	}
 
+	/**
+	 * Method to set the name of the player.
+	 * @param name - The name of the player to set.
+	 * @throws IllegalArgumentException - If the length of the name to be set is outside the range of minimum and maximum characters.
+	 */
 	public void setName(String name) throws IllegalArgumentException {
+		// Check the name length is within the set minimum and maximum number of characters
 		if (name.length() >= MIN_NAME && name.length() <= MAX_NAME) {
 			this.name = name;
 		} else {
 			throw new IllegalArgumentException("Name length is invalid");
 		}
-
 	}
 
+	/**
+	 * Method to get the number of honey jars the player has.
+	 * @return - The number of honey jars.
+	 */
 	public double getHoney() {
 		return this.honey;
 	}
 
+	/**
+	 * Method to update the number of honey jars the player has when a transaction happens.
+	 * @param jars
+	 */
 	public void updateHoney(double jars) {
 		this.honey += jars;
 	}
 
+	/**
+	 * Method to display to the console the number of honey jars the player has.
+	 */
 	public void showHoney() {
 		System.out.printf("BeeKeeper %s now has %.0f Honey Jars %n", this.name, this.honey);
 	}
 
+	/**
+	 * Method to simulate the rolling of a pair of dice by the player to generate a random number between 2 and 12.
+	 * @return - The total value rolled.
+	 */
 	public int rollDice() {
 		int roll, dice1, dice2 = 0;
 
+		// Generate random numbers between 1 and 6 for each dice 
 		Random rand = new Random();
 		dice1 = rand.nextInt(6) + 1;
 		dice2 = rand.nextInt(6) + 1;
+		
+		// Calculate total dice roll
 		roll = dice1 + dice2;
 
 		System.out.println("Rolling dice...");
@@ -68,20 +102,36 @@ public class Player {
 		return roll;
 	}
 
+	/**
+	 * Method to move the player on the game board by the specified number of places based on the dice roll, handling passing through Honey Haven where applicable.
+	 * @param places - The number of places to move.
+	 */
 	public void move(int places) {
+		// Check if moving to a position beyond or at Honey Haven
 		if (this.position + places >= 12) {
+			// Calculate the adjusted position after passing through Honey Haven
 			places = (this.position + places) - 12;
-			this.position = places;
+			this.position = places; 
 			HoneyHaven.passHoneyHaven(this);
 		} else {
 			this.position += places;
 		}
 	}
 
+	/**
+	 * Method to get the position of the player on the game board.
+	 * @return - The position of the player on the game board. 
+	 */
 	public int getPosition() {
 		return position;
 	}
 
+	/**
+	 * Method to facilitate trading garden tiles (i.e. by selling or swapping) between the current player and the other players of the game. 
+	 * @param gardens - The list of all garden tiles in the game.
+	 * @param players - The list of all players in the game.
+	 * @return - True if the trade is successful, False otherwise.
+	 */
 	public boolean trade(ArrayList<Garden> gardens, ArrayList<Player> players) {
 		int honey = 0;
 		Garden garden1 = null, garden2 = null;
@@ -90,15 +140,20 @@ public class Player {
 		boolean sell = false, swap = false;
 		ArrayList<Garden> ownedGardens1 = new ArrayList<Garden>();
 		ArrayList<Garden> ownedGardens2 = new ArrayList<Garden>();
+		
+		// Identify garden tiles owned by current player
 		for (Garden garden : gardens) {
 			if (garden.getOwner() == this) {
 				ownedGardens1.add(garden);
 			}
 		}
+		
+		// If the player doesn't own any garden tiles, display message to console that they can't trade
 		if (ownedGardens1.isEmpty()) {
 			System.out.println("You haven't purchased a garden yet, keep playing and build your empire");
 			return false;
 		} else {
+			// Prompt the player to select a garden tile for trade
 			System.out.println("Which Garden would you like to trade? [Enter a number]");
 			int i = 1;
 			for (Garden garden : ownedGardens1) {
@@ -114,6 +169,7 @@ public class Player {
 				garden1 = ownedGardens1.get(choice - 1);
 			}
 		}
+		// Prompt the player to select a player to trade with
 		System.out.println("Which Player would you like to trade with? [Enter a number]");
 		int j = 1;
 		for (Player player : players) {
@@ -133,12 +189,14 @@ public class Player {
 			player2 = otherPlayers.get(choice - 1);
 		}
 
+		// Identify garden tiles owned by player selected to trade with
 		for (Garden garden : gardens) {
 			if (garden.getOwner() == player2) {
 				ownedGardens2.add(garden);
 			}
 		}
 
+		// Prompt the player to specify whether they wish to swap or sell
 		System.out.println("Swap or Sell? [Enter a number]");
 		System.out.println("1. Swap");
 		System.out.println("2. Sell");
@@ -148,6 +206,7 @@ public class Player {
 		switch (choice) {
 		case 1:
 			swap = true;
+			// Prompt the player to select a garden tile to swap
 			System.out.println("Which Garden do you wish to swap for?");
 			int k = 1;
 			for (Garden garden : ownedGardens2) {
@@ -164,6 +223,7 @@ public class Player {
 				garden2 = ownedGardens2.get(choice - 1);
 			}
 
+			// Prompt the player to indicate whether they wish to add honey jars as part of trade offer
 			System.out.println("Do you wish to add Honey to sweeten the deal? [Enter a number]");
 			System.out.println("1. Yes - Add Honey with garden");
 			System.out.println("2. No - Just trade gardens");
@@ -172,6 +232,7 @@ public class Player {
 			choice = getPlayerChoice(3);
 			switch (choice) {
 			case 1:
+				// Prompt the player to specify the amount of honey jars they wish to offer in addition to the garden tile for the trade
 				System.out.println("How much Honey do you want to add to sweeten the deal? [Enter a number]");
 				honey = getHoneyAmountFromPlayer(this.getHoney());
 				break;
@@ -184,6 +245,7 @@ public class Player {
 			break;
 		case 2:
 			sell = true;
+			// Prompt the player to specify the amount of honey jars they wish to sell the garden tile for
 			System.out.println("How much Honey do you want to sell this for? [Enter a number]");
 			honey = getHoneyAmountFromPlayer(player2.getHoney());
 			break;
@@ -192,8 +254,10 @@ public class Player {
 			return false;
 		}
 
+		// Confirm the other player agrees to the terms of the trade
 		System.out.println("Does " + player2.getName() + " agree with the trade? [Y/N]");
 		if (getPlayerDecision()) {
+			// Complete transaction
 			garden1.setOwner(player2);
 			if (swap) {
 				this.updateHoney(-honey);
@@ -205,6 +269,7 @@ public class Player {
 				player2.updateHoney(-honey);
 			}
 
+			// Display updated garden tile ownership and honey jars following completion of the transaction
 			this.showHoney();
 			System.out.println();
 			System.out.println(player2.getName() + " now owns " + garden1.getName()+ "("+garden1.getField().getName()+")");
@@ -219,9 +284,12 @@ public class Player {
 		}
 	}
 
+	/**
+	 * Method to facilitate development of the garden tiles by adding hives or an apiary.
+	 * @param gardens - The list of all garden tiles in the game.
+	 * @return - True if the development is successful, False otherwise.
+	 */
 	public boolean develop(ArrayList<Garden> gardens) {
-		// TO DO DMcL
-		// In progress
  
 		System.out.println();
  
@@ -230,12 +298,14 @@ public class Player {
 		ArrayList<Garden> ownedGardensToAddHives = new ArrayList<Garden>();
 		ArrayList<Garden> ownedGardensToAddApiary = new ArrayList<Garden>();
  
+		// Identify garden tiles owned by current player
 		for (Garden garden : gardens) {
 			if (garden.getOwner() == this) {
 				ownedGardens.add(garden);
 			}
 		}
  
+		// Determine whether current player owns all garden tiles in a field
 		if (ownedGardens.size() > 0) {
 			for (Garden garden : ownedGardens) {
 				boolean ownsField = true;
@@ -245,6 +315,7 @@ public class Player {
 					}
 				}
  
+				// If the player owns all garden tiles in a field, determine whether the garden tiles are eligible to add hives or add an apiary
 				if (ownsField && garden.getHives() == 3 && garden.getApiary() == 0) {
 					ownedGardensToAddApiary.add(garden);
 				} else if (ownsField) {
@@ -253,21 +324,26 @@ public class Player {
 			}
  
 		} else {
+			// If the player doesn't own any garden tiles, display message to console that they can't develop
 			System.out.println("You haven't purchased a garden tile yet, keep playing and build your empire");
 			return false;
 		}
 		boolean hasAddHiveGardens = false;
 		boolean hasAddApiaryGardens = false;
+		
+		// If there are eligible garden tiles for development, prompt the player to choose whether they want to add a hive or an apiary
 		if (ownedGardensToAddHives.size() > 0 || ownedGardensToAddApiary.size() > 0) {
  
 			int i = 1;
 			double addHiveCost = 0;
 			double addApiaryCost = 0;
+		
 			if (ownedGardensToAddHives.size() > 0) {
 				System.out.println("Which Garden would you like to develop? [Enter a number]");
 				hasAddHiveGardens = true;
 				System.out.println("You can add a hive to the following garden tiles: /n");
  
+				// If the garden tile is eligible for hive development, calculate and display the cost of adding a hive, depending on existing developments
 				for (Garden garden : ownedGardensToAddHives) {
 					if (garden.getHives() == 0) {
 						addHiveCost = (garden.getTileCost()) * (0.1);
@@ -290,6 +366,7 @@ public class Player {
 				hasAddApiaryGardens = true;
 				System.out.println("You can develop the following garden tiles into an apiary: /n");
  
+				// If the garden tile is eligible for apiary development, calculate and display the cost of adding an apiary
 				for (Garden garden : ownedGardensToAddApiary) {
 					if (garden.getApiary() == 0) {
 						addApiaryCost = (garden.getTileCost()) * (0.5);
@@ -307,6 +384,7 @@ public class Player {
 				return false;
 			} else {
 				if (hasAddHiveGardens) {
+					// Process adding hives to the chosen garden tile
 					gardenToDevelop = ownedGardensToAddHives.get(choice - 1);
 					System.out.println(this.getName() + ", you have added a hive to " + gardenToDevelop.getName()
 							+ " which costs " + (int)addHiveCost + " Honey Jars");
@@ -314,6 +392,7 @@ public class Player {
 					gardenToDevelop.buildHive();
 					return true;
 				} else if (hasAddApiaryGardens) {
+					// Process adding an apiary to the chosen garden tile
 					gardenToDevelop = ownedGardensToAddApiary.get(choice - 1);
 					System.out.println(this.getName() + ", you have developed an apiary on " + gardenToDevelop.getName()
 							+ " which costs " + (int)addApiaryCost + " Honey Jars.");
@@ -330,6 +409,10 @@ public class Player {
 		return false;
 	}
 
+	/**
+	 * Method to display the menu to the player during their turn and handle menu navigation.
+	 * @return - 
+	 */
 	public boolean showMenu() {
 		System.out.println("Select an option:");
 		// Could implement that this first option doesn't show unless you have a garden
