@@ -13,35 +13,39 @@ class GardenTest {
 	int validHiveMin, validHiveMid, validHiveMax, invalidHiveMin, invalidHiveMax;
 	Field field;
 	Garden garden;
-	String name;
+	String validNameMin, validNameMid, validNameMax, invalidNameMin, invalidNameMax;
 
 	@BeforeEach
 	void setUp() throws Exception {
 		field = new Field("Pollen Meadow");
-		name = "Wild Rose Retreat";
+		validNameMin = "a".repeat(3);
+		validNameMid = "a".repeat(15);
+		validNameMax = "a".repeat(35);
+		invalidNameMin = "a".repeat(2);
+		invalidNameMax = "a".repeat(36);
 		validValueMin = 0;
 		validValue = 20;
 		invalidValue = -1;
-		//validApiaryMin = 0; 
+		 
 		validApiaryMax =1;
 		invalidApiaryMin = -1;
 		invalidApiaryMax = 2;
-		//validHiveMin = 0; 
+		
 		validHiveMid = 2; 
 		validHiveMax = 3; 
 		invalidHiveMin = -1; 
 		invalidHiveMax = 4;
 		
 		
-		garden = new Garden(name, field, validValue, validValue);
+		garden = new Garden(validNameMid, field, validValue, validValue);
 	}
 
 	//Test Garden constructor
 	@Test
 	void testGardenConstructor() {
-		garden = new Garden(name, field, validValue, validValue);
+		garden = new Garden(validNameMid, field, validValue, validValue);
 		//Test the abstract parent constructor
-		assertEquals(name, garden.getName());
+		assertEquals(validNameMid, garden.getName());
 		//Garden constructor tests
 		assertEquals(field, garden.getField());
 		assertEquals(validValue, garden.getTileCost());
@@ -54,19 +58,40 @@ class GardenTest {
 	void testGardenConstructorInvalid() {
 		//Test the abstract parent constructor
 		Exception exp = assertThrows(IllegalArgumentException.class, ()->{
-			garden = new Garden(null, field, validValueMin, validValue);
-		});assertEquals("Cannot be a null value", exp.getMessage());
+			garden = new Garden(invalidNameMin, field, validValueMin, validValue);
+		});assertEquals("Name must be 3-35 chars long", exp.getMessage());
 		//Garden constructor tests
 		exp = assertThrows(IllegalArgumentException.class, ()->{
-			garden = new Garden(name, null, validValue, validValue);
+			garden = new Garden(validNameMid, null, validValue, validValue);
 		});assertEquals("Cannot be a null value", exp.getMessage());
 		exp = assertThrows(IllegalArgumentException.class, ()->{
-			garden = new Garden(name, field, invalidValue, validValue);
+			garden = new Garden(validNameMid, field, invalidValue, validValue);
 		});assertEquals("Value cannot be less than 0", exp.getMessage());
 		exp = assertThrows(IllegalArgumentException.class, ()->{
-			garden = new Garden(name, field, validValue, invalidValue);
+			garden = new Garden(validNameMid, field, validValue, invalidValue);
 		});assertEquals("Value cannot be less than 0", exp.getMessage());
 
+	}
+	
+	
+	@Test
+	void testGetName() {
+		garden.setName(validNameMin);
+		assertEquals(validNameMin, garden.getName());
+		garden.setName(validNameMid);
+		assertEquals(validNameMid, garden.getName());
+		garden.setName(validNameMax);
+		assertEquals(validNameMax, garden.getName());
+	}
+	
+	@Test
+	void testSetNameInvalid() {
+		Exception exp = assertThrows(IllegalArgumentException.class, () -> {
+			garden.setName(invalidNameMin);
+		});assertEquals("Name must be 3-35 chars long", exp.getMessage());
+		exp = assertThrows(IllegalArgumentException.class, () -> {
+			garden.setName(invalidNameMax);
+		});assertEquals("Name must be 3-35 chars long", exp.getMessage());
 	}
 
 	@Test

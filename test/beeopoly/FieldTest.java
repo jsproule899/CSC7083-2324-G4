@@ -11,29 +11,33 @@ class FieldTest {
 	
 	
 	Field field;
-	String validName;
+	String validNameMin, validNameMid, validNameMax, invalidNameMin, invalidNameMax;
 	Garden garden;
 	ArrayList<Garden> gardens;
 
 	@BeforeEach
 	void setUp() throws Exception {
 		
-		validName = "Blossom Estate";
-		field = new Field(validName);
+		validNameMin = "a".repeat(3);
+		validNameMid = "a".repeat(12);
+		validNameMax = "a".repeat(25);
+		invalidNameMin = "a".repeat(2);
+		invalidNameMax = "a".repeat(26);
+		field = new Field(validNameMid);
 		garden = new Garden("Apple Blossom Grove", field, 400, 50);
 		gardens = new ArrayList<Garden>();
 	}
 
 	@Test
 	void testFieldConstructor() {
-		field = new Field(validName);
-		assertEquals("Blossom Estate", field.getName());
+		field = new Field(validNameMid);
+		assertEquals(validNameMid, field.getName());
 	}
 	@Test
 	void testFieldConstructorInvalid() {
 		Exception exp = assertThrows(IllegalArgumentException.class, ()->{
-			field = new Field(null);
-		});assertEquals("Cannot be a null value", exp.getMessage());
+			field = new Field(invalidNameMin);
+		});assertEquals("Field must be 3-25 chars long", exp.getMessage());
 	}
 
 	
@@ -49,15 +53,18 @@ class FieldTest {
 
 	@Test
 	void testGetName() {
-		field.setName(validName);
-		assertEquals(validName, field.getName());
+		field.setName(validNameMid);
+		assertEquals(validNameMid, field.getName());
 	}
 	
 	@Test
 	void testGetNameInvalid() {
 		Exception exp = assertThrows(IllegalArgumentException.class, ()->{
-			field = new Field(null);
-		});assertEquals("Cannot be a null value", exp.getMessage());
+			field.setName(invalidNameMin);
+		});assertEquals("Field must be 3-25 chars long", exp.getMessage());
+		exp = assertThrows(IllegalArgumentException.class, ()->{
+			field.setName(invalidNameMax);
+		});assertEquals("Field must be 3-25 chars long", exp.getMessage());
 	}
 
 }
