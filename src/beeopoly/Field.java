@@ -9,6 +9,9 @@ import java.util.ArrayList;
  * Class to represent a field on the Beeopoly game board.
  */
 public class Field {
+	
+	public static final int MIN_NAME = 3;
+	public static final int MAX_NAME = 25;
 
 	private String name;
 	private ArrayList<Garden> gardens = new ArrayList<Garden>();
@@ -55,13 +58,14 @@ public class Field {
 	 * Method to set the name of the field.
 	 * 
 	 * @param name - The name of the field to set.
-	 * @throws IllegalArgumentException - If the name is null.
+	 * @throws IllegalArgumentException - If the name is less than 3
+	 * or greater than 25.
 	 */
 	public void setName(String name) throws IllegalArgumentException {
-		if (name != null) {
+		if (name.length() >= MIN_NAME && name.length() <= MAX_NAME ) {
 			this.name = name;
-		} else {
-			throw new IllegalArgumentException("Cannot be a null value");
+		}else {
+			throw new IllegalArgumentException("Field must be 3-25 chars long");
 		}
 
 	}
