@@ -68,7 +68,7 @@ public class Garden extends BoardTile {
 			} else {
 				// If player declines to purchase garden tile, offer to other players to
 				// purchase
-				this.auction(player);
+				this.offerToOtherPlayers(player);
 			}
 		}
 	}
@@ -83,7 +83,7 @@ public class Garden extends BoardTile {
 		if (player.getHoney() < this.getTileCost()) {
 			System.out.println("Sorry you don't have enough Honey Jars to colonise this Garden.... ");
 			// If insufficient honey jars, offer to other players to purchase garden tile
-			this.auction(player);
+			this.offerToOtherPlayers(player);
 		} else {
 			// If player has sufficient honey jars, complete transaction
 			this.setOwner(player);
@@ -97,10 +97,10 @@ public class Garden extends BoardTile {
 	 * Method to offer garden tiles for purchase to other players in the game if the
 	 * player that landed on the garden tile declines to purchase it.
 	 * 
-	 * @param player - The player the garden tile is being offered to.
+	 * @param player - The player that landed on the garden tile who declined the purchase.
 	 * 
 	 */
-	public void auction(Player player) {
+	public void offerToOtherPlayers(Player player) {
 		Player currentPlayer = player;
 
 		// Display that the garden will be auctioned to other players
@@ -109,14 +109,14 @@ public class Garden extends BoardTile {
 		// Get the list of active players from the BoardGame class
 		List<Player> activePlayers = BoardGame.getActivePlayers();
 
-		for (Player bidder : activePlayers) {
-			if (bidder != currentPlayer) {
-				System.out.println(bidder.getName() + ", do you want to trade " + this.getTileCost()
+		for (Player otherPlayer : activePlayers) {
+			if (otherPlayer != currentPlayer) {
+				System.out.println(otherPlayer.getName() + ", do you want to trade " + this.getTileCost()
 						+ " Honey Jars to colonise " + this.getName() + "? [Y/N]");
 
 				if (Player.getPlayerDecision()) {
-					if (bidder.getHoney() >= this.getTileCost()) {
-						this.purchase(bidder);
+					if (otherPlayer.getHoney() >= this.getTileCost()) {
+						this.purchase(otherPlayer);
 						return;// Exit the method after selling
 					} else {
 						System.out.println("Sorry you don't have enough Honey Jars to colonise this Garden.... \"");
