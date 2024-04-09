@@ -8,28 +8,29 @@ import org.junit.jupiter.api.Test;
 class HoneyHavenTest {
 
 	HoneyHaven haven;
-	String name;
+	String validNameMid,  invalidNameMin;
 	Player player;
 	@BeforeEach
 	void setUp() throws Exception {
 		
-		name = "Honey Haven";
+		validNameMid = "a".repeat(15);
+		invalidNameMin = "a".repeat(2);
 		
-		player = new Player("Test player");
-		haven = new HoneyHaven(name);
+		player = new Player(validNameMid);
+		haven = new HoneyHaven(validNameMid);
 	}
 
 	@Test
 	void testHoneyHaven() {
-		haven = new HoneyHaven(name);
-		assertEquals(name, haven.getName());
+		haven = new HoneyHaven(validNameMid);
+		assertEquals(validNameMid, haven.getName());
 		
 	}
 	@Test
 	void testHoneyHavenInvalid() {
 		Exception exp = assertThrows(IllegalArgumentException.class, ()->{
-			haven = new HoneyHaven(null);
-		});assertEquals("Cannot be a null value", exp.getMessage());
+			haven = new HoneyHaven(invalidNameMin);
+		});assertEquals("Name must be 3-35 chars long", exp.getMessage());
 	}
 	@Test
 	void testPassHoneyHaven() {

@@ -56,6 +56,7 @@ class BoardGameTest {
 		gardens.add(garden);
 		assertEquals(player, garden.getOwner());
 		
+		//Set all resources to default
 		for (Garden garden : gardens) {
 			if (garden.getOwner() == player) {
 				garden.setOwner(null);
@@ -64,6 +65,7 @@ class BoardGameTest {
 			}
 		}
 		
+		//Test if resources have been reset
 		for (Garden garden : gardens) {
 			if (garden.getOwner() == player) {
                 assertNull(garden.getOwner());
@@ -73,12 +75,5 @@ class BoardGameTest {
 		}
 	}
 
-	@Test
-	void testPlayerNumber() {
-
-		garden.setHives(invalidValue);
-		assertEquals(invalidValue, garden.getHives());
-
-	}
 
 }

@@ -60,7 +60,7 @@ public class Player {
 		} else if (name.length() >= MIN_NAME && name.length() <= MAX_NAME) {
 			this.name = name;
 		} else {
-			throw new IllegalArgumentException("Name length is invalid");
+			throw new IllegalArgumentException("Name must be 3-15 chars");
 		}
 	}
 
