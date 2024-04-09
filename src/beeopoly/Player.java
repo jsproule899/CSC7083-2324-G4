@@ -30,7 +30,6 @@ public class Player {
 	 * @param name - The name of the player object.
 	 */
 	public Player(String name) {
-		super();
 		this.setName(name);
 		this.honey = 500;
 		this.position = 0; // indexed 0-11
@@ -54,9 +53,11 @@ public class Player {
 	 *                                  characters.
 	 */
 	public void setName(String name) throws IllegalArgumentException {
-		// Check the name length is within the set minimum and maximum number of
+		// Check the name is not null and that the length is within the set minimum and maximum number of
 		// characters
-		if (name.length() >= MIN_NAME && name.length() <= MAX_NAME) {
+		if (name == null) {
+			throw new IllegalArgumentException("Name cannot be null");
+		} else if (name.length() >= MIN_NAME && name.length() <= MAX_NAME) {
 			this.name = name;
 		} else {
 			throw new IllegalArgumentException("Name length is invalid");

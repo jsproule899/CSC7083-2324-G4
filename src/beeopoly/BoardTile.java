@@ -7,7 +7,7 @@ package beeopoly;
  * Abstract parent class for all board tiles in the Beeopoly game.
  */
 public abstract class BoardTile {
-	
+
 	public static final int MIN_NAME = 3;
 	public static final int MAX_NAME = 35;
 
@@ -19,8 +19,6 @@ public abstract class BoardTile {
 	 * @param name - The name of the board tile.
 	 */
 	public BoardTile(String name) {
-		// Don't think the super is needed
-		super();
 		this.setName(name);
 	}
 
@@ -37,13 +35,16 @@ public abstract class BoardTile {
 	 * Method to set the name of the board tile.
 	 * 
 	 * @param name - The name of the board tile to set.
-	 * @throws IllegalArgumentException - If the name is less than 3
-	 * or greater than 35.
+	 * @throws IllegalArgumentException - If the name is less than 3 or greater than
+	 *                                  35.
 	 */
 	public void setName(String name) throws IllegalArgumentException {
-		if (name.length() >= MIN_NAME && name.length() <= MAX_NAME ) {
+		
+		if (name == null) {
+			throw new IllegalArgumentException("Name cannot be null");
+		} else if (name.length() >= MIN_NAME && name.length() <= MAX_NAME) {
 			this.name = name;
-		}else {
+		} else {
 			throw new IllegalArgumentException("Name must be 3-35 chars long");
 		}
 
