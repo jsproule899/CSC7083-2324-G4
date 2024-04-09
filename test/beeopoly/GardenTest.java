@@ -93,6 +93,9 @@ class GardenTest {
 		exp = assertThrows(IllegalArgumentException.class, () -> {
 			garden.setName(invalidNameMax);
 		});assertEquals("Name must be 3-35 chars long", exp.getMessage());
+		exp = assertThrows(IllegalArgumentException.class, () -> {
+			garden.setName(null);
+		});assertEquals("Name cannot be null", exp.getMessage());
 	}
 
 	@Test

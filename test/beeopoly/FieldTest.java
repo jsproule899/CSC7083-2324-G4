@@ -69,6 +69,9 @@ class FieldTest {
 		exp = assertThrows(IllegalArgumentException.class, ()->{
 			field.setName(invalidNameMax);
 		});assertEquals("Field must be 3-25 chars long", exp.getMessage());
+		exp = assertThrows(IllegalArgumentException.class, ()->{
+			field.setName(null);
+		});assertEquals("Field cannot be null", exp.getMessage());
 	}
 
 }

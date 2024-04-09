@@ -49,14 +49,16 @@ public class Player {
 	 * Method to set the name of the player.
 	 * 
 	 * @param name - The name of the player to set.
-	 * @throws IllegalArgumentException - If the length of the name to be set is
-	 *                                  outside the range of minimum and maximum
-	 *                                  characters.
+	 * @throws IllegalArgumentException - If the length of the name is null
+	 *                                  or set is outside the range of minimum 
+	 *                                  and maximum characters.
 	 */
 	public void setName(String name) throws IllegalArgumentException {
 		// Check the name length is within the set minimum and maximum number of
 		// characters
-		if (name.length() >= MIN_NAME && name.length() <= MAX_NAME) {
+		if (name == null) {
+			throw new IllegalArgumentException("Name cannot be null");
+		} else if (name.length() >= MIN_NAME && name.length() <= MAX_NAME) {
 			this.name = name;
 		} else {
 			throw new IllegalArgumentException("Name must be 3-15 chars");
