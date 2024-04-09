@@ -232,8 +232,10 @@ public class Garden extends BoardTile {
 	 * 
 	 * @param owner - The name to set of the player that owns the garden tile.
 	 */
-	public void setOwner(Player owner) {
-		this.owner = owner;
+	public void setOwner(Player owner){
+			this.owner = owner;
+
+	
 	}
 
 	/**

@@ -9,6 +9,7 @@ class PlayerTest {
 	
 	String validNameMin, validNameMid, validNameMax, invalidNameMin, invalidNameMax;
 	Player player;
+	int honey, position;
 
 	@BeforeEach
 	void setUp() throws Exception {
@@ -19,6 +20,9 @@ class PlayerTest {
 		invalidNameMin = "a".repeat(2);
 		invalidNameMax = "a".repeat(16);
 		
+		honey = 500;
+		position = 0;
+		
 		player = new Player(validNameMid);
 	}
 	
@@ -27,13 +31,15 @@ class PlayerTest {
 	void testPlayerConstructor() {
 		player = new Player(validNameMid);
 		assertEquals(validNameMid, player.getName());
+		assertEquals(honey, player.getHoney());
+		assertEquals(position, player.getPosition());
 	}
 
 	@Test
 	void testPlayerConstructorInvalid() {
-		assertThrows(IllegalArgumentException.class, ()->{
+		Exception exp = assertThrows(IllegalArgumentException.class, ()->{
 			player = new Player(invalidNameMin);
-		});
+		}); assertEquals("Name must be 3-15 chars", exp.getMessage());
 	}
 	
 	@Test
@@ -51,11 +57,11 @@ class PlayerTest {
 		IllegalArgumentException exp = assertThrows(IllegalArgumentException.class, ()->{
 			player.setName(invalidNameMin);
 		});
-		assertEquals("Name length is invalid", exp.getMessage());
+		assertEquals("Name must be 3-15 chars", exp.getMessage());
 		exp = assertThrows(IllegalArgumentException.class, ()->{
 			player.setName(invalidNameMax);
 		});
-		assertEquals("Name length is invalid", exp.getMessage());
+		assertEquals("Name must be 3-15 chars", exp.getMessage());
 	}
 
 

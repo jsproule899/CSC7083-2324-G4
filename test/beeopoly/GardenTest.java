@@ -11,6 +11,7 @@ class GardenTest {
 	int validValueMin, validValue, invalidValue;
 	int validApiaryMin, validApiaryMax, invalidApiaryMin, invalidApiaryMax;
 	int validHiveMin, validHiveMid, validHiveMax, invalidHiveMin, invalidHiveMax;
+	Player player;
 	Field field;
 	Garden garden;
 	String validNameMin, validNameMid, validNameMax, invalidNameMin, invalidNameMax;
@@ -155,8 +156,16 @@ class GardenTest {
 		assertEquals(1, garden.getApiary());
 	}
 
-
-	//Do we need to test for min and max values?
+	@Test
+	void testGetOwner() {
+		player = new Player(validNameMid);
+		garden.setOwner(player);
+		assertEquals(player, garden.getOwner());
+		
+	}
+	
+	
+	
 	@Test
 	void testGetField() {
 		garden.setField(field);

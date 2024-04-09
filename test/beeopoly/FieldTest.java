@@ -53,8 +53,12 @@ class FieldTest {
 
 	@Test
 	void testGetName() {
+		field.setName(validNameMin);
+		assertEquals(validNameMin, field.getName());
 		field.setName(validNameMid);
 		assertEquals(validNameMid, field.getName());
+		field.setName(validNameMax);
+		assertEquals(validNameMax, field.getName());
 	}
 	
 	@Test
