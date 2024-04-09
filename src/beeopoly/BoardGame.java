@@ -70,10 +70,8 @@ public class BoardGame {
 		// Enter game loop
 		while (!quit) {
 			nextRound();
-			// Methods below to accommodate single responsibility
 			playerTurn();
-			endGameCheck(); // This check only occurs at the end of the round, if there is 2 players and the
-							// 1st player gets eliminated the 2nd player has their turn before it checks.
+			endGameCheck(); 
 
 		}
 	}
@@ -85,8 +83,13 @@ public class BoardGame {
 	public static void playerTurn() {
 		ArrayList<Player> startingPlayers = new ArrayList<Player>();
 		startingPlayers.addAll(activePlayers);
-		// If player is eliminated, skip their turn
+		
 		for (Player player : startingPlayers) {
+			//If only 1 player remains, break loop
+			if (activePlayers.size() < 2) {
+				continue;
+			}
+			// If player is eliminated, skip their turn
 			if (playerRank.contains(player)) {
 				continue;
 			}
@@ -642,7 +645,7 @@ public class BoardGame {
 		// Add removed player to playerRank
 		playerRank.add(player);
 
-		// Add removed player to playerRank
+		// Reset Resources 
 		for (Garden garden : gardens) {
 			if (garden.getOwner() == player) {
 				garden.setOwner(null);

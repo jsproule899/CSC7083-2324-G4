@@ -213,14 +213,5 @@ class GardenTest {
 		
 	}
 	
-	
-	
-//	Methods need to be split to test 
-//	@Test
-//	void testPayRent() {
-//		fail("Not yet implemented");
-//	}
-
-	
 
 }
