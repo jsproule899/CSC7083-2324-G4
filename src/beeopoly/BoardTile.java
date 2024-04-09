@@ -37,22 +37,8 @@ public abstract class BoardTile {
 	 * @param name - The name of the board tile to set.
 	 * @throws IllegalArgumentException - If the name is Null, less than 3 
 	 * 									or greater than 35.                               
-	 * @throws IllegalArgumentException - If the name is less than 3 or greater than
-	 *                                  35.
 	 */
 	public void setName(String name) throws IllegalArgumentException {
-		if (name == null) {
-			throw new IllegalArgumentException("Name cannot be null");
-		} else if (name.length() >= MIN_NAME && name.length() <= MAX_NAME) {
-		
-		if (name == null) {
-			throw new IllegalArgumentException("Name cannot be null");
-		} else if (name.length() >= MIN_NAME && name.length() <= MAX_NAME) {
-		
-		if (name == null) {
-			throw new IllegalArgumentException("Name cannot be null");
-		} else if (name.length() >= MIN_NAME && name.length() <= MAX_NAME) {
-		
 		if (name == null) {
 			throw new IllegalArgumentException("Name cannot be null");
 		} else if (name.length() >= MIN_NAME && name.length() <= MAX_NAME) {

@@ -56,23 +56,13 @@ public class Field {
 	 * Method to set the name of the field.
 	 * 
 	 * @param name - The name of the field to set.
-<<<<<<< HEAD
 	 * @throws IllegalArgumentException - If the name is null, less than 3 or 
 	 *                                  greater than 25.
-=======
-	 * @throws IllegalArgumentException - If the name is less than 3 or greater than
-	 *                                  25.
->>>>>>> branch 'main' of https://gitlab.eeecs.qub.ac.uk/CSC7083-2324/CSC7083-2324-G4.git
 	 */
 	public void setName(String name) throws IllegalArgumentException {
-<<<<<<< HEAD
+
 		if (name == null) {
 			throw new IllegalArgumentException("Field cannot be null");
-=======
-		
-		if (name == null) {
-			throw new IllegalArgumentException("Name cannot be null");
->>>>>>> branch 'main' of https://gitlab.eeecs.qub.ac.uk/CSC7083-2324/CSC7083-2324-G4.git
 		} else if (name.length() >= MIN_NAME && name.length() <= MAX_NAME) {
 			this.name = name;
 		} else {
