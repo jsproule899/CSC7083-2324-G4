@@ -173,12 +173,45 @@ public class BoardGame {
 				System.out.println();
 				i--;
 			}
+						
+		}
+		//Check with players if name is correct
+		boolean proceed = displayNames(players);
+		if (!proceed) {
+			getPlayerNames(sc, numOfPlayers);
+		}else {
+			// Add names that have passed validation to the activePlayers array
+			for (String name : players) {
+				activePlayers.add(new Player(name));
+			}
+		}
+		
+	}
+	
+	
+	/**
+	 * @param players - Prints the names from the array and asks player if 
+	 * 					they are correct
+	 * @return - false if player selects N or true if Y is selected
+	 *
+	 */
+	private static boolean displayNames(String[] players) {
 
+		System.out.println("Welcome to the game...");
+		for (String player : players) {
+			System.out.println(player);
 		}
-		// Add names that have passed validation to the activePlayers array
-		for (String name : players) {
-			activePlayers.add(new Player(name));
+		Scanner sc = new Scanner (System.in);
+		System.out.println("Are these names correct [Y/N]?");
+		String choice = sc.nextLine();
+		if(choice.equalsIgnoreCase("Y")) {
+			System.out.println("Great, lets begin");
+			return true;
+		}else {
+			System.out.println("OK, lets try that again");
+			return false;
 		}
+		
 	}
 
 	/**
@@ -306,6 +339,19 @@ public class BoardGame {
 	 */
 	private static void setPlayerOrder(ArrayList<Player> playOrder) {
 		Collections.shuffle(playOrder);
+		displayOrder(playOrder);
+	}
+
+	/**
+	 * @param playOrder
+	 * Prints to screen the order of play
+	 */
+	public static void displayOrder(ArrayList<Player> playOrder) {
+		int count = 1;
+		System.out.println("Order of play...");
+		for (Player player : playOrder) {
+			System.out.printf("%d) %s %n", count++, player.getName());
+		}
 	}
 
 	/**
