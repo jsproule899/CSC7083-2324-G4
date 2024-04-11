@@ -71,7 +71,7 @@ public class BoardGame {
 		while (!quit) {
 			nextRound();
 			playerTurn();
-			endGameCheck(); 
+			endGameCheck();
 
 		}
 	}
@@ -83,9 +83,9 @@ public class BoardGame {
 	public static void playerTurn() {
 		ArrayList<Player> startingPlayers = new ArrayList<Player>();
 		startingPlayers.addAll(activePlayers);
-		
+
 		for (Player player : startingPlayers) {
-			//If only 1 player remains, break loop
+			// If only 1 player remains, break loop
 			if (activePlayers.size() < 2) {
 				continue;
 			}
@@ -142,7 +142,7 @@ public class BoardGame {
 	/**
 	 * Method to allow users to input player names including validation of input.
 	 * 
-	 * @param sc - Scanner object for user input.
+	 * @param sc           - Scanner object for user input.
 	 * @param numOfPlayers - Number of players playing the game.
 	 */
 	public static void getPlayerNames(Scanner sc, int numOfPlayers) {
@@ -173,45 +173,13 @@ public class BoardGame {
 				System.out.println();
 				i--;
 			}
-						
-		}
-		//Check with players if name is correct
-		boolean proceed = displayNames(players);
-		if (!proceed) {
-			getPlayerNames(sc, numOfPlayers);
-		}else {
-			// Add names that have passed validation to the activePlayers array
-			for (String name : players) {
-				activePlayers.add(new Player(name));
-			}
-		}
-		
-	}
-	
-	
-	/**
-	 * @param players - Prints the names from the array and asks player if 
-	 * 					they are correct
-	 * @return - false if player selects N or true if Y is selected
-	 *
-	 */
-	private static boolean displayNames(String[] players) {
 
-		System.out.println("Welcome to the game...");
-		for (String player : players) {
-			System.out.println(player);
 		}
-		Scanner sc = new Scanner (System.in);
-		System.out.println("Are these names correct [Y/N]?");
-		String choice = sc.nextLine();
-		if(choice.equalsIgnoreCase("Y")) {
-			System.out.println("Great, lets begin");
-			return true;
-		}else {
-			System.out.println("OK, lets try that again");
-			return false;
+		// Add names that have passed validation to the activePlayers array
+		for (String name : players) {
+			activePlayers.add(new Player(name));
 		}
-		
+
 	}
 
 	/**
@@ -343,8 +311,7 @@ public class BoardGame {
 	}
 
 	/**
-	 * @param playOrder
-	 * Prints to screen the order of play
+	 * @param playOrder Prints to screen the order of play
 	 */
 	public static void displayOrder(ArrayList<Player> playOrder) {
 		int count = 1;
@@ -691,7 +658,7 @@ public class BoardGame {
 		// Add removed player to playerRank
 		playerRank.add(player);
 
-		// Reset Resources 
+		// Reset Resources
 		for (Garden garden : gardens) {
 			if (garden.getOwner() == player) {
 				garden.setOwner(null);
@@ -726,8 +693,8 @@ public class BoardGame {
 	}
 
 	/**
-	 * Method to return activePlayers to be used for auction method in the Garden class
-	 * class.
+	 * Method to return activePlayers to be used for auction method in the Garden
+	 * class class.
 	 * 
 	 * @return - The activePlayers list.
 	 */
