@@ -371,7 +371,7 @@ public class Player {
 			if (ownedGardensToAddHives.size() > 0) {
 				System.out.println("Which garden tile would you like to develop? [Enter a number]");
 				hasAddHiveGardens = true;
-				System.out.println("You can add a Hive to the following garden tiles: %n");
+				System.out.println("You can add a Hive to the following garden tiles:");
 
 				// If the garden tile is eligible for Hive development, calculate and display
 				// the cost of adding a Hive, depending on existing developments
@@ -395,7 +395,7 @@ public class Player {
 			}
 			if (ownedGardensToAddApiary.size() > 0) {
 				hasAddApiaryGardens = true;
-				System.out.println("You can develop the following garden tiles into an Apiary: %n");
+				System.out.println("You can develop the following garden tiles into an Apiary:");
 
 				// If the garden tile is eligible for Apiary development, calculate and display
 				// the cost of adding an Apiary
