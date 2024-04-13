@@ -370,23 +370,27 @@ public class Player {
 			if (ownedGardensToAddHives.size() > 0) {
 				System.out.println("Which garden tile would you like to develop? [Enter a number]");
 				hasAddHiveGardens = true;
+<<<<<<< HEAD
 				System.out.println("You can add a Hive to the following garden tiles: /n");
+=======
+				System.out.println("You can add a hive to the following garden tiles: \n");
+>>>>>>> branch 'main' of https://gitlab.eeecs.qub.ac.uk/CSC7083-2324/CSC7083-2324-G4.git
 
 				// If the garden tile is eligible for Hive development, calculate and display
 				// the cost of adding a Hive, depending on existing developments
 				for (Garden garden : ownedGardensToAddHives) {
 					if (garden.getHives() == 0) {
 						addHiveCost = (garden.getTileCost()) * (0.1);
-						System.out.printf("%d. %s (%s) for %.0f honey jars", i, garden.getName(),
+						System.out.printf("%d. %s (%s) for %.0f honey jars %n", i, garden.getName(),
 								garden.getField().getName(), addHiveCost);
 
 					} else if (garden.getHives() == 1) {
 						addHiveCost = (garden.getTileCost()) * (0.2);
-						System.out.printf("%d. %s (%s) for %.0f honey jars", i, garden.getName(),
+						System.out.printf("%d. %s (%s) for %.0f honey jars %n", i, garden.getName(),
 								garden.getField().getName(), addHiveCost);
 					} else if (garden.getHives() == 2) {
 						addHiveCost = (garden.getTileCost()) * (0.3);
-						System.out.printf("%d. %s (%s) for %.0f honey jars", i, garden.getName(),
+						System.out.printf("%d. %s (%s) for %.0f honey jars %n", i, garden.getName(),
 								garden.getField().getName(), addHiveCost);
 					}
 					i++;
@@ -394,14 +398,18 @@ public class Player {
 			}
 			if (ownedGardensToAddApiary.size() > 0) {
 				hasAddApiaryGardens = true;
+<<<<<<< HEAD
 				System.out.println("You can develop the following garden tiles into an Apiary: /n");
+=======
+				System.out.println("You can develop the following garden tiles into an apiary: \n");
+>>>>>>> branch 'main' of https://gitlab.eeecs.qub.ac.uk/CSC7083-2324/CSC7083-2324-G4.git
 
 				// If the garden tile is eligible for Apiary development, calculate and display
 				// the cost of adding an Apiary
 				for (Garden garden : ownedGardensToAddApiary) {
 					if (garden.getApiary() == 0) {
 						addApiaryCost = (garden.getTileCost()) * (0.5);
-						System.out.printf("%d. %s (%s) for %.0f honey jars%n", i, garden.getName(),
+						System.out.printf("%d. %s (%s) for %.0f honey jars %n", i, garden.getName(),
 								garden.getField().getName(), addApiaryCost);
 						i++;
 					}
@@ -422,8 +430,13 @@ public class Player {
 					this.updateHoney(-addHiveCost);
 					gardenToDevelop.buildHive();
 					return true;
+<<<<<<< HEAD
 				} else if (hasAddApiaryGardens) {
 					// Process adding an Apiary to the chosen garden tile
+=======
+				} else if (hasAddApiaryGardens) {	
+					// Process adding an apiary to the chosen garden tile
+>>>>>>> branch 'main' of https://gitlab.eeecs.qub.ac.uk/CSC7083-2324/CSC7083-2324-G4.git
 					gardenToDevelop = ownedGardensToAddApiary.get(choice - 1);
 					System.out.println(this.getName() + ", you have developed an Apiary on " + gardenToDevelop.getName()
 							+ " which costs " + (int) addApiaryCost + " honey jars.");
