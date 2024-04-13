@@ -240,7 +240,7 @@ public class BoardGame {
 		System.out.println("1. Gather your friends - 2 to 4 Beekeepers can build their empires.");
 		System.out.println("2. Roll those dice and buzz around the board.");
 		System.out.println(
-				"3. Own your piece of paradise by snapping up sweet garden tiles. But watch out�others might snatch them first! If you land on a tile and don't buy it, it will be offered to the other players.");
+				"3. Own your piece of paradise by snapping up sweet garden tiles. But watch others might snatch them first! If you land on a tile and don't buy it, it will be offered to the other players.");
 		System.out.println(
 				"4. If another Beekeeper lands on one of your gardens, they must show their appreciation for your hospitality by leaving you some honey jars.");
 		System.out.println("5. Collect 50 sweet honey jars when your bees fly through the Honey Haven.");
