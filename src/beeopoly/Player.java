@@ -517,6 +517,7 @@ public class Player {
 			BoardGame.removePlayer(this);
 			System.out.printf("Beekeeper %s has decided to retire and is letting their Bees rest their wings!%n",
 					this.getName());
+			System.out.printf("Beekeeper %s's gardens have all been released", this.getName());
 			return false;
 
 		default:
