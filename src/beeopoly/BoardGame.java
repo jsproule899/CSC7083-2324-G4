@@ -688,7 +688,7 @@ public class BoardGame {
 	public static void eliminatePlayer(Player player) {
 		// Display message to console
 		System.out.printf(
-				"Beekeeper %s, you have been eliminated from the game as you have run out of honey jars... Your Bees have fled the garden tiles and abondoned all the Hives and Apiaries!%n",
+				"Beekeeper %s, you have been eliminated from the game as you have run out of honey jars... Your Bees have fled their garden tiles and abondoned all the Hives and Apiaries!%n",
 				player.getName());
 		
 		// Remove player from game

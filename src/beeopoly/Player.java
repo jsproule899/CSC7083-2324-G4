@@ -418,7 +418,7 @@ public class Player {
 				// Process adding hives to the chosen garden tile
 				gardenToDevelop = ownedGardensToAddHives.get(choice - 1);
 				System.out.println(this.getName() + ", you have added a hive to " + gardenToDevelop.getName()
-						+ " which costs " + (int) addHiveCost + " Honey Jars");
+						+ " which costs " + (int) addHiveCost + " honey jars");
 				this.updateHoney(-addHiveCost);
 				gardenToDevelop.buildHive();
 				return true;
@@ -426,7 +426,7 @@ public class Player {
 				// Process adding an apiary to the chosen garden tile
 				gardenToDevelop = ownedGardensToAddApiary.get(choice - ownedGardensToAddHives.size() - 1);
 				System.out.println(this.getName() + ", you have developed an Apiary on " + gardenToDevelop.getName()
-						+ " which costs " + (int) addApiaryCost + " Honey Jars.");
+						+ " which costs " + (int) addApiaryCost + " honey jars.");
 				this.updateHoney(-addApiaryCost);
 				gardenToDevelop.buildApiary();
 				return true;
@@ -517,7 +517,7 @@ public class Player {
 			BoardGame.removePlayer(this);
 			System.out.printf("Beekeeper %s has decided to retire and is letting their Bees rest their wings!%n",
 					this.getName());
-			System.out.printf("Beekeeper %s's gardens have all been released", this.getName());
+			System.out.printf("Beekeeper %s's Bees have fled their garden tiles and abondoned all the Hives and Apiaries!%n", this.getName());
 			return false;
 
 		default:
