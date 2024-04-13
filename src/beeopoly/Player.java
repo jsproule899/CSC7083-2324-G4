@@ -48,12 +48,13 @@ public class Player {
 	 * Method to set the name of the player.
 	 * 
 	 * @param name - The name of the player to set.
-	 * @throws IllegalArgumentException - If the length of the name is null
-	 *                                  or set is outside the range of minimum 
-	 *                                  and maximum characters.
+	 * @throws IllegalArgumentException - If the length of the name is null or set
+	 *                                  is outside the range of minimum and maximum
+	 *                                  characters.
 	 */
 	public void setName(String name) throws IllegalArgumentException {
-		// Check the name is not null and that the length is within the set minimum and maximum number of
+		// Check the name is not null and that the length is within the set minimum and
+		// maximum number of
 		// characters
 		if (name == null) {
 			throw new IllegalArgumentException("Buzz off! Your Beekeeper name cannot be null");
@@ -394,8 +395,7 @@ public class Player {
 			}
 			if (ownedGardensToAddApiary.size() > 0) {
 				hasAddApiaryGardens = true;
-				System.out.println("You can develop the following garden tiles into an Apiary: /n");
-
+				System.out.println("You can develop the following garden tiles into an Apiary: %n");
 
 				// If the garden tile is eligible for Apiary development, calculate and display
 				// the cost of adding an Apiary
@@ -411,35 +411,35 @@ public class Player {
 
 			System.out.println(i + ". Cancel development");
 			int choice = getPlayerChoice(i);
-			if (choice == i || choice > i || choice <= 0) {
+			if (choice == i) {
 				System.out.println("Development cancelled...");
 				return false;
+			} else if (choice > 0 && choice <= ownedGardensToAddHives.size()) {
+				// Process adding hives to the chosen garden tile
+				gardenToDevelop = ownedGardensToAddHives.get(choice - 1);
+				System.out.println(this.getName() + ", you have added a hive to " + gardenToDevelop.getName()
+						+ " which costs " + (int) addHiveCost + " Honey Jars");
+				this.updateHoney(-addHiveCost);
+				gardenToDevelop.buildHive();
+				return true;
+			} else if (hasAddApiaryGardens == true && choice > ownedGardensToAddHives.size() && choice <= i) {
+				// Process adding an apiary to the chosen garden tile
+				gardenToDevelop = ownedGardensToAddApiary.get(choice - ownedGardensToAddHives.size() - 1);
+				System.out.println(this.getName() + ", you have developed an Apiary on " + gardenToDevelop.getName()
+						+ " which costs " + (int) addApiaryCost + " Honey Jars.");
+				this.updateHoney(-addApiaryCost);
+				gardenToDevelop.buildApiary();
+				return true;
 			} else {
-				if (hasAddHiveGardens) {
-					// Process adding Hives to the chosen garden tile
-					gardenToDevelop = ownedGardensToAddHives.get(choice - 1);
-					System.out.println(this.getName() + ", you have added a Hive to " + gardenToDevelop.getName()
-							+ " which costs " + (int) addHiveCost + " honey jars");
-					this.updateHoney(-addHiveCost);
-					gardenToDevelop.buildHive();
-					return true;
-
-				} else if (hasAddApiaryGardens) {
-					// Process adding an Apiary to the chosen garden tile
-					gardenToDevelop = ownedGardensToAddApiary.get(choice - 1);
-					System.out.println(this.getName() + ", you have developed an Apiary on " + gardenToDevelop.getName()
-							+ " which costs " + (int) addApiaryCost + " honey jars.");
-					this.updateHoney(-addApiaryCost);
-					gardenToDevelop.buildApiary();
-					return true;
-				}
+				System.out.println("Invalid choice. Development cancelled...");
+				return false;
 			}
+
 		} else {
 			System.out.println(
 					"You currently don't have enough garden tiles purchased to develop, keep playing and keep purchasing!");
 			return false;
 		}
-		return false;
 	}
 
 	/**
@@ -452,7 +452,8 @@ public class Player {
 	public boolean showMenu() {
 		// Display main menu options
 		System.out.println("Select an option:");
-		// Could implement that this first option doesn't show unless you have a garden tile
+		// Could implement that this first option doesn't show unless you have a garden
+		// tile
 		// but might confuse the players if the options change.
 		System.out.println("1. Manage Gardens");
 		System.out.println("2. Roll Dice");
