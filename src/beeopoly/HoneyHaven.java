@@ -22,7 +22,7 @@ public class HoneyHaven extends BoardTile {
 	 * @param player - The player passing through the Honey Haven tile.
 	 */
 	public static void passHoneyHaven(Player player) {
-		System.out.println("Your Bees have flown through the Honey Haven and collected an extra 50 Honey Jars");
+		System.out.println("Your Bees have flown through the Honey Haven and collected an extra 50 honey jars");
 		player.updateHoney(+50);
 		player.showHoney();
 		System.out.println();

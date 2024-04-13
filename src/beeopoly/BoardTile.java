@@ -8,6 +8,10 @@ package beeopoly;
  */
 public abstract class BoardTile {
 
+	/**
+	 * Constants for the minimum and maximum number of characters in a board tile
+	 * name.
+	 */
 	public static final int MIN_NAME = 3;
 	public static final int MAX_NAME = 35;
 
@@ -35,16 +39,16 @@ public abstract class BoardTile {
 	 * Method to set the name of the board tile.
 	 * 
 	 * @param name - The name of the board tile to set.
-	 * @throws IllegalArgumentException - If the name is Null, less than 3 
-	 * 									or greater than 35.                               
+	 * @throws IllegalArgumentException - If the name is null, less than 3 or
+	 *                                  greater than 35.
 	 */
 	public void setName(String name) throws IllegalArgumentException {
 		if (name == null) {
-			throw new IllegalArgumentException("Name cannot be null");
+			throw new IllegalArgumentException("Buzz off! Your Beekeeper name cannot be null");
 		} else if (name.length() >= MIN_NAME && name.length() <= MAX_NAME) {
 			this.name = name;
 		} else {
-			throw new IllegalArgumentException("Name must be 3-35 chars long");
+			throw new IllegalArgumentException("Buzz off! Your Beekeeper name must be 3-35 chars long");
 		}
 
 	}

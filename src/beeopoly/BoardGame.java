@@ -38,12 +38,12 @@ public class BoardGame {
 	public static ArrayList<Player> activePlayers = new ArrayList<Player>();
 
 	/**
-	 * List of players who were removed from the game during gameplay.
+	 * List of players who were removed from the game during game play.
 	 */
 	public static ArrayList<Player> playerRank = new ArrayList<Player>();
 
 	/**
-	 * Lists of tiles, fields, and gardens on game board.
+	 * Lists of tiles, fields, and garden tiles on game board.
 	 */
 	public static ArrayList<BoardTile> gameBoard = new ArrayList<BoardTile>();
 	public static ArrayList<Field> fields = new ArrayList<Field>();
@@ -61,7 +61,7 @@ public class BoardGame {
 	 */
 	public static void main(String[] args) {
 
-		// Initialise game with fields, gardens and boardgame array
+		// Initialise game with fields, garden tiles and boardgame array
 		setupGameBoard();
 		welcome();
 		register();
@@ -77,8 +77,8 @@ public class BoardGame {
 	}
 
 	/**
-	 * Method that displays information about a player turn. Who's turn it is, where
-	 * they have landed & end of turn.
+	 * Method that displays information about a player turn. The player whose turn it is, where
+	 * they have landed and when their turn has ended.
 	 */
 	public static void playerTurn() {
 		ArrayList<Player> startingPlayers = new ArrayList<Player>();
@@ -93,11 +93,11 @@ public class BoardGame {
 			if (playerRank.contains(player)) {
 				continue;
 			}
-			System.out.printf("It's %s's turn.%n", player.getName());
+			System.out.printf("It's Beekeeper %s's turn.%n", player.getName());
 			if (player.showMenu()) {
 				gameBoard.get(player.getPosition()).landOn(player);
 				System.out.println();
-				System.out.printf("End of %s's turn.%n", player.getName());
+				System.out.printf("End of Beekeeper %s's turn.%n", player.getName());
 				System.out.println("------------------------------------");
 			} else {
 				System.out.println("------------------------------------");
@@ -117,7 +117,7 @@ public class BoardGame {
 			for (Player player : activePlayers) {
 				System.out.println("There is only a single Beekeeper and their swarm still buzzing... "
 						+ player.getName()
-						+ " has won! Congratulations!!! Your Bees have grew into a wonderful colony and repollinated the world :D");
+						+ " has won! Congratulations!!! Your Bees have grown into a wonderful colony and repollinated the world :D");
 
 				beekeeperLeaderboard();
 				System.out.println(
@@ -151,14 +151,14 @@ public class BoardGame {
 
 			// Check user input is appropriate length
 			while (player.length() < MIN_CHARS || player.length() > MAX_CHARS) {
-				System.out.printf("Please Enter player %d (%d-%d chars)", i + 1, MIN_CHARS, MAX_CHARS);
+				System.out.printf("Please buzz in the name for Beekeeper %d [%d-%d chars]", i + 1, MIN_CHARS, MAX_CHARS);
 				System.out.println();
 				player = sc.nextLine().strip();
 				if (player.length() < MIN_CHARS) {
-					System.out.printf("Player name too short %d chars in length", player.length());
+					System.out.printf("Buzz off! Your Beekeeper name is too short - it is only %d chars in length", player.length());
 					System.out.println();
 				} else if (player.length() > MAX_CHARS) {
-					System.out.printf("Player name too long %d chars in length", player.length());
+					System.out.printf("Buzz off! Your Beekeeper name is too long - it is %d chars in length", player.length());
 					System.out.println();
 				}
 			}
@@ -166,10 +166,10 @@ public class BoardGame {
 			// Check name is unique
 			if (checkPlayerNameUnique(player)) {
 				players[i] = player;
-				System.out.println("Player Successfully added");
+				System.out.println("Player successfully buzzed onboard!");
 
 			} else {
-				System.err.printf("Error %s has been taken.%n", player);
+				System.err.printf("Buzz off! The name %s has already been taken.%n", player);
 				System.out.println();
 				i--;
 			}
@@ -195,7 +195,7 @@ public class BoardGame {
 		// Prompt user to enter number of players for game
 		while (!input) {
 			try {
-				System.out.printf("How many players are there? [must be %d-%d]%n", MIN_PLAYERS, MAX_PLAYERS);
+				System.out.printf("How many Beekeepers are ready to build their buzzing empire? [must be %d-%d]%n", MIN_PLAYERS, MAX_PLAYERS);
 				numOfPlayers = sc.nextInt();
 				sc.nextLine();
 				// Check number of players entered is permitted by game rules
@@ -203,11 +203,11 @@ public class BoardGame {
 					input = true;
 					players = new String[numOfPlayers];
 				} else {
-					System.out.println("Incorrect value entered");
+					System.out.printf("Buzz off! There must be %d-%d Beekeepers %n", MIN_PLAYERS, MAX_PLAYERS);
 				}
 
 			} catch (InputMismatchException e) {
-				System.out.println("Invalid data type, please enter a number");
+				System.out.println("Buzz off! You have entered an invalid data type, please enter a number");
 				sc.nextLine();
 			}
 		}
@@ -240,14 +240,14 @@ public class BoardGame {
 		System.out.println("1. Gather your friends - 2 to 4 Beekeepers can build their empires.");
 		System.out.println("2. Roll those dice and buzz around the board.");
 		System.out.println(
-				"3. Own your piece of paradise by snapping up sweet garden tiles. But watch out�others might snatch them first! If you land on a tile and don't buy it, it will be offered to the other players.");
+				"3. Own your piece of paradise by snapping up sweet garden tiles. But watch out, others might snatch them first! If you land on a garden tile and don't buy it, it will be offered to the other Beekeepers.");
 		System.out.println(
-				"4. If another Beekeeper lands on one of your gardens, they must show their appreciation for your hospitality by leaving you some honey jars.");
-		System.out.println("5. Collect 50 sweet honey jars when your bees fly through the Honey Haven.");
+				"4. If another Beekeeper lands on one of your garden tiles, they must show their appreciation for your hospitality by leaving you some honey jars.");
+		System.out.println("5. Collect 50 sweet honey jars when your Bees fly through the Honey Haven.");
 		System.out.println("6. Rest and recharge when you land on the Nectar Oasis.");
 		System.out.println(
-				"7. Rule the fields by acquiring all gardens within a field. Then, develop your empire with Hives�but remember, you'll need three before you can build an Apiary.");
-		System.out.println("8. Strike deals, swap tiles, and reign supreme as the savviest beekeeper in the hive!");
+				"7. Rule the fields by acquiring all garden tiles within a field. Then, develop your empire with Hives but remember, you'll need three before you can build an Apiary.");
+		System.out.println("8. Strike deals, swap tiles, and reign supreme as the savviest Beekeeper of the game!");
 		System.out.println(
 				"9. Keep those honey jars flowing or risk getting stung! Run out of honey jars and you will be eliminated from the game.");
 		System.out.println(
@@ -257,7 +257,7 @@ public class BoardGame {
 	}
 
 	/**
-	 * Method to set up the game board with fields, gardens, and other tiles.
+	 * Method to set up the game board with fields, garden tiles, and other tiles.
 	 */
 	private static void setupGameBoard() {
 		// Set up fields
@@ -330,7 +330,7 @@ public class BoardGame {
 
 		System.out.println();
 		System.out.println(
-				"It's time for the Start-of-Round Buzz Report. Let's see how our honey jars and gardens are buzzing along!");
+				"It's time for the Start-of-Round Buzz Report. Let's see how our honey jars and garden tiles are buzzing along!");
 
 		gameStatistics();
 
@@ -351,21 +351,21 @@ public class BoardGame {
 			System.out.println();
 			activePlayers.get(i).showHoney();
 
-			boolean hasGardens = false; // Flag to check if the player owns any gardens
+			boolean hasGardens = false; // Flag to check if the player owns any garden tiles
 
-			// Check if player owns any gardens
+			// Check if player owns any garden tiles
 			for (int j = 0; j < gardens.size(); j++) {
 				if (gardens.get(j).getOwner() == activePlayers.get(i)) {
 					hasGardens = true;
-					break; // Exit loop if player owns a garden
+					break; // Exit loop if player owns a garden tile
 				}
 			}
 
-			// If yes, print the gardens they own
+			// If yes, print the garden tiles they own
 			if (hasGardens) {
 				System.out.printf("Their Empire:\n", activePlayers.get(i).getName());
 
-				// Print owned gardens
+				// Print owned garden tiles
 				for (int j = 0; j < gardens.size(); j++) {
 					if (gardens.get(j).getOwner() == activePlayers.get(i)) {
 						System.out.printf("%-30s (%-20s\t", gardens.get(j).getName(),
@@ -384,9 +384,9 @@ public class BoardGame {
 
 			} else {
 
-				// If no, print message that player doesn't own any gardens
+				// If no, print message that player doesn't own any garden tiles
 				System.out.printf(
-						"Their empire stands gardenless, yet hope blooms for the bees to claim their own sanctuary in the next round.\n");
+						"Their empire stands gardenless, yet hope blooms for the Bees to claim their own sanctuary in the next round.\n");
 			}
 		}
 	}
@@ -423,22 +423,22 @@ public class BoardGame {
 			System.out.println("Are you absolutely certain you want to end the game? [Y/N]");
 			if (Player.getPlayerDecision()) {
 				System.out.println(
-						"Understood, fellow beekeepers. Sometimes, even the busiest bees need to rest their wings.");
+						"Understood, fellow Beekeepers. Sometimes, even the busiest bees need to rest their wings.");
 				displayLeaderboard();
 				// Bring game to an end
 				quit = true;
 			} else {
 				System.out.println(
-						"Excellent choice! The bees are buzzing with excitement to continue their journey. Let's keep the garden buzzing with excitement for another round of sweet victories! \n");
+						"Excellent choice! The Bees are buzzing with excitement to continue their journey. Let's keep the fields buzzing with excitement for another round of sweet victories! \n");
 			}
 		} else {
 			System.out.println(
-					"Excellent choice! The bees are buzzing with excitement to continue their journey. Let's keep the garden buzzing with excitement for another round of sweet victories! \n");
+					"Excellent choice! The Bees are buzzing with excitement to continue their journey. Let's keep the fields buzzing with excitement for another round of sweet victories! \n");
 		}
 	}
 
 	/**
-	 * Method to rank players based on honey and value of real estate.
+	 * Method to rank players based on honey jars and value of real estate.
 	 * 
 	 * @return - A list of ranked players.
 	 */
@@ -451,7 +451,7 @@ public class BoardGame {
 			double realEstateTotal = 0;
 			double finalScore = 0;
 
-			// Calculate value of each garden including developments owned by the player
+			// Calculate value of each garden tile including developments owned by the player
 			for (int j = 0; j < gardens.size(); j++) {
 
 				if (gardens.get(j).getOwner() == activePlayers.get(i)) {
@@ -546,7 +546,7 @@ public class BoardGame {
 		// Display message depending on whether there is one winner or joint winners
 		if (winners.size() == 1) {
 			System.out.printf(
-					"Flap your wings in triumph Beekeeper %s! Congratulations on your buzzing victory as a top beekeeper! \n",
+					"Flap your wings in triumph Beekeeper %s! Congratulations on your buzzing victory as a top Beekeeper! \n",
 					winners.get(0));
 
 		} else if (winners.size() > 1) {
@@ -566,7 +566,7 @@ public class BoardGame {
 			}
 
 			System.out.printf(
-					"Flap your wings in triumph Beekeepers %s! Congratulations on your buzzing victory as top beekeepers! \n",
+					"Flap your wings in triumph Beekeepers %s! Congratulations on your buzzing victory as top Beekeepers! \n",
 					winnerlist);
 		}
 
@@ -645,7 +645,7 @@ public class BoardGame {
 	}
 
 	/**
-	 * Method to remove a player from the game and reset their gardens and
+	 * Method to remove a player from the game and reset their garden tiles and
 	 * developments.
 	 * 
 	 * @param player - The player to be removed from the game.
@@ -686,15 +686,18 @@ public class BoardGame {
 	 * @param player - The player to be eliminated from the game.
 	 */
 	public static void eliminatePlayer(Player player) {
+		// Display message to console
 		System.out.printf(
-				"Beekeeper %s, you have been eliminated from the game as you have run out of Honey... Your Bees have fled the gardens and abondoned all the hives and apiaries!%n",
+				"Beekeeper %s, you have been eliminated from the game as you have run out of honey jars... Your Bees have fled the garden tiles and abondoned all the Hives and Apiaries!%n",
 				player.getName());
+		
+		// Remove player from game
 		removePlayer(player);
 	}
 
 	/**
-	 * Method to return activePlayers to be used for auction method in the Garden
-	 * class class.
+	 * Method to return activePlayers to be used for offerToOtherPlayers method in the Garden
+	 * class.
 	 * 
 	 * @return - The activePlayers list.
 	 */

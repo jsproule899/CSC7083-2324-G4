@@ -10,6 +10,9 @@ import java.util.ArrayList;
  */
 public class Field {
 
+	/**
+	 * Constants for the minimum and maximum number of characters in a field name.
+	 */
 	public static final int MIN_NAME = 3;
 	public static final int MAX_NAME = 25;
 
@@ -26,18 +29,18 @@ public class Field {
 	}
 
 	/**
-	 * Method to get the list of gardens in the field.
+	 * Method to get the list of garden tiles in the field.
 	 * 
-	 * @return - The list of gardens.
+	 * @return - The list of garden tiles.
 	 */
 	public ArrayList<Garden> getGardens() {
 		return gardens;
 	}
 
 	/**
-	 * Method to add a garden to the field.
+	 * Method to add a garden tile to the field.
 	 * 
-	 * @param garden - The garden to be added.
+	 * @param garden - The garden tile to be added.
 	 */
 	public void addGarden(Garden garden) {
 		this.gardens.add(garden);
@@ -62,11 +65,11 @@ public class Field {
 	public void setName(String name) throws IllegalArgumentException {
 
 		if (name == null) {
-			throw new IllegalArgumentException("Field cannot be null");
+			throw new IllegalArgumentException("Buzz off! Field cannot be null");
 		} else if (name.length() >= MIN_NAME && name.length() <= MAX_NAME) {
 			this.name = name;
 		} else {
-			throw new IllegalArgumentException("Field must be 3-25 chars long");
+			throw new IllegalArgumentException("Buzz off! Field must be 3-25 chars long");
 		}
 
 	}
