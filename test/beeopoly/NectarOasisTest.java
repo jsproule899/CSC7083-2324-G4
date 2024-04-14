@@ -28,7 +28,7 @@ class NectarOasisTest {
 	void testNectarOasisConstructorInvalid() {
 		Exception exp = assertThrows(IllegalArgumentException.class, ()->{
 			necOasis = new NectarOasis(invalidNameMin);
-		});assertEquals("Name must be 3-35 chars long", exp.getMessage());
+		});assertEquals("Buzz off! Your Beekeeper name must be 3-35 chars long", exp.getMessage());
 	}
 
 }

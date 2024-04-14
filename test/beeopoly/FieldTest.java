@@ -37,7 +37,7 @@ class FieldTest {
 	void testFieldConstructorInvalid() {
 		Exception exp = assertThrows(IllegalArgumentException.class, ()->{
 			field = new Field(invalidNameMin);
-		});assertEquals("Field must be 3-25 chars long", exp.getMessage());
+		});assertEquals("Buzz off! Field must be 3-25 chars long", exp.getMessage());
 	}
 
 	
@@ -65,13 +65,13 @@ class FieldTest {
 	void testGetNameInvalid() {
 		Exception exp = assertThrows(IllegalArgumentException.class, ()->{
 			field.setName(invalidNameMin);
-		});assertEquals("Field must be 3-25 chars long", exp.getMessage());
+		});assertEquals("Buzz off! Field must be 3-25 chars long", exp.getMessage());
 		exp = assertThrows(IllegalArgumentException.class, ()->{
 			field.setName(invalidNameMax);
-		});assertEquals("Field must be 3-25 chars long", exp.getMessage());
+		});assertEquals("Buzz off! Field must be 3-25 chars long", exp.getMessage());
 		exp = assertThrows(IllegalArgumentException.class, ()->{
 			field.setName(null);
-		});assertEquals("Field cannot be null", exp.getMessage());
+		});assertEquals("Buzz off! Field cannot be null", exp.getMessage());
 	}
 
 }

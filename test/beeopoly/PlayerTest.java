@@ -41,7 +41,7 @@ class PlayerTest {
 		Exception exp = assertThrows(IllegalArgumentException.class, () -> {
 			player = new Player(invalidNameMin);
 		});
-		assertEquals("Name must be 3-15 chars", exp.getMessage());
+		assertEquals("Buzz off! Your Beekeeper name must be 3-15 chars", exp.getMessage());
 	}
 
 	@Test
@@ -59,15 +59,15 @@ class PlayerTest {
 		IllegalArgumentException exp = assertThrows(IllegalArgumentException.class, () -> {
 			player.setName(invalidNameMin);
 		});
-		assertEquals("Name must be 3-15 chars", exp.getMessage());
+		assertEquals("Buzz off! Your Beekeeper name must be 3-15 chars", exp.getMessage());
 		exp = assertThrows(IllegalArgumentException.class, () -> {
 			player.setName(invalidNameMax);
 		});
-		assertEquals("Name must be 3-15 chars", exp.getMessage());
+		assertEquals("Buzz off! Your Beekeeper name must be 3-15 chars", exp.getMessage());
 		exp = assertThrows(IllegalArgumentException.class, () -> {
 			player.setName(null);
 		});
-		assertEquals("Name cannot be null", exp.getMessage());
+		assertEquals("Buzz off! Your Beekeeper name cannot be null", exp.getMessage());
 	}
 
 	@Test

@@ -60,17 +60,17 @@ class GardenTest {
 		//Test the abstract parent constructor
 		Exception exp = assertThrows(IllegalArgumentException.class, ()->{
 			garden = new Garden(invalidNameMin, field, validValueMin, validValue);
-		});assertEquals("Name must be 3-35 chars long", exp.getMessage());
+		});assertEquals("Buzz off! Your Beekeeper name must be 3-35 chars long", exp.getMessage());
 		//Garden constructor tests
 		exp = assertThrows(IllegalArgumentException.class, ()->{
 			garden = new Garden(validNameMid, null, validValue, validValue);
-		});assertEquals("Cannot be a null value", exp.getMessage());
+		});assertEquals("Buzz off! Field cannot be a null value", exp.getMessage());
 		exp = assertThrows(IllegalArgumentException.class, ()->{
 			garden = new Garden(validNameMid, field, invalidValue, validValue);
-		});assertEquals("Value cannot be less than 0", exp.getMessage());
+		});assertEquals("Buzz off! The cost of purchasing a garden tile cannot be less than 0", exp.getMessage());
 		exp = assertThrows(IllegalArgumentException.class, ()->{
 			garden = new Garden(validNameMid, field, validValue, invalidValue);
-		});assertEquals("Value cannot be less than 0", exp.getMessage());
+		});assertEquals("Buzz off! The cost of landing on a garden tile cannot be less than 0", exp.getMessage());
 
 	}
 	
@@ -89,13 +89,13 @@ class GardenTest {
 	void testSetNameInvalid() {
 		Exception exp = assertThrows(IllegalArgumentException.class, () -> {
 			garden.setName(invalidNameMin);
-		});assertEquals("Name must be 3-35 chars long", exp.getMessage());
+		});assertEquals("Buzz off! Your Beekeeper name must be 3-35 chars long", exp.getMessage());
 		exp = assertThrows(IllegalArgumentException.class, () -> {
 			garden.setName(invalidNameMax);
-		});assertEquals("Name must be 3-35 chars long", exp.getMessage());
+		});assertEquals("Buzz off! Your Beekeeper name must be 3-35 chars long", exp.getMessage());
 		exp = assertThrows(IllegalArgumentException.class, () -> {
 			garden.setName(null);
-		});assertEquals("Name cannot be null", exp.getMessage());
+		});assertEquals("Buzz off! Your Beekeeper name cannot be null", exp.getMessage());
 	}
 
 	@Test
@@ -114,11 +114,11 @@ class GardenTest {
 		Exception exp = assertThrows(IllegalArgumentException.class, () -> {
 			garden.setHives(invalidHiveMax);
 		});
-		assertEquals("The maximum Hives a garden can have is " + validHiveMax, exp.getMessage());
+		assertEquals("Buzz off! The maximum Hives a garden tile can have is " + validHiveMax, exp.getMessage());
 		exp = assertThrows(IllegalArgumentException.class, () -> {
 			garden.setHives(invalidHiveMin);
 		});
-		assertEquals("Hives cannot be set to less than 0", exp.getMessage());
+		assertEquals("Buzz off! Hives cannot be set to less than 0", exp.getMessage());
 	}
 	
 	@Test
@@ -133,11 +133,11 @@ class GardenTest {
 		Exception exp = assertThrows(IllegalArgumentException.class, () -> {
 			garden.setApiary(invalidApiaryMin);
 		});
-		assertEquals("Apiaries canot be set to less than 0", exp.getMessage());
+		assertEquals("Buzz off! Apiaries canot be set to less than 0", exp.getMessage());
 		exp = assertThrows(IllegalArgumentException.class, () -> {
 			garden.setApiary(invalidApiaryMax);
 		});
-		assertEquals("The maximum Apiaries a garden can have is " + validApiaryMax, exp.getMessage());
+		assertEquals("Buzz off! The maximum Apiaries a garden tile can have is " + validApiaryMax, exp.getMessage());
 		
 	}
 
@@ -180,7 +180,7 @@ class GardenTest {
 		Exception exp = assertThrows(IllegalArgumentException.class, () -> {
 			garden.setField(null);
 		});
-		assertEquals("Cannot be a null value", exp.getMessage());
+		assertEquals("Buzz off! Field cannot be a null value", exp.getMessage());
 	}
 
 	@Test
@@ -196,7 +196,7 @@ class GardenTest {
 	void testGetTileCostInvalid() {
 		Exception exp = assertThrows(IllegalArgumentException.class, () -> {
 			garden.setTileCost(invalidValue);
-		});assertEquals("Value cannot be less than 0", exp.getMessage());
+		});assertEquals("Buzz off! The cost of purchasing a garden tile cannot be less than 0", exp.getMessage());
 		
 	}
 
@@ -212,7 +212,7 @@ class GardenTest {
 	void testGetRentInvalid() {
 		Exception exp = assertThrows(IllegalArgumentException.class, () -> {
 			garden.setRent(invalidValue);
-		});assertEquals("Value cannot be less than 0", exp.getMessage());
+		});assertEquals("Buzz off! The cost of landing on a garden tile cannot be less than 0", exp.getMessage());
 		
 	}
 	
